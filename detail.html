@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết sản phẩm | SNEAKER SUPREME</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --red: #e60000; --black: #0a0a0a; --white: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #fcfcfc; padding-top: 80px; color: #333; }
+        a { text-decoration: none; color: inherit; }
+
+        /* NAVBAR */
+        nav { background: var(--black); height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 0 5%; position: fixed; top: 0; width: 100%; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .logo { color: var(--white); font-size: 24px; font-weight: 900; } .logo span { color: var(--red); }
+        .nav-right a { color: white; font-size: 20px; margin-left: 20px; transition: 0.3s; }
+        .nav-right a:hover { color: var(--red); }
+
+        /* MAIN CONTENT */
+        .wrapper { max-width: 1100px; margin: 40px auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 50px; padding: 0 20px; }
+        .img-zone { background: #f8f8f8; border-radius: 20px; padding: 50px; display: flex; align-items: center; justify-content: center; overflow: hidden; height: fit-content; }
+        .img-zone img { width: 100%; transition: 0.8s ease; }
+        .img-zone:hover img { transform: scale(1.2) rotate(-5deg); }
+        
+        .info-zone h1 { font-size: 34px; font-weight: 900; margin-bottom: 10px; line-height: 1.2; }
+        .price { font-size: 28px; color: var(--red); font-weight: 800; margin-bottom: 20px; }
+
+        /* SIZE SECTION */
+        .size-section { margin: 30px 0; }
+        .size-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 10px; }
+        .size-btn { padding: 12px; background: white; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .size-btn:hover { border-color: var(--red); color: var(--red); }
+        .size-btn.active { background: var(--black); color: white; border-color: var(--black); }
+
+        .btn-add { width: 100%; padding: 20px; background: var(--red); color: white; border: none; font-weight: bold; font-size: 16px; cursor: pointer; border-radius: 8px; transition: 0.3s; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-add:hover { background: var(--black); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+
+        /* TABS */
+        .tabs { max-width: 1100px; margin: 30px auto 60px; padding: 0 20px; }
+        .tab-head { border-bottom: 2px solid #eee; margin-bottom: 20px; display: flex; gap: 30px; }
+        .tab-btn { background: none; border: none; padding: 15px 0; font-weight: bold; font-size: 14px; cursor: pointer; border-bottom: 3px solid transparent; color: #888; text-transform: uppercase; }
+        .tab-btn.active { border-color: var(--red); color: var(--black); }
+        .tab-content { display: none; animation: fadeIn 0.4s; line-height: 1.8; color: #555; font-size: 15px; }
+        .tab-content.active { display: block; }
+
+        .policy-list li { margin-bottom: 12px; list-style: none; display: flex; align-items: flex-start; }
+        .policy-list li i { color: var(--red); margin-right: 12px; margin-top: 5px; }
+
+        @keyframes fadeIn { from{opacity:0; transform: translateY(10px)} to{opacity:1; transform: translateY(0)} }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">SNEAKER<span>SUPREME</span></a>
+        <div class="nav-right">
+            <a href="index.html" title="Trang chủ"><i class="fas fa-home"></i></a>
+            <a href="javascript:void(0)" onclick="goToCart()" title="Giỏ hàng"><i class="fas fa-shopping-bag"></i></a>
+        </div>
+    </nav>
+
+    <div class="wrapper">
+        <div class="img-zone">
+            <img id="d-img" src="" alt="Product Image">
+        </div>
+
+        <div class="info-zone">
+            <h1 id="d-name">Sản phẩm đang tải...</h1>
+            <div class="price" id="d-price">0 ₫</div>
+            <p style="color: #666; margin-bottom: 15px; font-size: 14px;">
+                <i class="fas fa-shield-alt" style="color: green;"></i> Cam kết hàng chính hãng 100%. Full box, tem tag từ nhà sản xuất.
+            </p>
+
+            <hr style="border: none; border-top: 1px solid #eee; margin-bottom: 20px;">
+
+            <div class="size-section">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <b style="font-size: 14px; text-transform: uppercase;">Chọn Kích Cỡ (EU)</b>
+                    <a href="#" style="font-size: 12px; color: #888; text-decoration: underline;">Hướng dẫn chọn size</a>
+                </div>
+                <div class="size-grid" id="size-picker">
+                    <button class="size-btn" onclick="selectSize(this)">36</button>
+                    <button class="size-btn" onclick="selectSize(this)">37</button>
+                    <button class="size-btn" onclick="selectSize(this)">38</button>
+                    <button class="size-btn" onclick="selectSize(this)">39</button>
+                    <button class="size-btn" onclick="selectSize(this)">40</button>
+                    <button class="size-btn" onclick="selectSize(this)">41</button>
+                    <button class="size-btn" onclick="selectSize(this)">42</button>
+                    <button class="size-btn" onclick="selectSize(this)">43</button>
+                    <button class="size-btn" onclick="selectSize(this)">44</button>
+                </div>
+            </div>
+
+            <button class="btn-add" onclick="addCart()">
+                <i class="fas fa-cart-plus"></i> THÊM VÀO GIỎ HÀNG
+            </button>
+            
+            <p style="text-align: center; font-size: 12px; color: #999; margin-top: 15px;">
+                <i class="fas fa-truck"></i> Miễn phí vận chuyển cho đơn hàng từ 2.000.000₫
+            </p>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab-head">
+            <button class="tab-btn active" onclick="openTab(0)">Chính Sách Bảo Hành</button>
+            <button class="tab-btn" onclick="openTab(1)">Quy Định Đổi Trả</button>
+        </div>
+        
+        <div class="tab-content active">
+            <ul class="policy-list">
+                <li><i class="fas fa-check-circle"></i> <div><b>Bảo hành kỹ thuật:</b> 12 tháng đối với các lỗi bong keo, sứt chỉ từ nhà sản xuất.</div></li>
+                <li><i class="fas fa-check-circle"></i> <div><b>Spa miễn phí:</b> Tặng kèm 03 lần vệ sinh giày chuyên sâu trọn đời.</div></li>
+                <li><i class="fas fa-check-circle"></i> <div><b>Cam kết đền bù:</b> Hoàn tiền 200% nếu phát hiện hàng giả, hàng nhái.</div></li>
+            </ul>
+        </div>
+        
+        <div class="tab-content">
+            <ul class="policy-list">
+                <li><i class="fas fa-undo-alt"></i> <div><b>Thời hạn:</b> Đổi trả thoải mái trong vòng 07 ngày kể từ khi nhận hàng.</div></li>
+                <li><i class="fas fa-box-open"></i> <div><b>Điều kiện:</b> Giày còn nguyên tem, mác, hộp gốc và chưa qua sử dụng.</div></li>
+                <li><i class="fas fa-sync"></i> <div><b>Hỗ trợ:</b> Đổi size tận nơi miễn phí phí ship lần đầu cho khách hàng thành viên.</div></li>
+            </ul>
+        </div>
+    </div>
+
+    <footer style="background: var(--black); color: #888; padding: 60px 5% 20px; border-top: 5px solid var(--red);">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto;">
+            <div>
+                <div class="logo" style="margin-bottom: 20px;">SNEAKER<span>SUPREME</span></div>
+                <p style="font-size: 14px; line-height: 1.6;">Hệ thống phân phối giày Sneaker chính hãng hàng đầu Việt Nam. Chất lượng và uy tín tạo nên thương hiệu.</p>
+            </div>
+            <div>
+                <h4 style="color: white; margin-bottom: 20px; text-transform: uppercase;">Liên Hệ</h4>
+                <p style="margin-bottom: 10px; font-size: 14px;"><i class="fas fa-map-marker-alt" style="color:var(--red); width: 20px;"></i> 68 Đường Sneaker, Quận 1, TP. HCM</p>
+                <p style="margin-bottom: 10px; font-size: 14px;"><i class="fas fa-phone-alt" style="color:var(--red); width: 20px;"></i> 1900 1234 - 0909 123 456</p>
+                <p style="margin-bottom: 10px; font-size: 14px;"><i class="fas fa-envelope" style="color:var(--red); width: 20px;"></i> cskh@sneakersupreme.vn</p>
+            </div>
+            <div>
+                <h4 style="color: white; margin-bottom: 20px; text-transform: uppercase;">Kết Nối</h4>
+                <div style="display: flex; gap: 15px;">
+                    <a href="#" style="color: white; font-size: 24px;"><i class="fab fa-facebook"></i></a>
+                    <a href="#" style="color: white; font-size: 24px;"><i class="fab fa-instagram"></i></a>
+                    <a href="#" style="color: white; font-size: 24px;"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; border-top: 1px solid #333; margin-top: 40px; padding-top: 20px; font-size: 12px;">
+            &copy; 2026 Sneaker Supreme. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Lấy dữ liệu sản phẩm từ LocalStorage
+        const p = JSON.parse(localStorage.getItem('sel_prod'));
+        let selectedSize = null;
+
+        window.onload = () => {
+            if(!p) {
+                window.location.href = 'index.html';
+                return;
+            }
+            document.getElementById('d-img').src = p.img;
+            document.getElementById('d-name').innerText = p.n;
+            document.getElementById('d-price').innerText = p.p.toLocaleString() + ' ₫';
+        };
+
+        // Logic chọn Size
+        function selectSize(btn) {
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedSize = btn.innerText;
+        }
+
+        // Logic chuyển đổi Tab
+        function openTab(idx) {
+            document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+            document.querySelectorAll('.tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
+        }
+
+        // Thêm vào giỏ hàng
+        function addCart() {
+            if(!localStorage.getItem('user_login')) {
+                alert("Bạn phải ĐĂNG NHẬP để mua hàng!");
+                window.location.href = 'login.html';
+                return;
+            }
+
+            if(!selectedSize) {
+                alert("Vui lòng chọn SIZE giày trước khi thêm vào giỏ hàng!");
+                return;
+            }
+
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const productWithDetails = {
+                ...p,
+                size: selectedSize,
+                addedAt: new Date().toISOString()
+            };
+
+            cart.push(productWithDetails);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert("Thành công! Đã thêm " + p.n + " (Size: " + selectedSize + ") vào giỏ hàng.");
+        }
+
+        // Kiểm tra chuyển hướng giỏ hàng
+        function goToCart() {
+            if(!localStorage.getItem('user_login')) {
+                alert("Vui lòng đăng nhập để xem giỏ hàng!");
+                window.location.href = 'login.html';
+            } else {
+                window.location.href = 'cart.html';
+            }
+        }
+    </script>
+</body>
+</html>

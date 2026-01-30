@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập | Sneaker Supreme</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --red: #e60000; --black: #111; }
+        body { margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--black); font-family: 'Segoe UI', sans-serif; }
+        
+        .card { background: white; padding: 40px; width: 400px; border-radius: 12px; position: relative; border-top: 6px solid var(--red); box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        h2 { text-align: center; margin-bottom: 25px; letter-spacing: 1px; font-weight: 800; color: var(--black); }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #555; }
+        
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 14px; transition: 0.3s; }
+        input:focus { border-color: var(--red); outline: none; box-shadow: 0 0 5px rgba(230,0,0,0.2); }
+        
+        .btn { width: 100%; padding: 14px; background: var(--red); color: white; border: none; font-weight: bold; cursor: pointer; border-radius: 6px; transition: 0.3s; font-size: 15px; margin-top: 10px; text-transform: uppercase; }
+        .btn:hover { background: #000; transform: translateY(-2px); }
+        
+        .link { text-align: center; font-size: 13px; margin-top: 20px; color: #666; }
+        .link span { color: var(--red); font-weight: bold; cursor: pointer; text-decoration: underline; }
+        
+        .back { position: absolute; top: -45px; left: 0; color: white; text-decoration: none; font-size: 14px; transition: 0.3s; opacity: 0.8; }
+        .back:hover { opacity: 1; color: var(--red); }
+    </style>
+</head>
+<body>
+    <div style="position:relative">
+        <a href="index.html" class="back"><i class="fas fa-arrow-left"></i> Quay lại cửa hàng</a>
+        
+        <div class="card" id="loginBox">
+            <h2>ĐĂNG NHẬP</h2>
+            <div class="form-group">
+                <label>Tên đăng nhập</label>
+                <input type="text" id="l-user" placeholder="Nhập username">
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu</label>
+                <input type="password" id="l-pass" placeholder="********">
+            </div>
+            <button class="btn" onclick="login()">Vào cửa hàng</button>
+            <div class="link">Chưa có tài khoản? <span onclick="toggle()">Đăng ký ngay</span></div>
+        </div>
+
+        <div class="card" id="regBox" style="display:none">
+            <h2>TẠO TÀI KHOẢN</h2>
+            <div class="form-group">
+                <label>Địa chỉ Email</label>
+                <input type="email" id="r-email" placeholder="sneaker@example.com">
+            </div>
+            <div class="form-group">
+                <label>Tên đăng nhập</label>
+                <input type="text" id="r-user" placeholder="Chọn username">
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu</label>
+                <input type="password" id="r-pass" placeholder="********">
+            </div>
+            <div class="form-group">
+                <label>Xác nhận mật khẩu</label>
+                <input type="password" id="r-repass" placeholder="********">
+            </div>
+            <button class="btn" onclick="reg()">Đăng ký thành viên</button>
+            <div class="link">Đã có tài khoản? <span onclick="toggle()">Đăng nhập ngay</span></div>
+        </div>
+    </div>
+
+    <script>
+        // Chuyển đổi giữa Đăng nhập và Đăng ký
+        function toggle() {
+            const l = document.getElementById('loginBox');
+            const r = document.getElementById('regBox');
+            if(l.style.display === 'none') {
+                l.style.display = 'block';
+                r.style.display = 'none';
+            } else {
+                l.style.display = 'none';
+                r.style.display = 'block';
+            }
+        }
+
+        // Xử lý ĐĂNG KÝ
+        function reg() {
+            const email = document.getElementById('r-email').value;
+            const user = document.getElementById('r-user').value;
+            const pass = document.getElementById('r-pass').value;
+            const repass = document.getElementById('r-repass').value;
+
+            // Kiểm tra dữ liệu
+            if(!email.includes('@')) return alert("Vui lòng nhập đúng định dạng Email!");
+            if(user.length < 3) return alert("Tên đăng nhập phải ít nhất 3 ký tự!");
+            if(pass.length < 6) return alert("Mật khẩu phải từ 6 ký tự trở lên!");
+            if(pass !== repass) return alert("Mật khẩu xác nhận không khớp!");
+
+            // Lưu thông tin người dùng vào LocalStorage
+            const userData = {
+                password: pass,
+                email: email
+            };
+            
+            localStorage.setItem('user_data_' + user, JSON.stringify(userData));
+            alert("Đăng ký thành công! Chào mừng Sneakerhead mới.");
+            toggle(); // Chuyển về màn hình đăng nhập
+        }
+
+        // Xử lý ĐĂNG NHẬP
+        function login() {
+            const user = document.getElementById('l-user').value;
+            const pass = document.getElementById('l-pass').value;
+
+            // Lấy dữ liệu từ LocalStorage
+            const storedData = localStorage.getItem('user_data_' + user);
+
+            if(storedData) {
+                const parsedData = JSON.parse(storedData);
+                if(parsedData.password === pass) {
+                    // Lưu trạng thái phiên làm việc (Session)
+                    localStorage.setItem('user_login', user);
+                    localStorage.setItem('user_email', parsedData.email);
+                    
+                    alert("Đăng nhập thành công! Đang chuyển hướng...");
+                    window.location.href = 'index.html';
+                } else {
+                    alert("Mật khẩu không chính xác!");
+                }
+            } else {
+                alert("Tài khoản không tồn tại!");
+            }
+        }
+    </script>
+</body>
+</html>
