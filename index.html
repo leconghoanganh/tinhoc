@@ -2,7 +2,8 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>SNEAKER SUPREME | Authentic Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIAY CHAT | Authentic Store 2036</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --red: #e60000; --black: #0a0a0a; --white: #ffffff; --overlay: rgba(0,0,0,0.7); }
@@ -14,247 +15,871 @@
         nav { background: var(--black); height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 0 5%; position: fixed; top: 0; width: 100%; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .logo { color: var(--white); font-size: 24px; font-weight: 900; letter-spacing: 1px; }
         .logo span { color: var(--red); }
-
         .nav-center { display: flex; align-items: center; gap: 15px; flex-grow: 1; justify-content: center; }
-        .search-box { position: relative; width: 400px; }
+        .search-box { position: relative; width: 100%; max-width: 400px; }
         .search-box input { width: 100%; padding: 12px 40px 12px 20px; border-radius: 30px; border: none; background: #222; color: white; outline: none; transition: 0.3s; }
-        .search-box input:focus { background: #333; box-shadow: 0 0 0 2px var(--red); }
-        .search-box i { position: absolute; right: 15px; top: 12px; color: #777; }
-
+        .search-box i { position: absolute; right: 15px; top: 12px; color: #777; pointer-events: none; }
         .nav-right { display: flex; align-items: center; gap: 20px; }
         .nav-right a, .nav-btn { color: var(--white); font-size: 20px; cursor: pointer; position: relative; transition: 0.3s; background: none; border: none; }
-        .nav-right a:hover, .nav-btn:hover { color: var(--red); }
         .badge { position: absolute; top: -8px; right: -10px; background: var(--red); color: white; font-size: 10px; padding: 2px 5px; border-radius: 10px; }
 
-        /* SIDEBAR & OVERLAY */
-        .filter-sidebar { position: fixed; top: 0; left: -320px; width: 320px; height: 100vh; background: white; z-index: 2000; padding: 30px; box-shadow: 5px 0 30px rgba(0,0,0,0.2); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; }
-        .filter-sidebar.active { left: 0; }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--overlay); z-index: 1500; opacity: 0; visibility: hidden; transition: 0.3s; }
-        .overlay.active { opacity: 1; visibility: visible; }
-        
-        .f-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
-        .f-group h4 { margin-bottom: 15px; font-weight: 800; text-transform: uppercase; font-size: 14px; }
-        .f-opt { display: flex; align-items: center; margin-bottom: 10px; cursor: pointer; font-size: 14px; color: #555; }
-        .f-opt:hover { color: var(--red); }
+        /* MOBILE SEARCH */
+        #mobile-search-btn { display: none; }
+        .mobile-search-container { position: fixed; top: 80px; left: 0; width: 100%; background: var(--black); z-index: 999; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .mobile-search-container.active { display: block; }
+        .mobile-search-box { position: relative; padding: 15px 5%; }
+        .mobile-search-box input { width: 100%; padding: 14px 50px 14px 20px; border-radius: 30px; border: none; background: #222; color: white; outline: none; font-size: 16px; }
+        .mobile-search-box i.fa-search { position: absolute; right: 10%; top: 50%; transform: translateY(-50%); color: #777; pointer-events: none; }
+        .mobile-search-box i.fa-times { position: absolute; right: 5%; top: 50%; transform: translateY(-50%); color: #777; cursor: pointer; }
+        #mobile-search-suggestions { width: 90%; margin: 0 auto; background: white; border-radius: 0 0 20px 20px; max-height: 300px; overflow-y: auto; }
 
-        /* HERO & CONTENT */
-        .hero { height: 450px; background: linear-gradient(to bottom, rgba(0,0,0,0.4), #fcfcfc), url('https://images.unsplash.com/photo-1556906781-9a412961c28c?w=1600'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 40px; }
-        .hero h1 { font-size: 55px; color: white; text-shadow: 0 5px 15px rgba(0,0,0,0.5); font-weight: 900; }
+        /* SEARCH SUGGESTIONS (chung) */
+        .search-suggestions { position: absolute; top: 48px; left: 0; width: 100%; background: white; border: 1px solid #ddd; border-top: none; border-radius: 0 0 20px 20px; max-height: 320px; overflow-y: auto; display: none; z-index: 999; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .sugg-item { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #333; border-bottom: 1px solid #eee; }
+        .sugg-item:hover { background: #f9f9f9; }
+        .sugg-item i.fa-times { margin-left: auto; opacity: 0.6; }
+        .sugg-item i.fa-times:hover { opacity: 1; color: var(--red); }
+        .sugg-clear { padding: 12px 20px; text-align: center; color: #999; font-size: 13px; cursor: pointer; }
+        .sugg-clear:hover { background: #f9f9f9; color: var(--red); }
+        .sugg-empty { padding: 20px; text-align: center; color: #999; font-size: 13px; }
 
+        /* HERO BANNER */
+        .hero { width: 100%; height: 500px; position: relative; overflow: hidden; background: var(--black); margin-bottom: 50px; }
+        .hero img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; animation: zoom 20s infinite alternate; }
+        @keyframes zoom { from { transform: scale(1); } to { transform: scale(1.2); } }
+        .hero-content { position: absolute; top: 50%; left: 5%; transform: translateY(-50%); color: white; z-index: 10; max-width: 600px; }
+        .hero-content h1 { font-size: 60px; font-weight: 900; line-height: 1.1; margin-bottom: 20px; text-transform: uppercase; }
+        .hero-content h1 span { color: var(--red); }
+        .hero-content p { font-size: 18px; margin-bottom: 30px; opacity: 0.9; }
+        .btn-shop { padding: 15px 40px; background: var(--red); color: white; font-weight: bold; border-radius: 5px; transition: 0.3s; }
+        .btn-shop:hover { background: #cc0000; }
+
+        /* BRAND ADS */
+        .brand-ads-container { display: flex; width: 100%; height: 350px; background: #000; overflow: hidden; margin-bottom: 50px; }
+        .brand-ad-card { flex: 1; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; transition: all 0.5s ease; cursor: pointer; border-right: 1px solid rgba(255,255,255,0.1); overflow: hidden; }
+        .brand-ad-card:last-child { border-right: none; }
+        .brand-ad-card:hover { flex: 2.5; background: #111; }
+        .ad-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; transition: 0.5s; z-index: 1; }
+        .brand-ad-card:hover .ad-bg-img { opacity: 0.6; transform: scale(1.1); }
+        .ad-content { position: relative; z-index: 2; text-align: center; padding: 20px; transform: translateY(20px); transition: 0.5s; }
+        .brand-ad-card:hover .ad-content { transform: translateY(0); }
+        .ad-brand-name { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; margin-bottom: 10px; text-transform: uppercase; }
+        .ad-slogan { font-size: 2rem; font-weight: 800; line-height: 1.1; margin-bottom: 15px; opacity: 0; transform: translateY(20px); transition: 0.5s 0.1s; }
+        .brand-ad-card:hover .ad-slogan { opacity: 1; transform: translateY(0); }
+        .style-nike .ad-slogan { font-style: italic; font-family: 'Arial Black', sans-serif; }
+        .style-adidas .ad-slogan { font-weight: 700; letter-spacing: -1px; }
+        .style-puma .ad-slogan { font-style: italic; color: #ff3333; }
+        .style-mlb .ad-slogan { font-family: 'Courier New', monospace; font-weight: 900; }
+        .btn-ad-action { display: inline-block; margin-top: 10px; padding: 8px 20px; border: 1px solid white; color: white; font-size: 12px; text-transform: uppercase; opacity: 0; transition: 0.3s; }
+        .brand-ad-card:hover .btn-ad-action { opacity: 1; }
+        .btn-ad-action:hover { background: white; color: black; }
+
+        /* SIDEBAR CHUNG - SỬA LẠI TOÀN BỘ */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;                    /* luôn bắt đầu từ left:0 để dễ transform */
+    width: 100%;
+    max-width: 380px;           /* giới hạn trên màn hình lớn */
+    height: 100vh;
+    background: white;
+    z-index: 2000;
+    padding: 20px;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.25); /* bóng nhẹ bên phải cho đẹp */
+    overflow-y: auto;
+    transform: translateX(-100%); /* mặc định ẩn bên trái */
+    transition: transform 0.4s ease-in-out;
+}
+
+/* Filter sidebar: từ trái sang */
+.filter-sidebar {
+    transform: translateX(-100%);
+}
+.filter-sidebar.active {
+    transform: translateX(0);
+}
+
+/* History & User sidebar: từ phải sang (dùng translateX dương) */
+.history-sidebar,
+.user-sidebar {
+    left: auto;
+    right: 0;
+    transform: translateX(101%); /* ẩn bên phải */
+    box-shadow: 10px 0 30px rgba(0,0,0,0.25);
+}
+.history-sidebar.active,
+.user-sidebar.active {
+    transform: translateX(0);
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    inset: 0;                   /* top/right/bottom/left = 0 */
+    background: var(--overlay);
+    z-index: 1500;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0s linear 0.35s; /* delay khi ẩn */
+}
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.35s ease, visibility 0s linear 0s; /* hiện ngay */
+}
+
+/* Header */
+.f-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+}
+
+/* Responsive - đảm bảo trên mobile */
+@media (min-width: 769px) {
+    .sidebar {
+        width: 350px;           /* desktop giữ nguyên 350px */
+        max-width: 380px;
+    }
+}
+
+        /* FORM & FILTER STYLES */
+        .f-group { margin-bottom: 25px; }
+        .f-group h4 { margin-bottom: 15px; font-size: 16px; }
+        .f-group label { display: block; margin-bottom: 8px; cursor: pointer; font-size: 14px; }
+        .color-dots { display: flex; gap: 10px; }
+        .color-filter { display: none; }
+        .color-label { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #ddd; cursor: pointer; position: relative; }
+        .color-filter:checked + .color-label::after { content: '\2713'; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px; text-shadow: 0 0 2px black; }
+
+        /* HISTORY ITEM */
+        .history-item { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; border-bottom: 1px solid #f9f9f9; padding-bottom: 12px; cursor: pointer; position: relative; }
+        .history-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 5px; }
+        .history-item h4 { font-size: 13px; margin-bottom: 3px; }
+        .history-item p { color: var(--red); font-size: 12px; font-weight: bold; }
+        .history-item i.fa-times { position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: #999; cursor: pointer; padding: 5px; }
+        .history-item i.fa-times:hover { color: var(--red); }
+
+        /* USER FORM */
+        .user-profile-header { text-align: center; margin-bottom: 30px; }
+        .user-avatar { width: 80px; height: 80px; background: #eee; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #aaa; }
+        .form-group { margin-bottom: 20px; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; outline: none; transition: 0.3s; }
+        .form-control:focus { border-color: var(--red); }
+        .btn-save { width: 100%; padding: 12px; background: var(--black); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
+        .btn-logout { width: 100%; padding: 12px; background: #fff; color: var(--red); border: 1px solid var(--red); border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .required-note { color: var(--red); font-size: 12px; margin-bottom: 20px; font-style: italic; text-align: center; display: none; }
+
+        /* GRID & CARDS */
         .brand-section { padding: 0 5% 50px; }
         .section-title { font-size: 28px; font-weight: 900; margin-bottom: 25px; display: flex; align-items: center; text-transform: uppercase; color: var(--black); }
         .section-title::after { content: ""; flex-grow: 1; height: 2px; background: #eee; margin-left: 20px; }
-        
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 30px; }
-        .card { background: white; border-radius: 15px; padding: 20px; position: relative; transition: 0.4s; border: 1px solid #f0f0f0; overflow: hidden; }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-color: var(--red); }
+        .card { background: white; border-radius: 15px; padding: 20px; position: relative; transition: 0.4s; border: 1px solid #f0f0f0; overflow: hidden; cursor: pointer; }
+        .card:hover { transform: translateY(-10px); border-color: var(--red); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .card img { width: 100%; height: 200px; object-fit: contain; transition: 0.6s; margin-bottom: 15px; }
-        .card:hover img { transform: scale(1.1) rotate(-8deg); }
-        .card h3 { font-size: 15px; margin: 5px 0 5px; height: 40px; font-weight: 700; overflow: hidden; }
-        .price { color: var(--red); font-size: 17px; font-weight: 800; }
-        .btn-view { position: absolute; bottom: -50px; left: 0; width: 100%; padding: 12px; background: var(--black); color: white; text-align: center; font-weight: bold; transition: 0.3s; font-size: 13px; }
+        .btn-view { position: absolute; bottom: -50px; left: 0; width: 100%; padding: 12px; background: var(--black); color: white; text-align: center; transition: 0.3s; font-weight: bold; }
         .card:hover .btn-view { bottom: 0; }
-        
-        /* SCROLL TO TOP */
-        #scrollTop { display: none; position: fixed; bottom: 30px; right: 30px; background: var(--red); color: white; width: 50px; height: 50px; border-radius: 50%; text-align: center; line-height: 50px; cursor: pointer; z-index: 999; font-size: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+
+        /* RESPONSIVE */
+        .desktop-greeting { display: none; font-size: 14px; color: white; }
+        @media (min-width: 768px) {
+            .desktop-greeting { display: block; }
+            .search-box { width: 250px; }
+            .hero-content h1 { font-size: 42px; }
+            .brand-ads-container { height: 280px; }
+        }
+        @media (max-width: 768px) {
+            nav { padding: 0 3%; }
+            .nav-center { display: none; } /* Ẩn thanh tìm kiếm desktop */
+            #mobile-search-btn { display: block; }
+            .hero { height: 350px; }
+            .hero-content { left: 20px; max-width: 90%; }
+            .hero-content h1 { font-size: 28px; }
+            .hero-content p { font-size: 14px; }
+            .brand-ads-container { flex-direction: column; height: auto; }
+            .brand-ad-card { height: 180px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            .brand-ad-card:hover { flex: 1; background: #111; }
+            .brand-ad-card .ad-content { transform: translateY(0); }
+            .brand-ad-card .ad-slogan { opacity: 1; transform: translateY(0); font-size: 1.6rem; }
+            .brand-ad-card .btn-ad-action { opacity: 1; }
+            .ad-bg-img { opacity: 0.4; }
+            .brand-ad-card:hover .ad-bg-img { opacity: 0.6; transform: scale(1.05); }
+            .sidebar { width: 100%; }
+            .grid { grid-template-columns: 1fr; gap: 20px; }
+        }
+        @media (max-width: 480px) {
+            body { padding-top: 70px; }
+            nav { height: 70px; }
+            .logo { font-size: 18px; }
+            .mobile-search-container { top: 70px; }
+            .mobile-search-box { padding: 10px 3%; }
+            .hero { height: 300px; }
+            .hero-content h1 { font-size: 22px; }
+            .section-title { font-size: 20px; }
+            .card img { height: 160px; }
+            .brand-ad-card { height: 160px; }
+            .ad-slogan { font-size: 1.4rem; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="overlay" id="overlay" onclick="toggleFilter()"></div>
-    <div class="filter-sidebar" id="sidebar">
-        <div class="f-header"><h3>BỘ LỌC</h3><i class="fas fa-times" onclick="toggleFilter()" style="cursor:pointer"></i></div>
-        <div class="f-group" style="margin-bottom:30px">
-            <h4>Thương hiệu</h4>
-            <label class="f-opt"><input type="checkbox" value="Nike" class="f-brand" onchange="applyFilter()"> Nike</label>
-            <label class="f-opt"><input type="checkbox" value="Adidas" class="f-brand" onchange="applyFilter()"> Adidas</label>
-            <label class="f-opt"><input type="checkbox" value="Puma" class="f-brand" onchange="applyFilter()"> Puma</label>
-            <label class="f-opt"><input type="checkbox" value="MLB" class="f-brand" onchange="applyFilter()"> MLB</label>
+    <div class="overlay" id="overlay" onclick="closeAllSidebars()"></div>
+    
+    <div class="sidebar history-sidebar" id="history-sidebar">
+        <div class="f-header"><h3>VỪA XEM</h3><i class="fas fa-times" onclick="closeAllSidebars()" style="cursor:pointer"></i></div>
+        <div id="history-list"></div>
+    </div>
+
+    <div class="sidebar filter-sidebar" id="filter-sidebar">
+        <div class="f-header"><h3>BỘ LỌC</h3><i class="fas fa-times" onclick="closeAllSidebars()" style="cursor:pointer"></i></div>
+        
+        <div class="f-group">
+            <h4>Hãng</h4>
+            <label><input type="checkbox" value="Nike" class="f-brand" onchange="applyFilter()"> Nike</label>
+            <label><input type="checkbox" value="Adidas" class="f-brand" onchange="applyFilter()"> Adidas</label>
+            <label><input type="checkbox" value="Puma" class="f-brand" onchange="applyFilter()"> Puma</label>
+            <label><input type="checkbox" value="MLB" class="f-brand" onchange="applyFilter()"> MLB</label>
         </div>
+
         <div class="f-group">
             <h4>Khoảng giá</h4>
-            <label class="f-opt"><input type="radio" name="price" value="all" checked onchange="applyFilter()"> Tất cả</label>
-            <label class="f-opt"><input type="radio" name="price" value="0-3000000" onchange="applyFilter()"> Dưới 3.000.000đ</label>
-            <label class="f-opt"><input type="radio" name="price" value="3000000-10000000" onchange="applyFilter()"> Trên 3.000.000đ</label>
+            <label><input type="checkbox" value="0-3" class="f-price" onchange="applyFilter()"> Dưới 3 triệu</label>
+            <label><input type="checkbox" value="3-6" class="f-price" onchange="applyFilter()"> 3 - 6 triệu</label>
+            <label><input type="checkbox" value="6-99" class="f-price" onchange="applyFilter()"> Trên 6 triệu</label>
         </div>
+
+        <div class="f-group">
+            <h4>Size giày</h4>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;">
+                <label><input type="checkbox" value="38" class="f-size" onchange="applyFilter()"> 38</label>
+                <label><input type="checkbox" value="39" class="f-size" onchange="applyFilter()"> 39</label>
+                <label><input type="checkbox" value="40" class="f-size" onchange="applyFilter()"> 40</label>
+                <label><input type="checkbox" value="41" class="f-size" onchange="applyFilter()"> 41</label>
+                <label><input type="checkbox" value="42" class="f-size" onchange="applyFilter()"> 42</label>
+                <label><input type="checkbox" value="43" class="f-size" onchange="applyFilter()"> 43</label>
+            </div>
+        </div>
+
+        <div class="f-group">
+            <h4>Màu sắc</h4>
+            <div class="color-dots">
+                <input type="checkbox" id="c-white" value="White" class="color-filter" onchange="applyFilter()">
+                <label for="c-white" class="color-label" style="background:#ffffff" title="Trắng"></label>
+                
+                <input type="checkbox" id="c-black" value="Black" class="color-filter" onchange="applyFilter()">
+                <label for="c-black" class="color-label" style="background:#0a0a0a" title="Đen"></label>
+                
+                <input type="checkbox" id="c-blue" value="Blue" class="color-filter" onchange="applyFilter()">
+                <label for="c-blue" class="color-label" style="background:#007bff" title="Xanh"></label>
+
+                <input type="checkbox" id="c-red" value="Red" class="color-filter" onchange="applyFilter()">
+                <label for="c-red" class="color-label" style="background:#e60000" title="Đỏ"></label>
+
+                <input type="checkbox" id="c-pink" value="Pink" class="color-filter" onchange="applyFilter()">
+                <label for="c-pink" class="color-label" style="background:#fd02ae" title="Hồng"></label>
+
+                <input type="checkbox" id="c-green" value="Green" class="color-filter" onchange="applyFilter()">
+                <label for="c-green" class="color-label" style="background:#00ff11" title="Xanh Lá"></label>
+
+                <input type="checkbox" id="c-purple" value="Purple" class="color-filter" onchange="applyFilter()">
+                <label for="c-purple" class="color-label" style="background:#9402fd" title="Tím"></label>
+            </div>
+        </div>
+        
+        <button onclick="resetFilters()" style="width:100%; padding:10px; background:#eee; border:none; border-radius:5px; cursor:pointer; margin-top:20px; font-weight: bold;">Xóa tất cả bộ lọc</button>
+    </div>
+
+    <div class="sidebar user-sidebar" id="user-sidebar">
+        <div class="f-header"><h3>THÔNG TIN CÁ NHÂN</h3><i class="fas fa-times" onclick="closeAllSidebars()" style="cursor:pointer"></i></div>
+        
+        <div class="user-profile-header">
+            <div class="user-avatar"><i class="fas fa-user"></i></div>
+            <h4 id="u-display-name">Khách hàng</h4>
+        </div>
+
+        <p id="require-msg" class="required-note"><i class="fas fa-exclamation-circle"></i> Vui lòng điền đầy đủ thông tin để tiếp tục mua sắm.</p>
+
+        <form id="user-form" onsubmit="saveUserInfo(event)">
+            <div class="form-group">
+                <label>Họ và tên *</label>
+                <input type="text" id="inp-name" class="form-control" placeholder="Nhập họ tên đầy đủ" required>
+            </div>
+            <div class="form-group">
+                <label>Số điện thoại *</label>
+                <input type="tel" id="inp-phone" class="form-control" placeholder="Nhập số điện thoại" required>
+            </div>
+            <div class="form-group">
+                <label>Địa chỉ nhận hàng *</label>
+                <input type="text" id="inp-address" class="form-control" placeholder="Số nhà, Đường, Phường..." required>
+            </div>
+            <div class="form-group">
+                <label>Thành phố/Tỉnh *</label>
+                <input type="text" id="inp-city" class="form-control" placeholder="Ví dụ: TP. Hồ Chí Minh" required>
+            </div>
+
+            <button type="submit" class="btn-save">LƯU THÔNG TIN</button>
+            <button type="button" class="btn-logout" onclick="logout()">ĐĂNG XUẤT</button>
+        </form>
     </div>
 
     <nav>
-        <a href="index.html" class="logo">SNEAKER<span>SUPREME</span></a>
+        <a href="index.html" class="logo">GIAY<span>CHAT</span></a>
         <div class="nav-center">
             <div class="search-box">
-                <input type="text" id="search" placeholder="Tìm kiếm sản phẩm..." onkeyup="applyFilter()">
+                <input type="text" id="search" placeholder="Tìm kiếm giày..." autocomplete="off">
                 <i class="fas fa-search"></i>
+                <div class="search-suggestions" id="search-suggestions"></div>
             </div>
         </div>
         <div class="nav-right">
-            <a href="index.html" title="Trang chủ"><i class="fas fa-home"></i></a> 
-            <button class="nav-btn" onclick="toggleFilter()" title="Bộ lọc"><i class="fas fa-sliders-h"></i></button>
-            <a href="javascript:void(0)" onclick="checkCartAccess()" title="Giỏ hàng">
+            <a href="index.html" title="Trang chủ"><i class="fas fa-home"></i></a>
+            <button class="nav-btn" id="mobile-search-btn" onclick="toggleMobileSearch()" title="Tìm kiếm"><i class="fas fa-search"></i></button>
+            <button class="nav-btn" onclick="toggleFilterSidebar()" title="Bộ lọc"><i class="fas fa-sliders-h"></i></button>
+            <button class="nav-btn" onclick="toggleHistory()" title="Lịch sử xem"><i class="fas fa-history"></i></button>
+            <a href="javascript:void(0)" onclick="checkCartAccess()" style="position:relative">
                 <i class="fas fa-shopping-bag"></i> <span class="badge" id="cart-cnt">0</span>
             </a>
-            <div id="user-icon-area"></div>
+            <div id="user-area"></div>
         </div>
     </nav>
 
     <div class="hero">
-        <div>
-            <h1>NEW COLLECTION 2026</h1>
-            <p style="color:#eee; margin-top:10px">Nâng tầm phong cách với 20 mẫu Sneaker hot nhất</p>
+        <img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=2000" alt="Banner">
+        <div class="hero-content">
+            <h1>NƠI HỘI TỤ <span>TINH HOA ĐẤT TRỜI</span></h1>
+            <p>Khám phá bộ sưu tập Sneaker độc quyền năm 2036.</p>
+            <a href="#main-container" class="btn-shop">MUA NGAY</a>
+        </div>
+    </div>
+
+    <div class="brand-ads-container">
+        <div class="brand-ad-card style-nike" onclick="quickFilterBrand('Nike')">
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000" class="ad-bg-img">
+            <div class="ad-content">
+                <div class="ad-brand-name">NIKE</div>
+                <div class="ad-slogan">JUST DO IT.</div>
+                <div class="btn-ad-action">Xem Bộ Sưu Tập</div>
+            </div>
+        </div>
+
+        <div class="brand-ad-card style-adidas" onclick="quickFilterBrand('Adidas')">
+            <img src="https://fado.vn/blog/wp-content/uploads/2023/02/giay-adidas-samba.jpg" class="ad-bg-img">
+            <div class="ad-content">
+                <div class="ad-brand-name">ADIDAS</div>
+                <div class="ad-slogan">IMPOSSIBLE IS NOTHING</div>
+                <div class="btn-ad-action">Khám Phá Ngay</div>
+            </div>
+        </div>
+
+        <div class="brand-ad-card style-puma" onclick="quickFilterBrand('Puma')">
+            <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=1000" class="ad-bg-img">
+            <div class="ad-content">
+                <div class="ad-brand-name">PUMA</div>
+                <div class="ad-slogan">FOREVER FASTER</div>
+                <div class="btn-ad-action">Mua Ngay</div>
+            </div>
+        </div>
+
+        <div class="brand-ad-card style-mlb" onclick="quickFilterBrand('MLB')">
+            <img src="https://images.unsplash.com/photo-1595341888016-a392ef81b7de?q=80&w=1000" class="ad-bg-img">
+            <div class="ad-content">
+                <div class="ad-brand-name">MLB</div>
+                <div class="ad-slogan">LIFE IS A GAME</div>
+                <div class="btn-ad-action">Xem Chi Tiết</div>
+            </div>
         </div>
     </div>
 
     <div id="main-container"></div>
-    <div id="scrollTop" onclick="window.scrollTo({top:0, behavior:'smooth'})"><i class="fas fa-arrow-up"></i></div>
 
-    <footer style="background: var(--black); color: #888; padding: 60px 5% 20px; margin-top: 50px; border-top: 5px solid var(--red);">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto;">
-        <div>
-            <div class="logo" style="margin-bottom: 20px;">SNEAKER<span>SUPREME</span></div>
-            <p style="font-size: 14px; line-height: 1.6;">Hệ thống phân phối giày Sneaker chính hãng hàng đầu Việt Nam. Chúng tôi cam kết mang đến những sản phẩm chất lượng và trải nghiệm mua sắm tuyệt vời nhất cho khách hàng.</p>
-        </div>
-        <div>
-            <h4 style="color: white; margin-bottom: 20px; text-transform: uppercase;">Liên Hệ</h4>
-            <p style="margin-bottom: 10px; font-size: 14px;"><i class="fas fa-map-marker-alt" style="color:var(--red); width: 20px;"></i> 68 Đường Sneaker, Phường Bến Nghé, Quận 1, TP. HCM</p>
-            <p style="margin-bottom: 10px; font-size: 14px;"><i class="fas fa-phone-alt" style="color:var(--red); width: 20px;"></i> Hotline: 1900 1234 - 0909 123 456</p>
-            <p style="margin-bottom: 10px; font-size: 14px;"><i class="fas fa-envelope" style="color:var(--red); width: 20px;"></i> cskh@sneakersupreme.vn</p>
-        </div>
-        <div>
-            <h4 style="color: white; margin-bottom: 20px; text-transform: uppercase;">Kết Nối Với Chúng Tôi</h4>
-            <div style="display: flex; gap: 15px;">
-                <a href="https://facebook.com" target="_blank" style="color: white; font-size: 24px;"><i class="fab fa-facebook"></i></a>
-                <a href="https://instagram.com" target="_blank" style="color: white; font-size: 24px;"><i class="fab fa-instagram"></i></a>
-                <a href="https://tiktok.com" target="_blank" style="color: white; font-size: 24px;"><i class="fab fa-tiktok"></i></a>
-                <a href="https://youtube.com" target="_blank" style="color: white; font-size: 24px;"><i class="fab fa-youtube"></i></a>
-            </div>
-            <p style="margin-top: 20px; font-size: 13px;">Đăng ký nhận tin để không bỏ lỡ các đợt Drop giày giới hạn.</p>
-        </div>
-    </div>
-    <div style="text-align: center; border-top: 1px solid #333; margin-top: 40px; padding-top: 20px; font-size: 13px;">
-        &copy; 2026 Sneaker Supreme. All Rights Reserved. Thiết kế bởi Gemini AI.
-    </div>
-</footer>
+    <footer style="background: #0a0a0a; color: #888; padding: 60px 5% 20px; border-top: 5px solid #e60000; margin-top: 50px;">
+        <div style="text-align: center;">&copy; 2036 GIAY CHAT. All rights reserved.</div>
+    </footer>
+
     <script>
-        // Database 20 Sản phẩm (5 Hãng x 4-5 Đôi)
+        // Database Sản Phẩm
         const db = [
-            // NIKE (5)
-            {id:1, b:"Nike", n:"Air Jordan 1 High Chicago", p:5800000, img:"https://images.unsplash.com/photo-1584735175315-9d58238a06c4?w=400"},
-            {id:2, b:"Nike", n:"Air Force 1 '07 White", p:2900000, img:"https://images.unsplash.com/photo-1595341888016-a392ef81b7de?w=400"},
-            {id:3, b:"Nike", n:"Nike Dunk Low Panda", p:3500000, img:"https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=400"},
-            {id:4, b:"Nike", n:"Nike Air Max 97", p:4200000, img:"https://images.unsplash.com/photo-1579338559194-a162d19bf842?w=400"},
-            {id:5, b:"Nike", n:"Jordan 4 Retro Military", p:6500000, img:"https://images.unsplash.com/photo-1552346154-21d32810aba3?w=400"},
+            {id:1, b:"Nike", n:"JA 3 'King Of The Court'", p:3500000, img:"https://i.ibb.co/1YXZ6gYR/625363279-915767384723639-5792405736223947877-n.png",
+            imgs:["https://i.ibb.co/1YXZ6gYR/625363279-915767384723639-5792405736223947877-n.png",
+                  "https://i.ibb.co/twMhfX9j/627658832-1575324580407913-3338541497679839199-n.png",
+                  "https://i.ibb.co/bMtyfSQ4/624750150-986297723720821-5743314715824805741-n.png"
+            ], s:[40,41,42], c:"Black"},
 
-            // ADIDAS (5)
-            {id:6, b:"Adidas", n:"Adidas Samba OG", p:3200000, img:"https://images.unsplash.com/photo-1605348532760-6753d2c43329?w=400"},
-            {id:7, b:"Adidas", n:"Ultraboost Light", p:4500000, img:"https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=400"},
-            {id:8, b:"Adidas", n:"Stan Smith Classic", p:2100000, img:"https://images.unsplash.com/photo-1597045566677-8cf032ed6634?w=400"},
-            {id:9, b:"Adidas", n:"Superstar Foundation", p:2400000, img:"https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=400"},
-            {id:10, b:"Adidas", n:"Yeezy Boost 350", p:8500000, img:"https://images.unsplash.com/photo-1581101767229-873298525d90?w=400"},
+            {id:2, b:"Nike", n:"JA 3 'Sail'", p:3500000, img:"https://i.ibb.co/HLhYj0KW/631706188-745887301625442-2681265362215387098-n.png",
+            imgs:["https://i.ibb.co/HLhYj0KW/631706188-745887301625442-2681265362215387098-n.png",
+                  "https://i.ibb.co/ccgcj0JC/624734534-2010669579663639-754262281597000753-n.png",
+                  "https://i.ibb.co/jvNJLp7k/625370604-1532583257806273-8610411959819160328-n.png"
+            ], s:[38,39,40,41,42,43], c:"Pink"},
+            
+            {id:3, b:"Nike", n:"Kyrie 8 'Chinese New Year'", p:9000000, img:"https://i.ibb.co/SwyKjRb0/626427771-887877020511151-1715349665036263589-n.png",
+            imgs:["https://i.ibb.co/SwyKjRb0/626427771-887877020511151-1715349665036263589-n.png",
+                  "https://i.ibb.co/Wpt6sNyQ/626357438-765510539931433-1680951240692059308-n.png",
+                  "https://i.ibb.co/mrksCysD/625870879-2360091834501909-7905962188565777004-n.png"
+            ], s:[39,40,41], c:"Blue"},
+            
+            {id:4, b:"Nike", n:"2941s", p:4600000, img:"https://i.ibb.co/PztY2nT8/629703316-24910281855314252-4113502537856489821-n.png",
+            imgs:["https://i.ibb.co/PztY2nT8/629703316-24910281855314252-4113502537856489821-n.png",
+                  "https://i.ibb.co/msVP6h6/628306205-2091485808311012-860467034500501931-n.png",
+                  "https://i.ibb.co/8DR1scPj/616053220-1314354173785293-6008689232796849552-n.png"
+            ],
+            s:[39,40,41], c:"Pink"},
+            
+            {id:5, b:"Adidas", n:"Dame X", p:2200000, img:"https://i.ibb.co/v4p49JLr/61-DOb-Xd-F3-GL-AC-UY900.jpg",
+            imgs:["https://i.ibb.co/v4p49JLr/61-DOb-Xd-F3-GL-AC-UY900.jpg",
+                  "https://i.ibb.co/XZ0k0M2f/download.jpg",
+                  "https://i.ibb.co/DN98Z4f/giay-dame-x-djen-jp6090-03-standard-4e958dbf79f5433d842a4fee6d183d67-master.webp"
+            ],
+            s:[38,39,40], c:"Black"},
 
-            // PUMA (5)
-            {id:11, b:"Puma", n:"Puma Palermo Blue", p:2400000, img:"https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400"},
-            {id:12, b:"Puma", n:"Puma Suede Classic", p:1900000, img:"https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400"}, // Placeholder img
-            {id:13, b:"Puma", n:"LaMelo Ball MB.03", p:4100000, img:"https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400"}, // Placeholder
-            {id:14, b:"Puma", n:"Puma RS-X Efekt", p:2800000, img:"https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400"}, // Placeholder
-            {id:15, b:"Puma", n:"Slipstream Low", p:2600000, img:"https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400"}, // Placeholder
+            {id:6, b:"Adidas", n:"Samba OG White", p:2700000, img:"https://i.ibb.co/Vr97Tvn/462561750-925714952942479-7926159657201299833-n.png",
+            imgs:["https://i.ibb.co/Vr97Tvn/462561750-925714952942479-7926159657201299833-n.png",
+                  "https://i.ibb.co/DHdkrgmy/581968739-32427986153512792-6066766017278427026-n.png",
+                  "https://i.ibb.co/qLjGWF5Q/628309194-1228664389388989-7600459401490589475-n.png"
+            ],
+            s:[38,39,40], c:"White"},
+            
+            {id:7, b:"Adidas", n:"Adizero Boston 13", p:2000000, img:"https://i.ibb.co/Mkc3Pq3Q/625095786-908501401971935-7963548450164518348-n.png",
+            imgs:["https://i.ibb.co/Mkc3Pq3Q/625095786-908501401971935-7963548450164518348-n.png",
+                  "https://i.ibb.co/DD8TKB8p/626722213-1455692349593302-7714727858209712194-n.png",
+                  "https://i.ibb.co/0jCk7ZCz/628525417-1212038091142935-2152427494445028156-n.png"
+            ],
+            s:[41,42,43], c:"Blue"},
+            
+            {id:8, b:"Adidas", n:"VL Court 3.0", p:1190000, img:"https://i.ibb.co/HD0WtrSt/625885975-837889009296634-4086156502736217501-n.png",
+            imgs:["https://i.ibb.co/HD0WtrSt/625885975-837889009296634-4086156502736217501-n.png",
+                  "https://i.ibb.co/3yBvcFbc/616138466-917288060752239-4036432034658505275-n.png",
+                  "https://i.ibb.co/kvS37MH/624597615-1955702411674636-7996985653615316745-n.png"
+            ],
+            s:[41,42,43], c:"Pink"},
+            
+            {id:9, b:"Puma", n:"Palermo Blue", p:2400000, img:"https://i.ibb.co/S7fGvhbv/39646344-01-e00c0869-9d8e-49db-8589-a2bb82637351.webp",
+            imgs:["https://i.ibb.co/S7fGvhbv/39646344-01-e00c0869-9d8e-49db-8589-a2bb82637351.webp",
+                  "https://i.ibb.co/nNxmC2Nt/39646344-08-b6a236a6-d7e3-47a1-ad27-4b41e6108391.webp",
+                  "https://i.ibb.co/5hzfjx62/f4465cc88c58.webp"
+            ],
+            s:[40,41], c:"Blue"},
+            
+            {id:10, b:"Puma", n:"Dagger 2 Mid Unisex", p:2700000, img:"https://i.ibb.co/0LpMb6Q/625147926-1068658718775289-3652551344046940966-n.jpg",
+            imgs:["https://i.ibb.co/0LpMb6Q/625147926-1068658718775289-3652551344046940966-n.jpg",
+                  "https://i.ibb.co/hbBDLgv/png.avif",
+                  "https://i.ibb.co/RpT1Z5v1/png.avif"
+            ],
+            s:[40,41], c:"Purple"},
+            
+            {id:11, b:"Puma", n:"MB.05 Voltage Unisex", p:3800000, img:"https://i.ibb.co/HDzccWN7/627073165-1436359044524228-4983930078741043061-n.png",
+            imgs:["https://i.ibb.co/HDzccWN7/627073165-1436359044524228-4983930078741043061-n.png",
+                  "https://i.ibb.co/204YVGb1/scarpa-da-basket-puma-mb05-lamelo-ball-signature-voltage-yellow-black-5.webp",
+                  "https://i.ibb.co/DP1zmyg5/MB.avif"
+            ],
+            s:[40,41], c:"Green"},
+            
+            {id:12, b:"Puma", n:"All-Pro NITRO 2 ET Unisex", p:2400000, img:"https://i.ibb.co/LzJBfdnY/628461701-1526381845131067-6026529168202884953-n.jpg",
+            imgs:["https://i.ibb.co/LzJBfdnY/628461701-1526381845131067-6026529168202884953-n.jpg",
+                  "https://i.ibb.co/67HCv3C4/Gi-y-b-ng-r-All-Pro-NITRO-2-ET-Unisex.avif",
+                  "https://i.ibb.co/FbXqkb80/31231301-Black-Orange-Yellow-TOP.webp"
+            ],
+            s:[40,41], c:"Blue"},
+            
+            {id:13, b:"MLB", n:"Winner Chunky", p:4990000, img:"https://i.ibb.co/HThSW7DB/Giay-MLB-Winner-Chunky-New-York-Yankees-Black-400x400.jpg",
+            imgs:["https://i.ibb.co/HThSW7DB/Giay-MLB-Winner-Chunky-New-York-Yankees-Black-400x400.jpg",
+                  "https://i.ibb.co/RTqdm1fd/screenshot-2025-07-21-094148-aa6929501b674f85a197c2cb7137ea0e-master.png",
+                  "https://i.ibb.co/TBKnCwfk/giay-mlb-winner-chunky-logo-ny-mau-den-3ashwd15n-50bks-8.webp"
+            ],
+            s:[38,39], c:"Black"},
 
-            // MLB (5)
-            {id:16, b:"MLB", n:"Big Ball Chunky A", p:2800000, img:"https://images.unsplash.com/photo-1603191659812-ee978eeeef76?w=400"},
-            {id:17, b:"MLB", n:"Chunky Liner NY", p:3100000, img:"https://images.unsplash.com/photo-1603191659812-ee978eeeef76?w=400"}, // Placeholder
-            {id:18, b:"MLB", n:"Playball Origin", p:1800000, img:"https://images.unsplash.com/photo-1603191659812-ee978eeeef76?w=400"}, // Placeholder
-            {id:19, b:"MLB", n:"Mound Mono High", p:2500000, img:"https://images.unsplash.com/photo-1603191659812-ee978eeeef76?w=400"}, // Placeholder
-            {id:20, b:"MLB", n:"Chunky Runner", p:3400000, img:"https://images.unsplash.com/photo-1603191659812-ee978eeeef76?w=400"} // Placeholder
+            {id:14, b:"MLB", n:"Jade Cruise Thrue", p:1490000, img:"https://product.hstatic.net/1000284478/product/wpk_185099_1_6d7dba88bf7040828a47e50a01c8d47e.jpg",
+            imgs:["https://product.hstatic.net/1000284478/product/wpk_185099_1_6d7dba88bf7040828a47e50a01c8d47e.jpg",
+                  "https://product.hstatic.net/1000284478/product/wpk_185099_2_1afa937b051d4330bf36373930d4fd07.jpg",
+                  "https://product.hstatic.net/1000284478/product/wpk_185099_5_f94734928b2f4dafa4d1530949e063d4.jpg"
+            ],
+            s:[38,39], c:"White"},
+
+            {id:15, b:"MLB", n:"Urban Revivo Red", p:1299000, img:"https://cdn.hstatic.net/products/1000284478/rc1_uays60012_1_b51b38ca15c6408c98b88dacf9b1aa0b.jpg",
+            imgs:["https://cdn.hstatic.net/products/1000284478/rc1_uays60012_1_b51b38ca15c6408c98b88dacf9b1aa0b.jpg",
+                  "https://cdn.hstatic.net/products/1000284478/rc1_uays60012_5_335cc217f00e46b9910f855281908ac4.jpg",
+                  "https://cdn.hstatic.net/products/1000284478/rc1_uays60012_6_b99181a7c12243fe9d046d9f0a142ab6.jpg"
+            ],
+            s:[38,39], c:"Red"},
+            
+            {id:16, b:"MLB", n:"Float Max 2.0 LT", p:2699000, img:"https://cdn.hstatic.net/products/1000284478/001_fs261ru02x007_1_697c2e43b2934f02be5aab763eb14792.jpg",
+            imgs:["https://cdn.hstatic.net/products/1000284478/001_fs261ru02x007_1_697c2e43b2934f02be5aab763eb14792.jpg",
+                  "https://cdn.hstatic.net/products/1000284478/001_fs261ru02x007_8_08d14811e4ad456c923011699d5f4802.jpg",
+                  "https://cdn.hstatic.net/products/1000284478/001_fs261ru02x007_7_848d9da18a754133b409583862aefe6b.jpg"
+            ],
+            s:[38,39], c:"Black"}
         ];
 
-        function toggleFilter() {
-            document.getElementById('sidebar').classList.toggle('active');
-            document.getElementById('overlay').classList.toggle('active');
+        const searchInp = document.getElementById('search');
+        const suggContainer = document.getElementById('search-suggestions');
+        const mobileSearchInp = document.getElementById('mobile-search-input');
+        const mobileSuggContainer = document.getElementById('mobile-search-suggestions');
+
+        const fmtPrice = (price) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+        /* Tìm kiếm suggestions - hỗ trợ cả desktop và mobile */
+        function showSearchSuggestions(container = suggContainer) {
+            const history = JSON.parse(localStorage.getItem('search_history') || '[]');
+            let html = '';
+            if (history.length === 0) {
+                html = '<div class="sugg-empty">Không có lịch sử tìm kiếm</div>';
+            } else {
+                html = history.map(q => `
+                    <div class="sugg-item" onclick="performSearch('${q.replace(/'/g, "\\'")}')">
+                        <i class="fas fa-history"></i><span>${q}</span>
+                        <i class="fas fa-times" onclick="removeSearchItem(event, '${q.replace(/'/g, "\\'")}')"></i>
+                    </div>
+                `).join('');
+                html += '<div class="sugg-clear" onclick="clearSearchHistory()">Xóa lịch sử tìm kiếm</div>';
+            }
+            container.innerHTML = html;
+            container.style.display = 'block';
+        }
+
+        function hideSearchSuggestions(container = suggContainer) {
+            setTimeout(() => { container.style.display = 'none'; }, 200);
+        }
+
+        /* Mobile search control */
+        function toggleMobileSearch() {
+            const container = document.getElementById('mobile-search-container');
+            container.classList.toggle('active');
+            if (container.classList.contains('active')) {
+                mobileSearchInp.value = searchInp.value;
+                mobileSearchInp.focus();
+                showSearchSuggestions(mobileSuggContainer);
+            }
+        }
+
+        function closeMobileSearch() {
+            document.getElementById('mobile-search-container').classList.remove('active');
+            hideSearchSuggestions(mobileSuggContainer);
+        }
+
+        function performSearch(query) {
+            searchInp.value = query;
+            if (mobileSearchInp) mobileSearchInp.value = query;
+            updateSearchHistory(query);
+            applyFilter();
+            hideSearchSuggestions();
+            hideSearchSuggestions(mobileSuggContainer);
+            closeMobileSearch();
+        }
+
+        // Desktop search events
+        searchInp.addEventListener('focus', () => showSearchSuggestions());
+        searchInp.addEventListener('blur', () => hideSearchSuggestions());
+        searchInp.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') performSearch(searchInp.value);
+            else applyFilter();
+        });
+
+        // Mobile search events
+        if (mobileSearchInp) {
+            mobileSearchInp.addEventListener('focus', () => showSearchSuggestions(mobileSuggContainer));
+            mobileSearchInp.addEventListener('blur', () => hideSearchSuggestions(mobileSuggContainer));
+            mobileSearchInp.addEventListener('keyup', (e) => {
+                searchInp.value = mobileSearchInp.value;
+                if (e.key === 'Enter') performSearch(mobileSearchInp.value);
+                else applyFilter();
+            });
+        }
+        /* LỊCH SỬ XEM */
+        function updateHistory(prod) {
+            let history = JSON.parse(localStorage.getItem('view_history') || '[]');
+            history = history.filter(x => x.id !== prod.id);
+            history.unshift(prod);
+            localStorage.setItem('view_history', JSON.stringify(history.slice(0, 10)));
+        }
+
+        function toggleHistory() {
+            const history = JSON.parse(localStorage.getItem('view_history') || '[]');
+            const container = document.getElementById('history-list');
+            let html = '';
+
+            if (history.length > 0) {
+                html += `<div style="text-align:right; margin-bottom:15px;">
+                            <button onclick="clearViewHistory()" style="background:none; border:none; color:#e60000; font-size:13px; cursor:pointer;">Xóa lịch sử xem</button>
+                         </div>`;
+            }
+
+            if (history.length === 0) {
+                html += '<p style="font-size:13px; color:#999; text-align:center; padding-top:20px;">Bạn chưa xem sản phẩm nào.</p>';
+            } else {
+                html += history.map(item => `
+                    <div class="history-item" onclick="goDetail(${item.id})">
+                        <img src="${item.img}">
+                        <div style="flex:1">
+                            <h4>${item.n}</h4>
+                            <p>${fmtPrice(item.p)}</p>
+                        </div>
+                        <i class="fas fa-times" onclick="removeViewItem(event, ${item.id})"></i>
+                    </div>
+                `).join('');
+            }
+
+            container.innerHTML = html;
+            openSidebar('history-sidebar');
+        }
+
+        function removeViewItem(e, id) {
+            e.stopPropagation();
+            let history = JSON.parse(localStorage.getItem('view_history') || '[]');
+            history = history.filter(x => x.id !== id);
+            localStorage.setItem('view_history', JSON.stringify(history));
+            toggleHistory();
+        }
+
+        function clearViewHistory() {
+            localStorage.removeItem('view_history');
+            toggleHistory();
+        }
+
+        /* LỊCH SỬ TÌM KIẾM */
+        function updateSearchHistory(query) {
+            if (!query.trim()) return;
+            let history = JSON.parse(localStorage.getItem('search_history') || '[]');
+            history = history.filter(q => q !== query);
+            history.unshift(query);
+            localStorage.setItem('search_history', JSON.stringify(history.slice(0, 10)));
+        }
+
+        function showSearchSuggestions() {
+            const history = JSON.parse(localStorage.getItem('search_history') || '[]');
+            let html = '';
+
+            if (history.length === 0) {
+                html = '<div class="sugg-empty">Không có lịch sử tìm kiếm</div>';
+            } else {
+                html = history.map(q => `
+                    <div class="sugg-item" onclick="performSearch('${q.replace(/'/g, "\\'")}')">
+                        <i class="fas fa-history"></i>
+                        <span>${q}</span>
+                        <i class="fas fa-times" onclick="removeSearchItem(event, '${q.replace(/'/g, "\\'")}')"></i>
+                    </div>
+                `).join('');
+                html += '<div class="sugg-clear" onclick="clearSearchHistory()">Xóa lịch sử tìm kiếm</div>';
+            }
+
+            suggContainer.innerHTML = html;
+            suggContainer.style.display = 'block';
+        }
+
+        function hideSearchSuggestions() {
+            setTimeout(() => { suggContainer.style.display = 'none'; }, 200);
+        }
+
+        function performSearch(query) {
+            searchInp.value = query;
+            updateSearchHistory(query);
+            applyFilter();
+            hideSearchSuggestions();
+        }
+
+        function removeSearchItem(e, query) {
+            e.stopPropagation();
+            let history = JSON.parse(localStorage.getItem('search_history') || '[]');
+            history = history.filter(q => q !== query);
+            localStorage.setItem('search_history', JSON.stringify(history));
+            searchInp.focus();
+            showSearchSuggestions();
+        }
+
+        function clearSearchHistory() {
+            localStorage.removeItem('search_history');
+            searchInp.focus();
+            showSearchSuggestions();
+        }
+
+        searchInp.addEventListener('focus', showSearchSuggestions);
+        searchInp.addEventListener('blur', hideSearchSuggestions);
+        searchInp.addEventListener('keyup', (e) => {
+            if(e.key === 'Enter') performSearch(searchInp.value);
+            else applyFilter();
+        });
+
+        /* SIDEBAR CONTROL */
+        function openSidebar(id) {
+            closeAllSidebars();
+            document.getElementById(id).classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        function toggleFilterSidebar() {
+            openSidebar('filter-sidebar');
+        }
+
+        function toggleUserSidebar() {
+            if (!localStorage.getItem('user_login')) {
+                window.location.href = 'login.html';
+                return;
+            }
+            loadUserInfo();
+            openSidebar('user-sidebar');
+        }
+
+        function closeAllSidebars() {
+            document.querySelectorAll('.sidebar').forEach(s => s.classList.remove('active'));
+            document.getElementById('overlay').classList.remove('active');
+            document.getElementById('require-msg').style.display = 'none';
+        }
+
+        /* RENDER & FILTER */
+        function quickFilterBrand(brandName) {
+            document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
+            const brandCheckbox = document.querySelector(`.f-brand[value="${brandName}"]`);
+            if (brandCheckbox) {
+                brandCheckbox.checked = true;
+                applyFilter();
+                document.getElementById('main-container').scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         function render(data) {
             const container = document.getElementById('main-container');
-            container.innerHTML = "";
-            const uniqueBrands = [...new Set(data.map(item => item.b))];
-
-            if(uniqueBrands.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:50px;"><h3>Không tìm thấy sản phẩm!</h3></div>`;
+            if (data.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:100px; font-size:18px; color:#999;">Không tìm thấy sản phẩm phù hợp.</div>`;
                 return;
             }
-
-            uniqueBrands.forEach(brand => {
-                const products = data.filter(i => i.b === brand);
+            container.innerHTML = "";
+            const brands = [...new Set(data.map(i => i.b))];
+            
+            brands.forEach(br => {
+                const prods = data.filter(i => i.b === br);
                 container.innerHTML += `
                     <div class="brand-section">
-                        <div class="section-title"><i class="fas fa-crown" style="color:var(--red); margin-right:10px"></i> ${brand} COLLECTION</div>
-                        <div class="grid">
-                            ${products.map(p => `
-                                <div class="card">
-                                    <img src="${p.img}">
-                                    <div style="color:#999; font-size:11px; font-weight:bold; text-transform:uppercase">${p.b}</div>
-                                    <h3>${p.n}</h3>
-                                    <div class="price">${p.p.toLocaleString()} ₫</div>
-                                    <a href="javascript:void(0)" onclick="goDetail(${p.id})" class="btn-view">XEM CHI TIẾT</a>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
+                        <div class="section-title">${br}</div>
+                        <div class="grid">${prods.map(p => `
+                            <div class="card" onclick="goDetail(${p.id})">
+                                <img src="${p.img}" alt="${p.n}">
+                                <h3>${p.n}</h3>
+                                <div style="color:var(--red); font-weight:bold; font-size:16px;">${fmtPrice(p.p)}</div>
+                                <div class="btn-view">CHI TIẾT</div>
+                            </div>`).join('')}</div>
+                    </div>`;
             });
         }
 
         function applyFilter() {
-            const s = document.getElementById('search').value.toLowerCase();
-            const brands = [...document.querySelectorAll('.f-brand:checked')].map(c => c.value);
-            const price = document.querySelector('input[name="price"]:checked').value;
+            const searchVal = searchInp.value.toLowerCase().trim();
+            const selBrands = [...document.querySelectorAll('.f-brand:checked')].map(c => c.value);
+            const selSizes = [...document.querySelectorAll('.f-size:checked')].map(c => parseInt(c.value));
+            const selColors = [...document.querySelectorAll('.color-filter:checked')].map(c => c.value);
+            const selPriceRanges = [...document.querySelectorAll('.f-price:checked')].map(c => c.value);
 
-            const res = db.filter(i => {
-                const matchName = i.n.toLowerCase().includes(s);
-                const matchBrand = brands.length ? brands.includes(i.b) : true;
-                let matchPrice = true;
-                if (price !== 'all') {
-                    const [min, max] = price.split('-').map(Number);
-                    matchPrice = i.p >= min && i.p <= max;
+            const result = db.filter(item => {
+                const matchName = item.n.toLowerCase().includes(searchVal);
+                const matchBrand = selBrands.length === 0 || selBrands.includes(item.b);
+                const matchColor = selColors.length === 0 || selColors.includes(item.c);
+                const matchSize = selSizes.length === 0 || item.s.some(size => selSizes.includes(size));
+                
+                let matchPrice = selPriceRanges.length === 0;
+                if (!matchPrice) {
+                    matchPrice = selPriceRanges.some(range => {
+                        const [min, max] = range.split('-').map(Number);
+                        const priceMil = item.p / 1000000;
+                        return priceMil >= min && (max === 99 || priceMil <= max);
+                    });
                 }
-                return matchName && matchBrand && matchPrice;
+
+                return matchName && matchBrand && matchColor && matchSize && matchPrice;
             });
-            render(res);
+            render(result);
         }
 
-        function goDetail(id) {
-            localStorage.setItem('sel_prod', JSON.stringify(db.find(x => x.id === id)));
-            window.location.href = 'detail.html';
+        function resetFilters() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
+            searchInp.value = '';
+            applyFilter();
+        }
+
+        /* USER INFO & CART CHECK */
+        function checkUserInfoComplete() {
+            if (!localStorage.getItem('user_login')) {
+                alert('Vui lòng đăng nhập để xem giỏ hàng!');
+                window.location.href = 'login.html';
+                return false;
+            }
+
+            const userInfo = JSON.parse(localStorage.getItem('user_info') || '{}');
+            if (!userInfo.name || !userInfo.phone || !userInfo.address || !userInfo.city) {
+                toggleUserSidebar();
+                document.getElementById('require-msg').style.display = 'block';
+                return false;
+            }
+            return true;
         }
 
         function checkCartAccess() {
-            if(localStorage.getItem('user_login')) {
+            if (checkUserInfoComplete()) {
                 window.location.href = 'cart.html';
-            } else {
-                alert('Vui lòng ĐĂNG NHẬP để xem giỏ hàng!');
-                window.location.href = 'login.html';
             }
         }
 
-        window.onload = () => {
-            render(db);
-            // Xử lý hiển thị login/logout
-            const user = localStorage.getItem('user_login');
-            const userArea = document.getElementById('user-icon-area');
-            if(user) {
-                userArea.innerHTML = `<a href="javascript:void(0)" onclick="logout()" title="Đăng xuất (${user})"><i class="fas fa-sign-out-alt"></i></a>`;
-                document.getElementById('cart-cnt').innerText = JSON.parse(localStorage.getItem('cart') || '[]').length;
-            } else {
-                userArea.innerHTML = `<a href="login.html" title="Đăng nhập"><i class="far fa-user"></i></a>`;
-            }
-        };
+        function loadUserInfo() {
+            const info = JSON.parse(localStorage.getItem('user_info') || '{}');
+            document.getElementById('inp-name').value = info.name || '';
+            document.getElementById('inp-phone').value = info.phone || '';
+            document.getElementById('inp-address').value = info.address || '';
+            document.getElementById('inp-city').value = info.city || '';
+            if (info.name) document.getElementById('u-display-name').innerText = info.name;
+        }
+
+        function saveUserInfo(e) {
+            e.preventDefault();
+            const info = {
+                name: document.getElementById('inp-name').value.trim(),
+                phone: document.getElementById('inp-phone').value.trim(),
+                address: document.getElementById('inp-address').value.trim(),
+                city: document.getElementById('inp-city').value.trim()
+            };
+            localStorage.setItem('user_info', JSON.stringify(info));
+            alert('Đã lưu thông tin thành công!');
+            document.getElementById('u-display-name').innerText = info.name;
+            document.getElementById('require-msg').style.display = 'none';
+            closeAllSidebars();
+        }
 
         function logout() {
-            localStorage.removeItem('user_login');
-            location.reload();
+            if(confirm('Bạn có chắc muốn đăng xuất?')) {
+                localStorage.removeItem('user_login');
+                location.reload();
+            }
         }
 
-        window.onscroll = () => {
-            document.getElementById('scrollTop').style.display = window.scrollY > 300 ? 'block' : 'none';
+        function goDetail(id) {
+            const prod = db.find(x => x.id === id);
+            if (prod) {
+                updateHistory(prod);
+                localStorage.setItem('sel_prod', JSON.stringify(prod));
+                window.location.href = 'detail.html';
+            } else {
+                alert('Sản phẩm không tồn tại!');
+            }
         }
+
+        /* KHỞI TẠO */
+        window.onload = () => {
+            render(db);
+            
+            const u = localStorage.getItem('user_login');
+            const uName = JSON.parse(localStorage.getItem('user_info') || '{}').name;
+            
+            const userHtml = u 
+                ? `<div style="display:flex; align-items:center; gap:10px;">
+                     <span class="desktop-greeting">Hi, ${uName || 'Member'}</span>
+                     <button class="nav-btn" onclick="toggleUserSidebar()" title="Tài khoản"><i class="fas fa-user-circle"></i></button>
+                   </div>` 
+                : `<a href="login.html" class="nav-btn" title="Đăng nhập"><i class="far fa-user"></i></a>`;
+            
+            document.getElementById('user-area').innerHTML = userHtml;
+
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            document.getElementById('cart-cnt').innerText = cart.length;
+        };
     </script>
 </body>
 </html>
