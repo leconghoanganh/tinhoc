@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GIAY CHAT | Authentic Store 2036</title>
+    <title>Chi tiết sản phẩm | GIAY CHAT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --red: #e60000; --black: #0a0a0a; --white: #ffffff; --overlay: rgba(0,0,0,0.7); }
+        :root { --red: #e60000; --black: #0a0a0a; --white: #ffffff; --overlay: rgba(0,0,0,0.7); --gold: #ffc107; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: #fcfcfc; color: #333; overflow-x: hidden; padding-top: 80px; }
         a { text-decoration: none; color: inherit; }
-
-        /* NAVBAR */
-        nav { background: var(--black); height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 0 5%; position: fixed; top: 0; width: 100%; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        /* --- NAVBAR --- */
+       nav { background: var(--black); height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 0 5%; position: fixed; top: 0; width: 100%; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .logo { color: var(--white); font-size: 24px; font-weight: 900; letter-spacing: 1px; }
         .logo span { color: var(--red); }
         .nav-center { display: flex; align-items: center; gap: 15px; flex-grow: 1; justify-content: center; }
@@ -21,247 +20,388 @@
         .search-box i { position: absolute; right: 15px; top: 12px; color: #777; pointer-events: none; }
         .nav-right { display: flex; align-items: center; gap: 20px; }
         .nav-right a, .nav-btn { color: var(--white); font-size: 20px; cursor: pointer; position: relative; transition: 0.3s; background: none; border: none; }
-        .nav-right a:hover, .nav-btn:hover { color: var(--red); transform: scale(1.1); }
         .badge { position: absolute; top: -8px; right: -10px; background: var(--red); color: white; font-size: 10px; padding: 2px 5px; border-radius: 10px; }
-        /* MOBILE SEARCH */
-       #mobile-search-btn { display: none; }
+        /* MOBILE SEARCH - GIỐNG INDEX */
+        #mobile-search-btn { display: none; }
         .mobile-search-container { position: fixed; top: 80px; left: 0; width: 100%; background: var(--black); z-index: 999; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .mobile-search-container.active { display: block; }
         .mobile-search-box { position: relative; padding: 15px 5%; }
         .mobile-search-box input { width: 100%; padding: 14px 50px 14px 20px; border-radius: 30px; border: none; background: #222; color: white; outline: none; font-size: 16px; }
         .mobile-search-box i.fa-search { position: absolute; right: 10%; top: 50%; transform: translateY(-50%); color: #777; pointer-events: none; }
         .mobile-search-box i.fa-times { position: absolute; right: 5%; top: 50%; transform: translateY(-50%); color: #777; cursor: pointer; }
-        #mobile-search-suggestions { width: 90%; margin: 0 auto; background: white; border-radius: 0 0 20px 20px; max-height: 300px; overflow-y: auto; }
-        /* SEARCH SUGGESTIONS (chung) */
-        .search-suggestions { position: absolute; top: 48px; left: 0; width: 100%; background: white; border: 1px solid #ddd; border-top: none; border-radius: 0 0 20px 20px; max-height: 320px; overflow-y: auto; display: none; z-index: 999; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-        .sugg-item { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #333; border-bottom: 1px solid #eee; }
-        .sugg-item:hover { background: #f9f9f9; }
-        .sugg-item i.fa-times { margin-left: auto; opacity: 0.6; }
-        .sugg-item i.fa-times:hover { opacity: 1; color: var(--red); }
-        .sugg-clear { padding: 12px 20px; text-align: center; color: #999; font-size: 13px; cursor: pointer; }
-        .sugg-clear:hover { background: #f9f9f9; color: var(--red); }
-        .sugg-empty { padding: 20px; text-align: center; color: #999; font-size: 13px; }
-        .sugg-item img { width: 40px; height: 40px; object-fit: cover; border-radius: 5px; }
-
-        /* HERO BANNER */
-        .hero { width: 100%; height: 500px; position: relative; overflow: hidden; background: var(--black); margin-bottom: 50px; }
-        .hero img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; animation: zoom 20s infinite alternate; }
-        @keyframes zoom { from { transform: scale(1); } to { transform: scale(1.2); } }
-        .hero-content { position: absolute; top: 50%; left: 5%; transform: translateY(-50%); color: white; z-index: 10; max-width: 600px; }
-        .hero-content h1 { font-size: 60px; font-weight: 900; line-height: 1.1; margin-bottom: 20px; text-transform: uppercase; }
-        .hero-content h1 span { color: var(--red); }
-        .hero-content p { font-size: 18px; margin-bottom: 30px; opacity: 0.9; }
-        .btn-shop { padding: 15px 40px; background: var(--red); color: white; font-weight: bold; border-radius: 5px; transition: 0.3s; }
-        .btn-shop:hover { background: #cc0000; }
-
-        /* BRAND ADS */
-        .brand-ads-container { display: flex; width: 100%; height: 350px; background: #000; overflow: hidden; margin-bottom: 50px; }
-        .brand-ad-card { flex: 1; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; transition: all 0.5s ease; cursor: pointer; border-right: 1px solid rgba(255,255,255,0.1); overflow: hidden; }
-        .brand-ad-card:last-child { border-right: none; }
-        .brand-ad-card:hover { flex: 2.5; background: #111; }
-        .ad-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; transition: 0.5s; z-index: 1; }
-        .brand-ad-card:hover .ad-bg-img { opacity: 0.6; transform: scale(1.1); }
-        .ad-content { position: relative; z-index: 2; text-align: center; padding: 20px; transform: translateY(20px); transition: 0.5s; }
-        .brand-ad-card:hover .ad-content { transform: translateY(0); }
-        .ad-brand-name { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; margin-bottom: 10px; text-transform: uppercase; }
-        .ad-slogan { font-size: 2rem; font-weight: 800; line-height: 1.1; margin-bottom: 15px; opacity: 0; transform: translateY(20px); transition: 0.5s 0.1s; }
-        .brand-ad-card:hover .ad-slogan { opacity: 1; transform: translateY(0); }
-        .style-nike .ad-slogan { font-style: italic; font-family: 'Arial Black', sans-serif; }
-        .style-adidas .ad-slogan { font-weight: 700; letter-spacing: -1px; }
-        .style-puma .ad-slogan { font-style: italic; color: #ff3333; }
-        .style-mlb .ad-slogan { font-family: 'Courier New', monospace; font-weight: 900; }
-        .btn-ad-action { display: inline-block; margin-top: 10px; padding: 8px 20px; border: 1px solid white; color: white; font-size: 12px; text-transform: uppercase; opacity: 0; transition: 0.3s; }
-        .brand-ad-card:hover .btn-ad-action { opacity: 1; }
-        .btn-ad-action:hover { background: white; color: black; }
-
-        /* DROPDOWN BRAND MENU */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .dropdown-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
-            background: #222;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .dropdown-btn:hover {
-            background: #333;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-        }
-        .dropdown-btn i { transition: transform 0.3s; }
-        .dropdown.active .dropdown-btn i { transform: rotate(180deg); }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background: #222;
-            min-width: 180px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
-            border-radius: 12px;
-            z-index: 10;
-            top: 100%;
+        /* --- SIDEBARS & OVERLAY --- */
+        .sidebar {
+            position: fixed;
+            top: 0;
             left: 0;
-            margin-top: 8px;
-            overflow: hidden;
+            width: 100%;
+            max-width: 380px;
+            height: 100vh;
+            background: white;
+            z-index: 2000;
+            padding: 20px;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.25);
+            overflow-y: auto;
+            transform: translateX(-100%);
+            transition: transform 0.4s ease-in-out;
         }
-        .dropdown.active .dropdown-content { display: block; }
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 18px;
-            color: white;
-            cursor: pointer;
-            transition: all 0.2s;
+        .filter-sidebar {
+            transform: translateX(-100%);
         }
-        .dropdown-item:hover {
-            background: var(--red);
+        .filter-sidebar.active {
+            transform: translateX(0);
         }
-        .dropdown-item i { font-size: 16px; }
-
-        /* SIDEBAR CHUNG - SỬA LẠI TOÀN BỘ */
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;                    /* luôn bắt đầu từ left:0 để dễ transform */
-    width: 100%;
-    max-width: 380px;           /* giới hạn trên màn hình lớn */
-    height: 100vh;
-    background: white;
-    z-index: 2000;
-    padding: 20px;
-    box-shadow: -10px 0 30px rgba(0,0,0,0.25); /* bóng nhẹ bên phải cho đẹp */
-    overflow-y: auto;
-    transform: translateX(-100%); /* mặc định ẩn bên trái */
-    transition: transform 0.4s ease-in-out;
-}
-
-/* Filter sidebar: từ trái sang */
-.filter-sidebar {
-    transform: translateX(-100%);
-}
-.filter-sidebar.active {
-    transform: translateX(0);
-}
-
-/* History & User sidebar: từ phải sang (dùng translateX dương) */
-.history-sidebar,
-.user-sidebar {
-    left: auto;
-    right: 0;
-    transform: translateX(101%); /* ẩn bên phải */
-    box-shadow: 10px 0 30px rgba(0,0,0,0.25);
-}
-.history-sidebar.active,
-.user-sidebar.active {
-    transform: translateX(0);
-}
-
-/* Overlay */
-.overlay {
-    position: fixed;
-    inset: 0;                   /* top/right/bottom/left = 0 */
-    background: var(--overlay);
-    z-index: 1500;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.35s ease, visibility 0s linear 0.35s; /* delay khi ẩn */
-}
-.overlay.active {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.35s ease, visibility 0s linear 0s; /* hiện ngay */
-}
-
-/* Header */
-.f-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 15px;
-}
-
-/* Responsive - đảm bảo trên mobile */
-@media (max-width: 768px) {
-            nav { padding: 0 3%; }
-            .nav-center { display: none; }
-            #mobile-search-btn { display: block; }
+        .history-sidebar,
+        .user-sidebar {
+            left: auto;
+            right: 0;
+            transform: translateX(100%);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.25);
         }
-
-        /* FORM & FILTER STYLES */
-        .f-group { margin-bottom: 25px; }
-        .f-group h4 { margin-bottom: 15px; font-size: 16px; }
-        .f-group label { display: block; margin-bottom: 8px; cursor: pointer; font-size: 14px; }
-        .color-dots { display: flex; gap: 10px; }
-        .color-filter { display: none; }
-        .color-label { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #ddd; cursor: pointer; position: relative; }
-        .color-filter:checked + .color-label::after { content: '\2713'; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px; text-shadow: 0 0 2px black; }
-
-        /* HISTORY ITEM */
+        .history-sidebar.active,
+        .user-sidebar.active {
+            transform: translateX(0);
+        }
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--overlay);
+            z-index: 1500;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+        }
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.35s ease, visibility 0s linear 0s;
+        }
+        .f-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 15px; } /* History Item */
         .history-item { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; border-bottom: 1px solid #f9f9f9; padding-bottom: 12px; cursor: pointer; position: relative; }
         .history-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 5px; }
         .history-item h4 { font-size: 13px; margin-bottom: 3px; }
         .history-item p { color: var(--red); font-size: 12px; font-weight: bold; }
-        .history-item i.fa-times { position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: #999; cursor: pointer; padding: 5px; }
-        .history-item i.fa-times:hover { color: var(--red); }
-
-        /* USER FORM */
-        .user-profile-header { text-align: center; margin-bottom: 30px; }
-        .user-avatar { width: 80px; height: 80px; background: #eee; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #aaa; }
-        .form-group { margin-bottom: 20px; }
-        .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; outline: none; transition: 0.3s; }
-        .form-control:focus { border-color: var(--red); }
-        .btn-save { width: 100%; padding: 12px; background: var(--black); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
-        .btn-logout { width: 100%; padding: 12px; background: #fff; color: var(--red); border: 1px solid var(--red); border-radius: 6px; font-weight: bold; cursor: pointer; }
-        .required-note { color: var(--red); font-size: 12px; margin-bottom: 20px; font-style: italic; text-align: center; display: none; }
-
-        /* GRID & CARDS */
-        .brand-section { padding: 0 5% 50px; }
-        .section-title { font-size: 28px; font-weight: 900; margin-bottom: 25px; display: flex; align-items: center; text-transform: uppercase; color: var(--black); }
-        .section-title::after { content: ""; flex-grow: 1; height: 2px; background: #eee; margin-left: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 30px; }
-        .card { background: white; border-radius: 15px; padding: 20px; position: relative; transition: 0.4s; border: 1px solid #f0f0f0; overflow: hidden; cursor: pointer; }
-        .card:hover { transform: translateY(-10px); border-color: var(--red); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .card img { width: 100%; height: 200px; object-fit: contain; transition: 0.6s; margin-bottom: 15px; }
-        .btn-view { position: absolute; bottom: -50px; left: 0; width: 100%; padding: 12px; background: var(--black); color: white; text-align: center; transition: 0.3s; font-weight: bold; }
-        .card:hover .btn-view { bottom: 0; }
-
-        /* RESPONSIVE */
+        .history-item i.fa-times { position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: #999; cursor: pointer; font-size: 14px; }
+        /* --- MAIN PRODUCT DETAIL --- */
+     .wrapper { max-width: 1200px; margin: 40px auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 50px; padding: 0 20px; }
+        .img-zone { position: sticky; top: 100px; }
+        .main-img-box { background: #f8f8f8; border-radius: 20px; padding: 20px; height: 450px; margin-bottom: 15px; overflow: hidden; position: relative; }
+        .main-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; transition: 0.5s ease; }
+        .thumb-list { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .thumb-item { width: 80px; height: 80px; border: 2px solid transparent; border-radius: 10px; overflow: hidden; cursor: pointer; opacity: 0.6; transition: 0.3s; background: #f8f8f8; }
+        .thumb-item.active { border-color: var(--red); opacity: 1; }
+        .info-zone h1 { font-size: 32px; font-weight: 900; margin-bottom: 10px; line-height: 1.2; }
+        .price { font-size: 28px; color: var(--red); font-weight: 800; margin-bottom: 20px; }
+        .slides { display: flex; height: 100%; transition: transform 0.5s ease-in-out; }
+        .slides img { width: 100%; height: 100%; flex-shrink: 0; object-fit: contain; padding: 20px; }
+        .image-counter { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.5); color: white; padding: 5px 10px; border-radius: 10px; font-size: 12px; }
+        .prev, .next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 18px; }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+        /* GALLERY SECTION */
+        .img-zone { position: sticky; top: 100px; }
+        .main-img-box { background: #f8f8f8; border-radius: 20px; padding: 20px; display: flex; align-items: center; justify-content: center; height: 450px; margin-bottom: 15px; overflow: hidden; position: relative; display: block !important; }
+        .main-img-box img { max-width: 100%; max-height: 100%; transition: 0.5s ease; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); }
+        .main-img-box:hover img { transform: scale(1.05); }
+        .thumb-list { display: flex; gap: 10px; justify-content: center; }
+        .thumb-item { width: 80px; height: 80px; border: 2px solid transparent; border-radius: 10px; overflow: hidden; cursor: pointer; opacity: 0.6; transition: 0.3s; background: #f8f8f8; }
+        .thumb-item img { width: 100%; height: 100%; object-fit: cover; }
+        .thumb-item:hover, .thumb-item.active { border-color: var(--red); opacity: 1; }
+        .info-zone h1 { font-size: 32px; font-weight: 900; margin-bottom: 10px; line-height: 1.2; }
+        .price { font-size: 28px; color: var(--red); font-weight: 800; margin-bottom: 20px; }
+        /* Thêm đoạn này để các ảnh xếp hàng ngang */
+        .slides {
+        display: flex; /* Xếp ảnh thành hàng ngang */
+        height: 100%;
+        transition: transform 0.5s ease-in-out;
+        }
+        /* Quan trọng: Mỗi tấm ảnh phải chiếm đúng 100% chiều rộng khung */
+        .slides img { 
+        width: 100%; 
+        height: 100%; 
+        flex-shrink: 0; /* Ngăn ảnh bị co lại */
+        object-fit: contain; 
+        padding: 20px;
+        }
+       /* Specs, Size, Button */
+        .product-specs { margin: 25px 0; padding: 20px; background: #fff; border: 1px solid #eee; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); }
+        .product-specs li { margin-bottom: 12px; display: flex; justify-content: space-between; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
+        .product-specs li:last-child { border-bottom: none; }
+        .size-section { margin: 30px 0; }
+        .size-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+        .size-btn { width: 50px; height: 40px; background: white; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+        .size-btn.active { background: var(--black); color: white; border-color: var(--black); transform: scale(1.1); }
+        .size-btn.disabled { background: #f5f5f5; color: #ccc; cursor: not-allowed; position: relative; }
+        .size-btn.disabled::after { content: ''; position: absolute; width: 100%; height: 1px; background: #ccc; transform: rotate(45deg); }
+        /* SIZE GUIDE MODAL */
+        .size-guide-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; z-index: 2500; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); width: 90%; max-width: 500px; display: none; }
+        .size-guide-modal.active { display: block; }
+        .sg-table { width: 100%; border-collapse: collapse; margin-top: 15px; text-align: center; font-size: 14px; }
+        .sg-table th { background: var(--black); color: white; padding: 10px; }
+        .sg-table td { border: 1px solid #eee; padding: 8px; }
+        .sg-close { position: absolute; top: 15px; right: 15px; cursor: pointer; font-size: 20px; color: #999; }
+        .sg-close:hover { color: var(--red); }
+        @keyframes popIn { from {opacity: 0; transform: translate(-50%, -60%);} to {opacity: 1; transform: translate(-50%, -50%);} }
+        .btn-add { width: 100%; padding: 18px; background: var(--red); color: white; border: none; font-weight: bold; font-size: 16px; border-radius: 8px; cursor: pointer; margin-top: 20px; transition: 0.3s; text-transform: uppercase; }
+        .btn-add:hover { background: #cc0000; }
+        /* --- TABS SECTION --- */
+        /* TABS & REVIEWS - ĐÃ CHỈNH SỬA HOÀN CHỈNH */
+.tabs {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 5%;              /* Đồng bộ với index, padding 5% */
+}.tab-head {
+    border-bottom: 2px solid #eee;
+    display: flex;
+    gap: 30px;                  /* Giảm gap để gọn hơn */
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    justify-content: center;    /* Căn giữa trên mobile */
+}
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 12px 0;            /* Giảm padding nhẹ */
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    color: #999;
+    font-size: 15px;            /* Giảm nhẹ font cho mobile */
+    transition: 0.3s;
+    white-space: nowrap;        /* Ngăn chữ bị cắt */
+}
+.tab-btn:hover {
+    color: var(--black);
+}
+.tab-btn.active {
+    border-color: var(--red);
+    color: var(--black);
+}
+.tab-content {
+    display: none;
+    line-height: 1.8;
+    color: #555;
+}
+.tab-content.active {
+    display: block;
+}
+/* REVIEW CONTAINER */
+.review-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+}
+/* FORM ĐÁNH GIÁ */
+.review-form {
+    background: #f9f9f9;
+    padding: 25px;              /* Giảm padding cho gọn */
+    border-radius: 12px;
+}
+.star-rating {
+    margin-bottom: 15px;
+    font-size: 28px;            /* Tăng nhẹ để dễ bấm trên mobile */
+    color: #ddd;
+    cursor: pointer;
+    display: inline-block;
+}
+.star-rating i.selected,
+.star-rating i:hover {
+    color: var(--gold);
+}
+.inp-group {
+    margin-bottom: 15px;
+}
+.inp-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #444;
+}
+.inp-group input,
+.inp-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+.inp-group input:focus,
+.inp-group textarea:focus {
+    border-color: var(--red);
+}
+.inp-group textarea {
+    resize: vertical;
+    height: 110px;
+    min-height: 80px;
+}
+/* UPLOAD BOX & PREVIEW */
+.upload-box {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: white;
+}
+.upload-box:hover {
+    border-color: var(--red);
+    color: var(--red);
+    background: #fff5f5;
+}
+#preview-imgs {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+.prev-img {
+    width: 70px;                /* Tăng nhẹ để dễ nhìn */
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: transform 0.3s;
+}
+.prev-img:hover {
+    transform: scale(1.08);
+}
+/* DANH SÁCH BÌNH LUẬN */
+.review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.review-item {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 24px;
+    overflow: hidden;           /* Ngăn tràn khung */
+}
+.r-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.r-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+}
+.r-avatar {
+    width: 44px;
+    height: 44px;
+    background: #eee;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 18px;
+    font-weight: bold;
+}
+.r-stars {
+    color: var(--gold);
+    font-size: 14px;
+}
+.r-date {
+    font-size: 13px;
+    color: #888;
+}
+.r-content {
+    margin-bottom: 12px;
+    line-height: 1.6;
+    color: #444;
+}
+.r-imgs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.r-imgs img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid #eee;
+    transition: all 0.3s;
+}
+.r-imgs img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+        /* --- RELATED PRODUCTS --- */
+       /* RELATED PRODUCTS - ĐÃ FIX LỖI LẤN KHUNG */
+.related-section {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 5%;          /* Giống index, padding 5% để cân đối */
+}
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));  /* Giảm minmax xuống 220px để mobile không quá to */
+    gap: 20px;              /* Giảm gap để gọn hơn */
+}
+.rel-card {
+    background: white;
+    border: 1px solid #f0f0f0;   /* Thêm border nhẹ để dễ thấy khung */
+    padding: 15px;              /* Giảm padding nhẹ */
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
+    overflow: hidden;           /* Quan trọng: ngăn hình tràn ra ngoài card */
+}
+.rel-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--red);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+.rel-card img {
+    width: 100%;
+    height: 160px;              /* Giữ chiều cao cố định, giống index */
+    object-fit: contain;        /* Giữ nguyên contain để không bị cắt */
+    margin-bottom: 12px;
+    transition: transform 0.4s ease;
+}
+.rel-card:hover img {
+    transform: scale(1.05);     /* Zoom nhẹ khi hover, nhưng vẫn trong khung */
+}
+.rel-card h4 {
+    font-size: 14px;
+    margin: 8px 0;
+    height: 40px;
+    overflow: hidden;
+    line-height: 1.3;
+}
+.rel-card div {
+    color: var(--red);
+    font-weight: bold;
+    font-size: 15px;
+}
+        /* RESPONSIVE - GIỐNG INDEX */
         .desktop-greeting { display: none; font-size: 14px; color: white; }
-        @media (min-width: 768px) {
+        @media (min-width: 769px) {
             .desktop-greeting { display: block; }
             .search-box { width: 250px; }
-            .hero-content h1 { font-size: 42px; }
-            .brand-ads-container { height: 280px; }
         }
         @media (max-width: 768px) {
             nav { padding: 0 3%; }
-            .nav-center { display: none; } /* Ẩn thanh tìm kiếm desktop */
+            .nav-center { display: none; }
             #mobile-search-btn { display: block; }
-            .hero { height: 350px; }
-            .hero-content { left: 20px; max-width: 90%; }
-            .hero-content h1 { font-size: 28px; }
-            .hero-content p { font-size: 14px; }
-            .brand-ads-container { flex-direction: column; height: auto; }
-            .brand-ad-card { height: 180px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
-            .brand-ad-card:hover { flex: 1; background: #111; }
-            .brand-ad-card .ad-content { transform: translateY(0); }
-            .brand-ad-card .ad-slogan { opacity: 1; transform: translateY(0); font-size: 1.6rem; }
-            .brand-ad-card .btn-ad-action { opacity: 1; }
-            .ad-bg-img { opacity: 0.4; }
-            .brand-ad-card:hover .ad-bg-img { opacity: 0.6; transform: scale(1.05); }
-            .sidebar { width: 100%; }
-            .grid { grid-template-columns: 1fr; gap: 20px; }
+            .wrapper { grid-template-columns: 1fr; gap: 30px; }
+            .img-zone { position: static; }
+            .main-img-box { height: 400px; }
+            .review-container { grid-template-columns: 1fr; }
+            .tab-head { gap: 20px; }
         }
         @media (max-width: 480px) {
             body { padding-top: 70px; }
@@ -269,220 +409,197 @@
             .logo { font-size: 18px; }
             .mobile-search-container { top: 70px; }
             .mobile-search-box { padding: 10px 3%; }
-            .hero { height: 300px; }
-            .hero-content h1 { font-size: 22px; }
-            .section-title { font-size: 20px; }
-            .card img { height: 160px; }
-            .brand-ad-card { height: 160px; }
-            .ad-slogan { font-size: 1.4rem; }
+            .main-img-box { height: 300px; }
+            .info-zone h1 { font-size: 24px; }
+            .price { font-size: 24px; }
         }
-
-        /* Brand Menu Styles */
-        .brand-menu { display: flex; gap: 10px; }
-        .brand-icon { color: rgb(0, 0, 0); font-size: 18px; padding: 8px 15px; background: #222; border-radius: 30px; cursor: pointer; transition: 0.3s; }
-        .brand-icon:hover { background: #333; }
-        .brand-icon i { margin-right: 5px; }
     </style>
 </head>
 <body>
-
-    <div class="overlay" id="overlay" onclick="closeAllSidebars()"></div>
-    
+    <div class="overlay" id="overlay" onclick="closeAll()"></div>
+    <div class="mobile-search-container" id="mobile-search-container">
+        <div class="mobile-search-box">
+            <input type="text" id="mobile-search-input" placeholder="Tìm kiếm giày..." autocomplete="off">
+            <i class="fas fa-search"></i>
+            <i class="fas fa-times" onclick="closeMobileSearch()"></i>
+        </div>
+    </div>
+    <div class="size-guide-modal" id="size-modal">
+        <i class="fas fa-times sg-close" onclick="toggleSizeGuide()"></i>
+        <h3 style="text-align:center; margin-bottom:10px;">BẢNG QUY ĐỔI SIZE GIÀY</h3>
+        <p style="text-align:center; font-size:13px; color:#666">Áp dụng cho các dòng Nike, Adidas, Puma phổ thông</p>
+        <table class="sg-table">
+            <thead>
+                <tr>
+                    <th>Size VN/EU</th>
+                    <th>Size US (Men)</th>
+                    <th>Chiều dài chân (CM)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>36</td><td>4</td><td>22.5</td></tr>
+                <tr><td>37</td><td>5</td><td>23.5</td></tr>
+                <tr><td>38</td><td>5.5</td><td>24</td></tr>
+                <tr><td>39</td><td>6.5</td><td>24.5</td></tr>
+                <tr><td>40</td><td>7</td><td>25</td></tr>
+                <tr><td>41</td><td>8</td><td>26</td></tr>
+                <tr><td>42</td><td>8.5</td><td>26.5</td></tr>
+                <tr><td>43</td><td>9.5</td><td>27.5</td></tr>
+                <tr><td>44</td><td>10</td><td>28</td></tr>
+            </tbody>
+        </table>
+    </div>
     <div class="sidebar history-sidebar" id="history-sidebar">
-        <div class="f-header"><h3>VỪA XEM</h3><i class="fas fa-times" onclick="closeAllSidebars()" style="cursor:pointer"></i></div>
+        <div class="f-header"><h3>VỪA XEM</h3><i class="fas fa-times" onclick="closeAll()"></i></div>
         <div id="history-list"></div>
     </div>
-
-    <div class="sidebar filter-sidebar" id="filter-sidebar">
-        <div class="f-header"><h3>BỘ LỌC</h3><i class="fas fa-times" onclick="closeAllSidebars()" style="cursor:pointer"></i></div>
-
-        <div class="f-group">
-            <h4>Khoảng giá</h4>
-            <label><input type="checkbox" value="0-3" class="f-price" onchange="applyFilter()"> Dưới 3 triệu</label>
-            <label><input type="checkbox" value="3-6" class="f-price" onchange="applyFilter()"> 3 - 6 triệu</label>
-            <label><input type="checkbox" value="6-99" class="f-price" onchange="applyFilter()"> Trên 6 triệu</label>
-        </div>
-
-        <div class="f-group">
-            <h4>Size giày</h4>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;">
-                <label><input type="checkbox" value="38" class="f-size" onchange="applyFilter()"> 38</label>
-                <label><input type="checkbox" value="39" class="f-size" onchange="applyFilter()"> 39</label>
-                <label><input type="checkbox" value="40" class="f-size" onchange="applyFilter()"> 40</label>
-                <label><input type="checkbox" value="41" class="f-size" onchange="applyFilter()"> 41</label>
-                <label><input type="checkbox" value="42" class="f-size" onchange="applyFilter()"> 42</label>
-                <label><input type="checkbox" value="43" class="f-size" onchange="applyFilter()"> 43</label>
-            </div>
-        </div>
-
-        <div class="f-group">
-            <h4>Màu sắc</h4>
-            <div class="color-dots">
-                <input type="checkbox" id="c-white" value="White" class="color-filter" onchange="applyFilter()">
-                <label for="c-white" class="color-label" style="background:#ffffff" title="Trắng"></label>
-                
-                <input type="checkbox" id="c-black" value="Black" class="color-filter" onchange="applyFilter()">
-                <label for="c-black" class="color-label" style="background:#0a0a0a" title="Đen"></label>
-                
-                <input type="checkbox" id="c-blue" value="Blue" class="color-filter" onchange="applyFilter()">
-                <label for="c-blue" class="color-label" style="background:#007bff" title="Xanh"></label>
-
-                <input type="checkbox" id="c-red" value="Red" class="color-filter" onchange="applyFilter()">
-                <label for="c-red" class="color-label" style="background:#e60000" title="Đỏ"></label>
-
-                <input type="checkbox" id="c-pink" value="Pink" class="color-filter" onchange="applyFilter()">
-                <label for="c-pink" class="color-label" style="background:#fd02ae" title="Hồng"></label>
-
-                <input type="checkbox" id="c-green" value="Green" class="color-filter" onchange="applyFilter()">
-                <label for="c-green" class="color-label" style="background:#00ff11" title="Xanh Lá"></label>
-
-                <input type="checkbox" id="c-purple" value="Purple" class="color-filter" onchange="applyFilter()">
-                <label for="c-purple" class="color-label" style="background:#9402fd" title="Tím"></label>
-            </div>
-        </div>
-        
-        <button onclick="resetFilters()" style="width:100%; padding:10px; background:#eee; border:none; border-radius:5px; cursor:pointer; margin-top:20px; font-weight: bold;">Xóa tất cả bộ lọc</button>
-    </div>
-
     <div class="sidebar user-sidebar" id="user-sidebar">
-        <div class="f-header"><h3>THÔNG TIN CÁ NHÂN</h3><i class="fas fa-times" onclick="closeAllSidebars()" style="cursor:pointer"></i></div>
-        
-        <div class="user-profile-header">
-            <div class="user-avatar"><i class="fas fa-user"></i></div>
-            <h4 id="u-display-name">Khách hàng</h4>
+        <div class="f-header"><h3>THÔNG TIN GIAO HÀNG</h3><i class="fas fa-times" onclick="closeAll()"></i></div>
+        <div style="background:#fff3cd; color:#856404; padding:10px; border-radius:5px; font-size:13px; margin-bottom:15px;">
+            <i class="fas fa-exclamation-circle"></i> Vui lòng điền đầy đủ thông tin bên dưới để thêm vào giỏ hàng.
         </div>
-
-        <p id="require-msg" class="required-note"><i class="fas fa-exclamation-circle"></i> Vui lòng điền đầy đủ thông tin để tiếp tục mua sắm.</p>
-
-        <form id="user-form" onsubmit="saveUserInfo(event)">
-            <div class="form-group">
-                <label>Họ và tên *</label>
-                <input type="text" id="inp-name" class="form-control" placeholder="Nhập họ tên đầy đủ" required>
-            </div>
-            <div class="form-group">
-                <label>Số điện thoại *</label>
-                <input type="tel" id="inp-phone" class="form-control" placeholder="Nhập số điện thoại" required>
-            </div>
-            <div class="form-group">
-                <label>Địa chỉ nhận hàng *</label>
-                <input type="text" id="inp-address" class="form-control" placeholder="Số nhà, Đường, Phường..." required>
-            </div>
-            <div class="form-group">
-                <label>Thành phố/Tỉnh *</label>
-                <input type="text" id="inp-city" class="form-control" placeholder="Ví dụ: TP. Hồ Chí Minh" required>
-            </div>
-
-            <button type="submit" class="btn-save">LƯU THÔNG TIN</button>
-            <button type="button" class="btn-logout" onclick="logout()">ĐĂNG XUẤT</button>
-        </form>
+        <div id="user-info-content" style="font-size:14px;">
+            <form onsubmit="saveUserInfo(event)">
+                <div class="inp-group"><label>Họ tên *</label><input type="text" id="inp-name" required></div>
+                <div class="inp-group"><label>Số điện thoại *</label><input type="tel" id="inp-phone" required></div>
+                <div class="inp-group"><label>Địa chỉ nhận hàng *</label><input type="text" id="inp-address" required placeholder="Số nhà, đường..."></div>
+                <div class="inp-group"><label>Tỉnh / Thành phố *</label><input type="text" id="inp-city" required></div>
+                <button type="submit" style="width:100%; padding:12px; background:var(--black); color:white; border:none; border-radius:6px; cursor: pointer;">LƯU VÀ TIẾP TỤC</button>
+            </form>
+            <p style="font-size:12px; color:#999; margin-top:15px; text-align:center">Thông tin này dùng để tạo đơn hàng nhanh chóng.</p>
+            <button onclick="logout()" style="width:100%; margin-top:10px; padding:10px; border:1px solid var(--red); color:var(--red); background:none; cursor:pointer; border-radius:6px">ĐĂNG XUẤT</button>
+        </div>
     </div>
-
     <nav>
         <a href="index.html" class="logo">GIAY<span>CHAT</span></a>
         <div class="nav-center">
-            <!-- Menu đa cấp hãng giày -->
-            <div class="dropdown" id="brand-dropdown">
-                <button class="dropdown-btn" onclick="toggleDropdown()">
-                    <i class="fas fa-tags"></i> Hãng giày <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <div class="dropdown-item" onclick="quickFilterBrand('Nike')">
-                        <i class="fas fa-shoe-prints"></i> Nike
-                    </div>
-                    <div class="dropdown-item" onclick="quickFilterBrand('Adidas')">
-                        <i class="fas fa-shoe-prints"></i> Adidas
-                    </div>
-                    <div class="dropdown-item" onclick="quickFilterBrand('Puma')">
-                        <i class="fas fa-shoe-prints"></i> Puma
-                    </div>
-                    <div class="dropdown-item" onclick="quickFilterBrand('MLB')">
-                        <i class="fas fa-baseball-ball"></i> MLB
-                    </div>
-                </div>
-            </div>
-
             <div class="search-box">
-                <input type="text" id="search" placeholder="Tìm kiếm giày..." autocomplete="off">
+                <input type="text" id="search-inp" placeholder="Tìm kiếm sản phẩm..." autocomplete="off">
                 <i class="fas fa-search"></i>
-                <div class="search-suggestions" id="search-suggestions"></div>
+                <div id="search-suggestions" style="position: absolute; width: 100%; background: white; top: 100%; display: none; box-shadow: 0 5px 10px rgba(0,0,0,0.1);"></div>
             </div>
         </div>
-
         <div class="nav-right">
-            <a href="index.html" title="Trang chủ"><i class="fas fa-home"></i></a>
-            <button class="nav-btn" id="mobile-search-btn" onclick="toggleMobileSearch()" title="Tìm kiếm"><i class="fas fa-search"></i></button>
-            <button class="nav-btn" onclick="toggleFilterSidebar()" title="Bộ lọc"><i class="fas fa-sliders-h"></i></button>
-            <button class="nav-btn" onclick="toggleHistory()" title="Lịch sử xem"><i class="fas fa-history"></i></button>
+            <a href="index.html"><i class="fas fa-home"></i></a>
+            <button class="nav-btn" onclick="toggleHistory()"><i class="fas fa-history"></i></button>
             <a href="javascript:void(0)" onclick="checkCartAccess()" style="position:relative">
                 <i class="fas fa-shopping-bag"></i> <span class="badge" id="cart-cnt">0</span>
             </a>
             <div id="user-area"></div>
         </div>
     </nav>
-
-    <div class="mobile-search-container" id="mobile-search-container">
-        <div class="mobile-search-box">
-            <input type="text" id="mobile-search" placeholder="Tìm kiếm giày..." autocomplete="off">
-            <i class="fas fa-search"></i>
-            <i class="fas fa-times" onclick="closeMobileSearch()"></i>
+    <div class="wrapper">
+        <div class="img-zone">
+    <div class="main-img-box slider-container">
+        
+        <div class="slides" id="slideTrack">
+        
         </div>
-        <div id="mobile-search-suggestions"></div>
+
+        <div class="image-counter" id="counter">1 / 1</div>
     </div>
-
-    <div class="hero">
-        <img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=2000" alt="Banner">
-        <div class="hero-content">
-            <h1>NƠI HỘI TỤ <span>TINH HOA ĐẤT TRỜI</span></h1>
-            <p>Khám phá bộ sưu tập Sneaker độc quyền năm 2036.</p>
-            <a href="#main-container" class="btn-shop">MUA NGAY</a>
-        </div>
-    </div>
-
-    <div class="brand-ads-container">
-        <div class="brand-ad-card style-nike" onclick="quickFilterBrand('Nike')">
-            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000" class="ad-bg-img">
-            <div class="ad-content">
-                <div class="ad-brand-name">NIKE</div>
-                <div class="ad-slogan">JUST DO IT.</div>
-                <div class="btn-ad-action">Xem Bộ Sưu Tập</div>
+    <div class="thumb-list" id="thumb-list"></div>
+</div>
+        <div class="info-zone">
+            <h1 id="d-name">Đang tải...</h1>
+            <div class="price" id="d-price">0 ₫</div>
+            <p style="color: #666; font-size: 14px; margin-bottom: 20px;"><i class="fas fa-check-circle" style="color:#2ecc71"></i> Cam kết Authentic 100% full box.</p>
+            <div class="product-specs">
+                <ul>
+                    <li><strong>Thương hiệu</strong><span id="d-brand">--</span></li>
+                    <li><strong>Mã sản phẩm</strong><span id="d-code">SKU-2026</span></li>
+                    <li><strong>Tình trạng</strong><span style="color:var(--red); font-weight:bold">Mới 100%</span></li>
+                    <li><strong>Made in</strong><span>China</span></li>
+                    <li><strong>Vận chuyển</strong><span>Freeship đơn > 2TR</span></li>
+                </ul>
             </div>
-        </div>
-
-        <div class="brand-ad-card style-adidas" onclick="quickFilterBrand('Adidas')">
-            <img src="https://fado.vn/blog/wp-content/uploads/2023/02/giay-adidas-samba.jpg" class="ad-bg-img">
-            <div class="ad-content">
-                <div class="ad-brand-name">ADIDAS</div>
-                <div class="ad-slogan">IMPOSSIBLE IS NOTHING</div>
-                <div class="btn-ad-action">Khám Phá Ngay</div>
+            <div class="size-section">
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; align-items:center;">
+                    <b style="font-size: 14px;">CHỌN SIZE (EU)</b>
+                    <button onclick="toggleSizeGuide()" style="background:none; border:none; color:var(--black); text-decoration:underline; cursor:pointer; font-size:13px; font-weight:bold;">
+                        <i class="fas fa-ruler-horizontal"></i> Bảng quy đổi size
+                    </button>
+                </div>
+                <div class="size-grid" id="size-picker"></div>
             </div>
-        </div>
-
-        <div class="brand-ad-card style-puma" onclick="quickFilterBrand('Puma')">
-            <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=1000" class="ad-bg-img">
-            <div class="ad-content">
-                <div class="ad-brand-name">PUMA</div>
-                <div class="ad-slogan">FOREVER FASTER</div>
-                <div class="btn-ad-action">Mua Ngay</div>
-            </div>
-        </div>
-
-        <div class="brand-ad-card style-mlb" onclick="quickFilterBrand('MLB')">
-            <img src="https://images.unsplash.com/photo-1595341888016-a392ef81b7de?q=80&w=1000" class="ad-bg-img">
-            <div class="ad-content">
-                <div class="ad-brand-name">MLB</div>
-                <div class="ad-slogan">LIFE IS A GAME</div>
-                <div class="btn-ad-action">Xem Chi Tiết</div>
+            <button class="btn-add" onclick="addCart()"><i class="fas fa-cart-plus"></i> THÊM VÀO GIỎ HÀNG</button>
+            <div style="margin-top:20px; font-size:13px; color:#777; line-height:1.6;">
+                * Cam kết: Hàng chính hãng 100%.<br>
+                * Bảo hành: 12 tháng lỗi nhà sản xuất.<br>
+                * Đổi trả: Trong vòng 7 ngày (chưa qua sử dụng).
             </div>
         </div>
     </div>
-    <div id="main-container"></div>
-
-    <footer style="background: #0a0a0a; color: #888; padding: 60px 5% 20px; border-top: 5px solid #e60000; margin-top: 50px;">
-        <div style="text-align: center;">&copy; 2036 GIAY CHAT. All rights reserved.</div>
+    <div class="tabs">
+        <div class="tab-head">
+            <button class="tab-btn active" onclick="openTab(0)">MÔ TẢ SẢN PHẨM</button>
+            <button class="tab-btn" onclick="openTab(1)">CHÍNH SÁCH</button>
+            <button class="tab-btn" onclick="openTab(2)">ĐÁNH GIÁ (<span id="rev-count">0</span>)</button>
+        </div>
+        <div class="tab-content active">
+            <h3 style="margin-bottom:15px">Đặc điểm nổi bật</h3>
+            <p>Sản phẩm <strong><span class="d-name-text"></span></strong> là sự kết hợp hoàn hảo giữa phong cách cổ điển và công nghệ hiện đại.
+            Được chế tác từ những vật liệu cao cấp nhất, đôi giày mang lại cảm giác êm ái tuyệt đối cho đôi chân.</p>
+            <br>
+            <ul style="margin-left:20px; list-style-type:circle;">
+                <li>Upper (Thân giày): Da cao cấp kết hợp vải thoáng khí.</li>
+                <li>Outsole (Đế ngoài): Cao su chống mài mòn, độ bám cực tốt.</li>
+                <li>Midsole (Đế giữa): Công nghệ đệm êm ái hỗ trợ vận động.</li>
+                <li>Màu sắc trung thực, dễ phối đồ (Jeans, Short, Kaki).</li>
+            </ul>
+            <br>
+            <p>Sở hữu thiết kế thời thượng, dễ dàng phối hợp với nhiều phong cách thời trang khác nhau. Chất liệu da cao cấp và đế cao su bền bỉ giúp bạn tự tin trong mọi hoạt động. Công nghệ đệm lót tiên tiến mang lại cảm giác êm ái suốt cả ngày dài. Từng đường kim mũi chỉ được gia công tỉ mỉ, đảm bảo độ bền vượt trội.</p>
+        </div>
+        <div class="tab-content">
+            <strong>1. Chính sách đổi hàng:</strong><br>
+            - Hỗ trợ đổi size trong vòng 7 ngày kể từ ngày nhận hàng.<br>
+            - Sản phẩm phải còn nguyên tem, tag, box và chưa qua sử dụng.<br><br>
+            <strong>2. Chính sách bảo hành:</strong><br>
+            - Bảo hành 12 tháng keo, chỉ.<br>
+            - Không bảo hành các lỗi do người sử dụng (xước, rách, bẩn...).<br><br>
+            <strong>3. Vận chuyển:</strong> Giao hàng toàn quốc 2-4 ngày. Kiểm tra hàng trước khi thanh toán.
+        </div>
+        <div class="tab-content">
+            <div class="review-container">
+                <div class="review-form">
+                    <h3>Viết đánh giá của bạn</h3>
+                    <div class="star-rating" id="star-input">
+                        <i class="fas fa-star" data-val="1"></i>
+                        <i class="fas fa-star" data-val="2"></i>
+                        <i class="fas fa-star" data-val="3"></i>
+                        <i class="fas fa-star" data-val="4"></i>
+                        <i class="fas fa-star" data-val="5"></i>
+                    </div>
+                    <div class="inp-group">
+                        <input type="text" id="rev-name" placeholder="Tên hiển thị của bạn...">
+                    </div>
+                    <div class="inp-group">
+                        <textarea id="rev-content" placeholder="Chia sẻ cảm nhận về sản phẩm..."></textarea>
+                    </div>
+                    <div class="inp-group">
+                        <input type="file" id="rev-file" accept="image/*" multiple hidden onchange="handleFileSelect(event)">
+                        <div class="upload-box" onclick="document.getElementById('rev-file').click()">
+                            <i class="fas fa-camera"></i> Thêm ảnh thực tế
+                        </div>
+                        <div id="preview-imgs"></div>
+                    </div>
+                    <button class="btn-add" style="padding:12px; font-size:14px; background:var(--black);" onclick="submitReview()">GỬI ĐÁNH GIÁ</button>
+                </div>
+                <div class="review-list" id="review-list">
+                    <div style="text-align:center; color:#999; margin-top:30px;">Chưa có đánh giá nào. Hãy là người đầu tiên!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="related-section">
+        <h3 style="margin-bottom:20px; border-left:4px solid var(--red); padding-left:10px; text-transform:uppercase">Có thể bạn thích</h3>
+        <div class="related-grid" id="related-list"></div>
+    </div>
+    <footer>
+        &copy; 2036 GIAY CHAT. All rights reserved.
     </footer>
-
     <script>
-        // Database Sản Phẩm
+        // --- DATA & GLOBAL VARS ---
         const db = [
             {id:1, b:"Nike", n:"JA 3 'King Of The Court'", p:3500000, img:"https://i.ibb.co/1YXZ6gYR/625363279-915767384723639-5792405736223947877-n.png",
             imgs:["https://i.ibb.co/1YXZ6gYR/625363279-915767384723639-5792405736223947877-n.png",
@@ -495,20 +612,17 @@
                   "https://i.ibb.co/ccgcj0JC/624734534-2010669579663639-754262281597000753-n.png",
                   "https://i.ibb.co/jvNJLp7k/625370604-1532583257806273-8610411959819160328-n.png"
             ], s:[38,39,40,41,42,43], c:"Pink"},
-            
             {id:3, b:"Nike", n:"Kyrie 8 'Chinese New Year'", p:9000000, img:"https://i.ibb.co/SwyKjRb0/626427771-887877020511151-1715349665036263589-n.png",
             imgs:["https://i.ibb.co/SwyKjRb0/626427771-887877020511151-1715349665036263589-n.png",
                   "https://i.ibb.co/Wpt6sNyQ/626357438-765510539931433-1680951240692059308-n.png",
                   "https://i.ibb.co/mrksCysD/625870879-2360091834501909-7905962188565777004-n.png"
             ], s:[39,40,41], c:"Blue"},
-            
             {id:4, b:"Nike", n:"2941s", p:4600000, img:"https://i.ibb.co/PztY2nT8/629703316-24910281855314252-4113502537856489821-n.png",
             imgs:["https://i.ibb.co/PztY2nT8/629703316-24910281855314252-4113502537856489821-n.png",
                   "https://i.ibb.co/msVP6h6/628306205-2091485808311012-860467034500501931-n.png",
                   "https://i.ibb.co/8DR1scPj/616053220-1314354173785293-6008689232796849552-n.png"
             ],
             s:[39,40,41], c:"Pink"},
-            
             {id:5, b:"Adidas", n:"Dame X", p:2200000, img:"https://i.ibb.co/v4p49JLr/61-DOb-Xd-F3-GL-AC-UY900.jpg",
             imgs:["https://i.ibb.co/v4p49JLr/61-DOb-Xd-F3-GL-AC-UY900.jpg",
                   "https://i.ibb.co/XZ0k0M2f/download.jpg",
@@ -522,49 +636,42 @@
                   "https://i.ibb.co/qLjGWF5Q/628309194-1228664389388989-7600459401490589475-n.png"
             ],
             s:[38,39,40], c:"White"},
-            
             {id:7, b:"Adidas", n:"Adizero Boston 13", p:2000000, img:"https://i.ibb.co/Mkc3Pq3Q/625095786-908501401971935-7963548450164518348-n.png",
             imgs:["https://i.ibb.co/Mkc3Pq3Q/625095786-908501401971935-7963548450164518348-n.png",
                   "https://i.ibb.co/DD8TKB8p/626722213-1455692349593302-7714727858209712194-n.png",
                   "https://i.ibb.co/0jCk7ZCz/628525417-1212038091142935-2152427494445028156-n.png"
             ],
             s:[41,42,43], c:"Blue"},
-            
             {id:8, b:"Adidas", n:"VL Court 3.0", p:1190000, img:"https://i.ibb.co/HD0WtrSt/625885975-837889009296634-4086156502736217501-n.png",
             imgs:["https://i.ibb.co/HD0WtrSt/625885975-837889009296634-4086156502736217501-n.png",
                   "https://i.ibb.co/3yBvcFbc/616138466-917288060752239-4036432034658505275-n.png",
                   "https://i.ibb.co/kvS37MH/624597615-1955702411674636-7996985653615316745-n.png"
             ],
             s:[41,42,43], c:"Pink"},
-            
             {id:9, b:"Puma", n:"Palermo Blue", p:2400000, img:"https://i.ibb.co/S7fGvhbv/39646344-01-e00c0869-9d8e-49db-8589-a2bb82637351.webp",
             imgs:["https://i.ibb.co/S7fGvhbv/39646344-01-e00c0869-9d8e-49db-8589-a2bb82637351.webp",
                   "https://i.ibb.co/nNxmC2Nt/39646344-08-b6a236a6-d7e3-47a1-ad27-4b41e6108391.webp",
                   "https://i.ibb.co/5hzfjx62/f4465cc88c58.webp"
             ],
             s:[40,41], c:"Blue"},
-            
             {id:10, b:"Puma", n:"Dagger 2 Mid Unisex", p:2700000, img:"https://i.ibb.co/0LpMb6Q/625147926-1068658718775289-3652551344046940966-n.jpg",
-            imgs:["https://i.ibb.co/0LpMb6Q/625147926-1068658718775289-3652551344046940966-n.jpg",
-                  "https://i.ibb.co/hbBDLgv/png.avif",
-                  "https://i.ibb.co/RpT1Z5v1/png.avif"
+            img:["https://i.ibb.co/0LpMb6Q/625147926-1068658718775289-3652551344046940966-n.jpg",
+                 "https://i.ibb.co/hbBDLgv/png.avif",
+                 "https://i.ibb.co/RpT1Z5v1/png.avif"
             ],
             s:[40,41], c:"Purple"},
-            
             {id:11, b:"Puma", n:"MB.05 Voltage Unisex", p:3800000, img:"https://i.ibb.co/HDzccWN7/627073165-1436359044524228-4983930078741043061-n.png",
             imgs:["https://i.ibb.co/HDzccWN7/627073165-1436359044524228-4983930078741043061-n.png",
                   "https://i.ibb.co/204YVGb1/scarpa-da-basket-puma-mb05-lamelo-ball-signature-voltage-yellow-black-5.webp",
                   "https://i.ibb.co/DP1zmyg5/MB.avif"
             ],
             s:[40,41], c:"Green"},
-            
             {id:12, b:"Puma", n:"All-Pro NITRO 2 ET Unisex", p:2400000, img:"https://i.ibb.co/LzJBfdnY/628461701-1526381845131067-6026529168202884953-n.jpg",
             imgs:["https://i.ibb.co/LzJBfdnY/628461701-1526381845131067-6026529168202884953-n.jpg",
                   "https://i.ibb.co/67HCv3C4/Gi-y-b-ng-r-All-Pro-NITRO-2-ET-Unisex.avif",
                   "https://i.ibb.co/FbXqkb80/31231301-Black-Orange-Yellow-TOP.webp"
             ],
             s:[40,41], c:"Blue"},
-            
             {id:13, b:"MLB", n:"Winner Chunky", p:4990000, img:"https://i.ibb.co/HThSW7DB/Giay-MLB-Winner-Chunky-New-York-Yankees-Black-400x400.jpg",
             imgs:["https://i.ibb.co/HThSW7DB/Giay-MLB-Winner-Chunky-New-York-Yankees-Black-400x400.jpg",
                   "https://i.ibb.co/RTqdm1fd/screenshot-2025-07-21-094148-aa6929501b674f85a197c2cb7137ea0e-master.png",
@@ -585,7 +692,6 @@
                   "https://cdn.hstatic.net/products/1000284478/rc1_uays60012_6_b99181a7c12243fe9d046d9f0a142ab6.jpg"
             ],
             s:[38,39], c:"Red"},
-            
             {id:16, b:"MLB", n:"Float Max 2.0 LT", p:2699000, img:"https://cdn.hstatic.net/products/1000284478/001_fs261ru02x007_1_697c2e43b2934f02be5aab763eb14792.jpg",
             imgs:["https://cdn.hstatic.net/products/1000284478/001_fs261ru02x007_1_697c2e43b2934f02be5aab763eb14792.jpg",
                   "https://cdn.hstatic.net/products/1000284478/001_fs261ru02x007_8_08d14811e4ad456c923011699d5f4802.jpg",
@@ -593,390 +699,120 @@
             ],
             s:[38,39], c:"Black"}
         ];
-        // ==================== ELEMENTS ====================
-const searchInp          = document.getElementById('search');
-const suggContainer      = document.getElementById('search-suggestions');
-const mobileSearchInp    = document.getElementById('mobile-search');           // ← đã sửa ID cho khớp HTML
-const mobileSuggContainer= document.getElementById('mobile-search-suggestions');
-const mobileContainer    = document.getElementById('mobile-search-container');
+        let selectedSize = null;
+        let currentRating = 0;
+        let uploadedImages = [];
+        const currentProd = JSON.parse(localStorage.getItem('sel_prod'));
 
-        const fmtPrice = (price) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
-        /* Tìm kiếm suggestions - hỗ trợ cả desktop và mobile */
-        function showSearchSuggestions(container = suggContainer) {
-            const history = JSON.parse(localStorage.getItem('search_history') || '[]');
-            let html = '';
-            if (history.length === 0) {
-                html = '<div class="sugg-empty">Không có lịch sử tìm kiếm</div>';
-            } else {
-                html = history.map(q => `
-                    <div class="sugg-item" onclick="performSearch('${q.replace(/'/g, "\\'")}')">
-                        <i class="fas fa-history"></i><span>${q}</span>
-                        <i class="fas fa-times" onclick="removeSearchItem(event, '${q.replace(/'/g, "\\'")}')"></i>
-                    </div>
-                `).join('');
-                html += '<div class="sugg-clear" onclick="clearSearchHistory()">Xóa lịch sử tìm kiếm</div>';
-            }
-            container.innerHTML = html;
-            container.style.display = 'block';
-        }
-
-        function hideSearchSuggestions(container = suggContainer) {
-            setTimeout(() => { container.style.display = 'none'; }, 200);
-        }
-
-
-        /* Mobile search control */
+        // Thêm các hàm mobile search giống index
         function toggleMobileSearch() {
             const container = document.getElementById('mobile-search-container');
             container.classList.toggle('active');
             if (container.classList.contains('active')) {
-                mobileSearchInp.value = searchInp.value;
-                mobileSearchInp.focus();
-                showSearchSuggestions(mobileSuggContainer);
+                document.getElementById('mobile-search-input').focus();
             }
         }
-
         function closeMobileSearch() {
             document.getElementById('mobile-search-container').classList.remove('active');
-            hideSearchSuggestions(mobileSuggContainer);
-        }
-
-        function performSearch(query) {
-    query = query.trim();
-    if (!query) return;
-
-    searchInp.value = query;
-    if (mobileSearchInp) mobileSearchInp.value = query;
-
-    applyFilter();
-
-    // Ẩn suggestions
-    suggContainer.style.display = 'none';
-    if (mobileSuggContainer) mobileSuggContainer.style.display = 'none';
-    closeMobileSearch();
-}
-
-        // Desktop search events
-       searchInp.addEventListener('focus', () => {
-    if (!searchInp.value.trim()) renderSearchHistory(suggContainer);
-});
-
-searchInp.addEventListener('input', () => {
-    if (!searchInp.value.trim()) {
-        renderSearchHistory(suggContainer);
-    } else {
-        suggContainer.style.display = 'none';
-    }
-});
-
-searchInp.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') performSearch(searchInp.value);
-});
-
-        // Mobile search events
-        function toggleMobileSearch() {
-    mobileContainer.classList.toggle('active');
-    if (mobileContainer.classList.contains('active')) {
-        mobileSearchInp.value = searchInp.value;
-        mobileSearchInp.focus();
-        if (!mobileSearchInp.value.trim()) renderSearchHistory(mobileSuggContainer);
-    }
-}
-
-function closeMobileSearch() {
-    mobileContainer.classList.remove('active');
-}
-
-if (mobileSearchInp) {
-    mobileSearchInp.addEventListener('focus', () => {
-        if (!mobileSearchInp.value.trim()) renderSearchHistory(mobileSuggContainer);
-    });
-
-    mobileSearchInp.addEventListener('input', () => {
-        if (!mobileSearchInp.value.trim()) {
-            renderSearchHistory(mobileSuggContainer);
-        } else {
-            mobileSuggContainer.style.display = 'none';
-        }
-    });
-
-    mobileSearchInp.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') performSearch(mobileSearchInp.value);
-    });
-}
-
-// Click ngoài để ẩn suggestions (cả desktop & mobile)
-document.addEventListener('click', (e) => {
-    if (!searchInp.contains(e.target) && !suggContainer.contains(e.target)) {
-        suggContainer.style.display = 'none';
-    }
-    if (mobileSearchInp && mobileSuggContainer &&
-        !mobileSearchInp.contains(e.target) && !mobileSuggContainer.contains(e.target)) {
-        mobileSuggContainer.style.display = 'none';
-    }
-});
-        /* LỊCH SỬ XEM */
-       function updateHistory(prod) {
-    let history = JSON.parse(localStorage.getItem('view_history') || '[]');
-    history = history.filter(x => x.id !== prod.id);
-    history.unshift(prod);
-    localStorage.setItem('view_history', JSON.stringify(history.slice(0, 10)));
-}
-
-        function toggleHistory() {
-            const history = JSON.parse(localStorage.getItem('view_history') || '[]');
-            const container = document.getElementById('history-list');
-            let html = '';
-
-            if (history.length > 0) {
-                html += `<div style="text-align:right; margin-bottom:15px;">
-                            <button onclick="clearViewHistory()" style="background:none; border:none; color:#e60000; font-size:13px; cursor:pointer;">Xóa lịch sử xem</button>
-                         </div>`;
-            }
-
-            if (history.length === 0) {
-                html += '<p style="font-size:13px; color:#999; text-align:center; padding-top:20px;">Bạn chưa xem sản phẩm nào.</p>';
-            } else {
-                html += history.map(item => `
-                    <div class="history-item" onclick="goDetail(${item.id})">
-                        <img src="${item.img}">
-                        <div style="flex:1">
-                            <h4>${item.n}</h4>
-                            <p>${fmtPrice(item.p)}</p>
-                        </div>
-                        <i class="fas fa-times" onclick="removeViewItem(event, ${item.id})"></i>
-                    </div>
-                `).join('');
-            }
-
-            container.innerHTML = html;
-            openSidebar('history-sidebar');
-        }
-
-        function removeViewItem(e, id) {
-            e.stopPropagation();
-            let history = JSON.parse(localStorage.getItem('view_history') || '[]');
-            history = history.filter(x => x.id !== id);
-            localStorage.setItem('view_history', JSON.stringify(history));
-            toggleHistory();
-        }
-
-        function clearViewHistory() {
-            localStorage.removeItem('view_history');
-            toggleHistory();
-        }
-
-// ==================== LỊCH SỬ TÌM KIẾM ====================
-const SEARCH_KEY = 'search_history';
-const MAX_HISTORY = 10;
-
-const getSearchHistory = () => JSON.parse(localStorage.getItem(SEARCH_KEY) || '[]');
-
-const saveSearchHistory = (arr) => {
-    localStorage.setItem(SEARCH_KEY, JSON.stringify(arr.slice(0, MAX_HISTORY)));
-};
-
-function renderSearchHistory(container) {
-    const history = getSearchHistory();
-    let html = '';
-
-    if (history.length === 0) {
-        html = '<div class="sugg-empty">Chưa có lịch sử tìm kiếm</div>';
-    } else {
-        html = history.map(q => {
-            let iconHtml = '<i class="fas fa-history"></i>';
-            const prod = db.find(i => i.n.toLowerCase() === q.toLowerCase());
-            if (prod) {
-                iconHtml = `<img src="${prod.img}" alt="${q}">`;
-            }
-            return `
-                <div class="sugg-item" onclick="performSearch('${q.replace(/'/g, "\\'")}')">
-                    ${iconHtml}
-                    <span>${q}</span>
-                    <i class="fas fa-times" onclick="event.stopImmediatePropagation(); removeSearchItem('${q.replace(/'/g, "\\'")}')"></i>
-                </div>
-            `;
-        }).join('');
-        html += `<div class="sugg-clear" onclick="clearSearchHistory()">Xóa tất cả lịch sử</div>`;
-    }
-
-    container.innerHTML = html;
-    container.style.display = 'block';
-}
-
-function removeSearchItem(query) {
-    let history = getSearchHistory();
-    history = history.filter(q => q !== query);
-    saveSearchHistory(history);
-    renderSearchHistory(suggContainer);
-    if (mobileSuggContainer && mobileSuggContainer.style.display === 'block') {
-        renderSearchHistory(mobileSuggContainer);
-    }
-}
-
-function clearSearchHistory() {
-    localStorage.removeItem(SEARCH_KEY);
-    renderSearchHistory(suggContainer);
-    if (mobileSuggContainer) renderSearchHistory(mobileSuggContainer);
-}
-
-function updateSearchHistory(query) {
-    if (!query.trim()) return;
-    let history = getSearchHistory().filter(q => q !== query);
-    history.unshift(query);
-    saveSearchHistory(history);
-}
-
-        searchInp.addEventListener('focus', showSearchSuggestions);
-        searchInp.addEventListener('blur', hideSearchSuggestions);
-        searchInp.addEventListener('keyup', (e) => {
-            if(e.key === 'Enter') performSearch(searchInp.value);
-            else applyFilter();
-        });
-
-        /* SIDEBAR CONTROL */
-        function openSidebar(id) {
-            closeAllSidebars();
-            document.getElementById(id).classList.add('active');
-            document.getElementById('overlay').classList.add('active');
-        }
-
-        function toggleFilterSidebar() {
-            openSidebar('filter-sidebar');
-        }
-
-        function toggleUserSidebar() {
-            if (!localStorage.getItem('user_login')) {
-                window.location.href = 'login.html';
-                return;
-            }
-            loadUserInfo();
-            openSidebar('user-sidebar');
         }
 
         function closeAllSidebars() {
             document.querySelectorAll('.sidebar').forEach(s => s.classList.remove('active'));
             document.getElementById('overlay').classList.remove('active');
-            document.getElementById('require-msg').style.display = 'none';
+            document.getElementById('size-modal').classList.remove('active');
         }
 
-        // Toggle dropdown khi click
-        function toggleDropdown() {
-            const dropdown = document.getElementById('brand-dropdown');
-            dropdown.classList.toggle('active');
-
-            // Đóng khi click ra ngoài
-            document.addEventListener('click', function handler(e) {
-                if (!dropdown.contains(e.target)) {
-                    dropdown.classList.remove('active');
-                    document.removeEventListener('click', handler);
-                }
+        function toggleSizeGuide() {
+            const modal = document.getElementById('size-modal');
+            modal.classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+        // --- INIT ---
+        window.onload = () => {
+            if(!currentProd) { window.location.href = 'index.html'; return; }
+            document.getElementById('d-name').innerText = currentProd.n;
+            document.querySelectorAll('.d-name-text').forEach(el => el.innerText = currentProd.n);
+            document.getElementById('d-price').innerText = currentProd.p.toLocaleString() + ' ₫';
+            document.getElementById('d-brand').innerText = currentProd.b;
+            document.getElementById('d-code').innerText = `SKU-${currentProd.id}26-${currentProd.b.substring(0,3).toUpperCase()}`;
+            renderGallery();
+            renderSizePicker();
+            updateHistory(currentProd);
+            updateUI();
+            renderRelated();
+            loadReviews();
+            loadUserInfo();
+            const stars = document.querySelectorAll('#star-input i');
+            stars.forEach(star => {
+                star.addEventListener('mouseover', function() {
+                    const val = this.getAttribute('data-val');
+                    highlightStars(val);
+                });
+                star.addEventListener('click', function() {
+                    currentRating = this.getAttribute('data-val');
+                    highlightStars(currentRating);
+                });
             });
+            document.getElementById('star-input').addEventListener('mouseleave', () => highlightStars(currentRating));
+        };
+        // --- SIZE & CART LOGIC ---
+        function renderSizePicker() {
+            const container = document.getElementById('size-picker');
+            const allSizes = [36, 37, 38, 39, 40, 41, 42, 43, 44, 45];
+            const availableSizes = currentProd.s || [];
+            container.innerHTML = allSizes.map(size => {
+                const isAvailable = availableSizes.includes(size);
+                return `<button class="size-btn ${isAvailable ? '' : 'disabled'}"
+                        onclick="${isAvailable ? `selectSize(this, ${size})` : ''}">${size}</button>`;
+            }).join('');
         }
-
-        /* RENDER & FILTER */
-       function quickFilterBrand(brandName) {
-            document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
-            const brandCheckbox = document.querySelector(`.f-brand[value="${brandName}"]`);
-            if (brandCheckbox) {
-                brandCheckbox.checked = true;
-                applyFilter();
-                document.getElementById('main-container').scrollIntoView({ behavior: 'smooth' });
-            }
-            // Đóng dropdown sau khi chọn
-            document.getElementById('brand-dropdown').classList.remove('active');
+        function selectSize(btn, size) {
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedSize = size;
         }
-
-        function render(data) {
-            const container = document.getElementById('main-container');
-            if (data.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:100px; font-size:18px; color:#999;">Không tìm thấy sản phẩm phù hợp.</div>`;
+        function addCart() {
+            if (!checkUserInfoComplete()) return;
+            if(!selectedSize) {
+                alert('Vui lòng chọn size giày!');
+                document.querySelector('.size-section').scrollIntoView({behavior: 'smooth'});
                 return;
             }
-            container.innerHTML = "";
-            const brands = [...new Set(data.map(i => i.b))];
-            
-            brands.forEach(br => {
-                const prods = data.filter(i => i.b === br);
-                container.innerHTML += `
-                    <div class="brand-section">
-                        <div class="section-title">${br}</div>
-                        <div class="grid">${prods.map(p => `
-                            <div class="card" onclick="goDetail(${p.id})">
-                                <img src="${p.img}" alt="${p.n}">
-                                <h3>${p.n}</h3>
-                                <div style="color:var(--red); font-weight:bold; font-size:16px;">${fmtPrice(p.p)}</div>
-                                <div class="btn-view">CHI TIẾT</div>
-                            </div>`).join('')}</div>
-                    </div>`;
-            });
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const existing = cart.find(x => x.id === currentProd.id && x.size === selectedSize);
+            if (existing) {
+                existing.qty = (existing.qty || 1) + 1;
+                alert('Sản phẩm đã có trong giỏ hàng (cập nhật số lượng)!');
+            } else {
+                cart.push({...currentProd, size: selectedSize, qty: 1});
+                alert('Đã thêm vào giỏ hàng thành công!');
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateUI();
         }
-
-        function applyFilter() {
-            const searchVal = searchInp.value.toLowerCase().trim();
-            const selBrands = [...document.querySelectorAll('.f-brand:checked')].map(c => c.value);
-            const selSizes = [...document.querySelectorAll('.f-size:checked')].map(c => parseInt(c.value));
-            const selColors = [...document.querySelectorAll('.color-filter:checked')].map(c => c.value);
-            const selPriceRanges = [...document.querySelectorAll('.f-price:checked')].map(c => c.value);
-
-            const result = db.filter(item => {
-                const matchName = item.n.toLowerCase().includes(searchVal);
-                const matchBrand = selBrands.length === 0 || selBrands.includes(item.b);
-                const matchColor = selColors.length === 0 || selColors.includes(item.c);
-                const matchSize = selSizes.length === 0 || item.s.some(size => selSizes.includes(size));
-                
-                let matchPrice = selPriceRanges.length === 0;
-                if (!matchPrice) {
-                    matchPrice = selPriceRanges.some(range => {
-                        const [min, max] = range.split('-').map(Number);
-                        const priceMil = item.p / 1000000;
-                        return priceMil >= min && (max === 99 || priceMil <= max);
-                    });
-                }
-
-                return matchName && matchBrand && matchColor && matchSize && matchPrice;
-            });
-            render(result);
-        }
-
-        function resetFilters() {
-            document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
-            searchInp.value = '';
-            applyFilter();
-        }
-
-        /* USER INFO & CART CHECK */
+        // --- USER INFO LOGIC ---
         function checkUserInfoComplete() {
             if (!localStorage.getItem('user_login')) {
-                alert('Vui lòng đăng nhập để xem giỏ hàng!');
+                alert('Vui lòng đăng nhập để thực hiện mua hàng!');
                 window.location.href = 'login.html';
                 return false;
             }
-
             const userInfo = JSON.parse(localStorage.getItem('user_info') || '{}');
             if (!userInfo.name || !userInfo.phone || !userInfo.address || !userInfo.city) {
-                toggleUserSidebar();
-                document.getElementById('require-msg').style.display = 'block';
+                document.getElementById('user-sidebar').classList.add('active');
+                document.getElementById('overlay').classList.add('active');
+                loadUserInfo();
                 return false;
             }
             return true;
         }
-
-        function checkCartAccess() {
-            if (checkUserInfoComplete()) {
-                window.location.href = 'cart.html';
-            }
-        }
-
         function loadUserInfo() {
             const info = JSON.parse(localStorage.getItem('user_info') || '{}');
             document.getElementById('inp-name').value = info.name || '';
             document.getElementById('inp-phone').value = info.phone || '';
             document.getElementById('inp-address').value = info.address || '';
             document.getElementById('inp-city').value = info.city || '';
-            if (info.name) document.getElementById('u-display-name').innerText = info.name;
         }
-
         function saveUserInfo(e) {
             e.preventDefault();
             const info = {
@@ -986,49 +822,243 @@ function updateSearchHistory(query) {
                 city: document.getElementById('inp-city').value.trim()
             };
             localStorage.setItem('user_info', JSON.stringify(info));
-            alert('Đã lưu thông tin thành công!');
-            document.getElementById('u-display-name').innerText = info.name;
-            document.getElementById('require-msg').style.display = 'none';
-            closeAllSidebars();
+            alert('Đã lưu thông tin giao hàng!');
+            closeAll();
         }
-
-        function logout() {
-            if(confirm('Bạn có chắc muốn đăng xuất?')) {
-                localStorage.removeItem('user_login');
-                location.reload();
+        // --- REVIEW LOGIC ---
+        function highlightStars(val) {
+            document.querySelectorAll('#star-input i').forEach(s => {
+                if (s.getAttribute('data-val') <= val) s.classList.add('selected');
+                else s.classList.remove('selected');
+            });
+        }
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            const previewContainer = document.getElementById('preview-imgs');
+            if (files.length + uploadedImages.length > 3) {
+                alert('Chỉ được đăng tối đa 3 ảnh!');
+                return;
             }
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    uploadedImages.push(e.target.result);
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'prev-img';
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
         }
-
-        function goDetail(id) {
-            const prod = db.find(x => x.id === id);
-            if (prod) {
-                updateHistory(prod);
-                localStorage.setItem('sel_prod', JSON.stringify(prod));
-                window.location.href = 'detail.html';
+        function submitReview() {
+            const name = document.getElementById('rev-name').value.trim();
+            const content = document.getElementById('rev-content').value.trim();
+            if(currentRating === 0) { alert('Vui lòng chọn số sao đánh giá!'); return; }
+            if(!name || !content) { alert('Vui lòng điền tên và nội dung đánh giá!'); return; }
+            const newReview = {
+                id: Date.now(),
+                prodId: currentProd.id,
+                name: name,
+                rating: currentRating,
+                content: content,
+                date: new Date().toLocaleDateString('vi-VN'),
+                imgs: [...uploadedImages]
+            };
+            let allReviews = JSON.parse(localStorage.getItem('product_reviews') || '[]');
+            allReviews.unshift(newReview);
+            localStorage.setItem('product_reviews', JSON.stringify(allReviews));
+            document.getElementById('rev-name').value = '';
+            document.getElementById('rev-content').value = '';
+            document.getElementById('preview-imgs').innerHTML = '';
+            uploadedImages = [];
+            currentRating = 0;
+            highlightStars(0);
+            alert('Cảm ơn bạn đã đánh giá!');
+            loadReviews();
+        }
+        function loadReviews() {
+            const allReviews = JSON.parse(localStorage.getItem('product_reviews') || '[]');
+            const productReviews = allReviews.filter(r => r.prodId === currentProd.id);
+            document.getElementById('rev-count').innerText = productReviews.length;
+            const listContainer = document.getElementById('review-list');
+            if (productReviews.length === 0) {
+                listContainer.innerHTML = '<div style="text-align:center; color:#999; margin-top:30px;">Chưa có đánh giá nào. Hãy là người đầu tiên!</div>';
+                return;
+            }
+            listContainer.innerHTML = productReviews.map(r => `
+                <div class="review-item">
+                    <div class="r-header">
+                        <div class="r-user">
+                            <div class="r-avatar">${r.name.charAt(0).toUpperCase()}</div>
+                            <div>
+                                <div>${r.name}</div>
+                                <div class="r-stars">${renderStars(r.rating)}</div>
+                            </div>
+                        </div>
+                        <div class="r-date">${r.date}</div>
+                    </div>
+                    <div class="r-content">${r.content}</div>
+                    ${r.imgs && r.imgs.length > 0 ? `
+                        <div class="r-imgs">
+                            ${r.imgs.map(img => `<img src="${img}" onclick="viewImage(this.src)">`).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+        function renderStars(rating) {
+            let html = '';
+            for(let i=1; i<=5; i++) {
+                html += `<i class="fas fa-star" style="color:${i <= rating ? '#ffc107' : '#ddd'}"></i>`;
+            }
+            return html;
+        }
+        // --- UTILS ---
+        function updateHistory(prod) {
+            let history = JSON.parse(localStorage.getItem('view_history') || '[]');
+            history = history.filter(x => x.id !== prod.id);
+            history.unshift(prod);
+            localStorage.setItem('view_history', JSON.stringify(history.slice(0, 10)));
+        }
+        function toggleHistory() {
+            const history = JSON.parse(localStorage.getItem('view_history') || '[]');
+            const container = document.getElementById('history-list');
+            if(history.length === 0) container.innerHTML = '<p style="text-align:center;color:#999;padding:20px;">Trống</p>';
+            else container.innerHTML = history.map(item => `
+                <div class="history-item" onclick="goDetail(${item.id})">
+                    <img src="${item.img}">
+                    <div style="flex:1"><h4>${item.n}</h4><p>${item.p.toLocaleString()} ₫</p></div>
+                    <i class="fas fa-times" onclick="removeViewItem(event, ${item.id})"></i>
+                </div>
+            `).join('');
+            document.getElementById('history-sidebar').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+        function removeViewItem(e, id) {
+            e.stopPropagation();
+            let history = JSON.parse(localStorage.getItem('view_history') || '[]');
+            history = history.filter(x => x.id !== id);
+            localStorage.setItem('view_history', JSON.stringify(history));
+            toggleHistory();
+        }
+        function renderRelated() {
+            const related = db.filter(x => x.b === currentProd.b && x.id !== currentProd.id).slice(0, 4);
+            document.getElementById('related-list').innerHTML = related.map(p => `
+                <div class="rel-card" onclick="goDetail(${p.id})">
+                    <img src="${p.img}">
+                    <h4 style="font-size:14px; margin:10px 0; height:40px; overflow:hidden;">${p.n}</h4>
+                    <div style="color:var(--red); font-weight:bold">${p.p.toLocaleString()} ₫</div>
+                </div>
+            `).join('');
+        }
+        function checkCartAccess() {
+            if (!checkUserInfoComplete()) return;
+            window.location.href = 'cart.html';
+        }
+        function updateUI() {
+            const u = localStorage.getItem('user_login');
+            document.getElementById('user-area').innerHTML = u
+                ? `<button class="nav-btn" onclick="document.getElementById('user-sidebar').classList.add('active');document.getElementById('overlay').classList.add('active');loadUserInfo()"><i class="fas fa-user-circle"></i></button>`
+                : `<a href="login.html" class="nav-btn"><i class="far fa-user"></i></a>`;
+            document.getElementById('cart-cnt').innerText = JSON.parse(localStorage.getItem('cart') || '[]').length;
+        }
+        function toggleSizeGuide() {
+            const modal = document.getElementById('size-modal');
+            const overlay = document.getElementById('overlay');
+            if (modal.style.display === 'block') {
+                modal.style.display = 'none';
+                overlay.classList.remove('active');
             } else {
-                alert('Sản phẩm không tồn tại!');
+                modal.style.display = 'block';
+                overlay.classList.add('active');
             }
         }
+        function goDetail(id) {
+            localStorage.setItem('sel_prod', JSON.stringify(db.find(x => x.id === id)));
+            window.location.reload();
+        }
+        function openTab(idx) {
+            document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+            document.querySelectorAll('.tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
+        }
+        function closeAll() {
+            document.querySelectorAll('.sidebar').forEach(s => s.classList.remove('active'));
+            document.getElementById('overlay').classList.remove('active');
+            document.getElementById('size-modal').style.display = 'none';
+        }
+        function logout() {
+            localStorage.removeItem('user_login');
+            localStorage.removeItem('user_info');
+            location.reload();
+        }
+/* ================== GALLERY SLIDER ================== */
+let slideIndex = 0;
 
-        /* KHỞI TẠO */
-        window.onload = () => {
-    render(db);
+function renderGallery() {
+    const track = document.getElementById('slideTrack');
+    const thumbList = document.getElementById('thumb-list');
+    const counter = document.getElementById('counter');
 
-    const u = localStorage.getItem('user_login');
-    const uName = JSON.parse(localStorage.getItem('user_info') || '{}').name || 'Member';
+    const images = currentProd.imgs && currentProd.imgs.length
+        ? currentProd.imgs
+        : [currentProd.img];
 
-    const userHtml = u 
-        ? `<div style="display:flex; align-items:center; gap:10px;">
-             <span class="desktop-greeting">Hi, ${uName}</span>
-             <button class="nav-btn" onclick="toggleUserSidebar()" title="Tài khoản"><i class="fas fa-user-circle"></i></button>
-           </div>` 
-        : `<a href="login.html" class="nav-btn" title="Đăng nhập"><i class="far fa-user"></i></a>`;
+    slideIndex = 0;
 
-    document.getElementById('user-area').innerHTML = userHtml;
+    /* Main slides */
+    track.innerHTML = images.map(src => `
+        <img src="${src}" 
+             alt="${currentProd.n}" 
+             onerror="this.src='https://placehold.co/600x600?text=No+Image'">
+    `).join('');
 
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    document.getElementById('cart-cnt').innerText = cart.length;
-};
+    /* Thumbnails */
+    thumbList.innerHTML = images.map((src, idx) => `
+        <div class="thumb-item ${idx === 0 ? 'active' : ''}" 
+             onclick="goToSlide(${idx})">
+            <img src="${src}">
+        </div>
+    `).join('');
+
+    updateSlide();
+
+    /* Ẩn / hiện nút điều hướng */
+    document.querySelectorAll('.main-img-box .prev, .main-img-box .next')
+        .forEach(btn => btn.style.display = images.length > 1 ? 'block' : 'none');
+}
+
+function updateSlide() {
+    const track = document.getElementById('slideTrack');
+    const thumbs = document.querySelectorAll('.thumb-item');
+    const counter = document.getElementById('counter');
+    const total = track.children.length;
+
+    track.style.transform = `translateX(-${slideIndex * 100}%)`;
+
+    thumbs.forEach((t, i) =>
+        t.classList.toggle('active', i === slideIndex)
+    );
+
+    if (counter) {
+        counter.innerText = `${slideIndex + 1} / ${total}`;
+    }
+}
+
+function moveSlide(step) {
+    const total = document.getElementById('slideTrack').children.length;
+    slideIndex += step;
+
+    if (slideIndex < 0) slideIndex = total - 1;
+    if (slideIndex >= total) slideIndex = 0;
+
+    updateSlide();
+}
+
+function goToSlide(index) {
+    slideIndex = index;
+    updateSlide();
+}
     </script>
 </body>
 </html>
