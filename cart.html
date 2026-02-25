@@ -97,6 +97,49 @@
         .btn-checkout { width: 100%; background: var(--black); color: white; border: none; padding: 20px; font-weight: bold; border-radius: 10px; cursor: pointer; margin-top: 20px; font-size: 16px; transition: 0.3s; letter-spacing: 1px; text-transform: uppercase; }
         .btn-checkout:hover { background: var(--red); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(230,0,0,0.3); }
 
+       /* Hiệu ứng cho lớp phủ thành công trên mã QR */
+.qr-wrapper { position: relative; display: inline-block; margin: 10px 0; }
+#qr-success-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.92);
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    border-radius: 10px; z-index: 5;
+    animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+#qr-success-overlay i { font-size: 80px; color: #28a745; }
+#qr-success-overlay span { font-weight: bold; color: #28a745; margin-top: 10px; }
+
+@keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+} 
+
+        /* Hiệu ứng loading đơn hàng COD */
+.loading-overlay {
+    position: fixed; inset: 0; background: rgba(255,255,255,0.9);
+    display: none; flex-direction: column; align-items: center;
+    justify-content: center; z-index: 11000;
+}
+.loading-overlay i { font-size: 50px; color: var(--red); margin-bottom: 15px; }
+
+        /* --- HIỆU ỨNG PHÁO HOA GIẤY (CONFETTI) --- */
+#confetti-box {
+    position: fixed; inset: 0; pointer-events: none;
+    z-index: 10001; /* Cao hơn cả màn hình success */
+    overflow: hidden; display: none;
+}
+.confetti {
+    position: absolute; width: 10px; height: 10px; top: -20px;
+    opacity: 0.8;
+    animation: fall linear forwards;
+}
+/* Tạo hiệu ứng rơi và xoay ngẫu nhiên */
+@keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    20% { opacity: 0.8; }
+    100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+}
+
         /* MODALS */
         #paymentModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; }
         .qr-card { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; position: relative; }
@@ -256,14 +299,29 @@
             <h3 id="qr-title" style="margin-bottom:10px;">QUÉT MÃ THANH TOÁN</h3>
             <p id="qr-subtitle" style="font-size:13px; color:#666; margin-bottom:20px;">Nội dung: <b id="pay-content" style="color:var(--red)"></b></p>
             
-            <img id="qr-image" src="" style="width:250px; border-radius:10px; border:1px solid #eee; padding:10px;">
+            <div class="qr-wrapper">
+                <img id="qr-image" src="" style="width:250px; border-radius:10px; border:1px solid #eee; padding:10px;">
+                <div id="qr-success-overlay">
+                    <i class="fas fa-check-circle"></i>
+                    <span>ĐÃ THANH TOÁN</span>
+                </div>
+            </div>
             
             <div style="margin-top:20px;">
-                <button onclick="confirmPaid()" style="width:100%; padding:15px; background:var(--black); color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">TÔI ĐÃ CHUYỂN KHOẢN</button>
-                <p style="font-size:12px; color:#999; margin-top:10px;">Hệ thống sẽ tự động xác nhận sau 1-3 phút.</p>
+                <button id="btn-manual" onclick="confirmPaid()" style="width:100%; padding:15px; background:var(--black); color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">TÔI ĐÃ CHUYỂN KHOẢN</button>
+                <p id="auto-status" style="font-size:12px; color:#999; margin-top:10px;">
+                    <i class="fas fa-spinner fa-spin"></i> Đang chờ bạn quét mã...
+                </p>
             </div>
         </div>
     </div>
+
+    <div id="confetti-box"></div>
+
+    <div id="loading-order" class="loading-overlay">
+    <i class="fas fa-box-open fa-bounce"></i>
+    <b style="letter-spacing: 1px;">ĐANG KHỞI TẠO ĐƠN HÀNG...</b>
+</div>
 
     <div id="success">
         <div style="margin-top: 50px;">
@@ -342,14 +400,28 @@
             currentMethod = method;
         }
 
+        let simTimer; // Biến quản lý giả lập
+
         function handleCheckout() {
             const cart = JSON.parse(localStorage.getItem('cart') || '[]');
             if(cart.length === 0) return alert("Giỏ hàng của bạn đang trống!");
 
             if(currentMethod === 'cod') {
-                showSuccess();
+                // --- LOGIC CHO COD HOÀN CHỈNH ---
+                const loader = document.getElementById('loading-order');
+                loader.style.display = 'flex'; // Hiện màn hình chờ
+
+                setTimeout(() => {
+                    loader.style.display = 'none'; // Ẩn màn hình chờ
+                    
+                    // Cập nhật lại nội dung thông báo thành công cho COD
+                    const successContent = document.querySelector('#success p');
+                    successContent.innerHTML = 'Đơn hàng <b>COD</b> đã được ghi nhận. <br>Bạn sẽ thanh toán khi nhận được hàng.';
+                    
+                    showSuccess();
+                }, 2000); // Đợi 2 giây để giả lập lưu đơn hàng
             } else {
-                openQRModal();
+                openQRModal(); // Chạy logic QR 10 giây đã làm ở trên
             }
         }
 
@@ -363,26 +435,53 @@
 
             if(currentMethod === 'bank') {
                 document.getElementById('qr-title').innerText = "CHUYỂN KHOẢN MB BANK";
-                document.getElementById('qr-image').src = `https://img.vietqr.io/image/MB-0123456789999-compact.png?amount=${total}&addInfo=${user}%20${code}`;
+                document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=2|99|0909123456|||0|0|${total}|${user}%20${code}|transfer_myqr`;
             } else {
                 document.getElementById('qr-title').innerText = "THANH TOÁN MOMO";
                 document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=2|99|0909123456|||0|0|${total}|${user}%20${code}|transfer_myqr`;
             }
 
+            // Reset trạng thái ban đầu
+            document.getElementById('qr-success-overlay').style.display = 'none';
+            document.getElementById('auto-status').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang chờ bạn quét mã...';
+            document.getElementById('auto-status').style.color = '#999';
+            document.getElementById('btn-manual').style.display = 'block';
+
             document.getElementById('paymentModal').style.display = 'flex';
+
+           // --- LUỒNG GIẢ LẬP TỔNG 14 GIÂY ---
+
+            // Giai đoạn 1: Sau 6 giây, thông báo tìm thấy giao dịch
+            simTimer = setTimeout(() => {
+                const status = document.getElementById('auto-status');
+                status.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Đã phát hiện giao dịch. Đang xác thực...';
+                status.style.color = "#f39c12"; // Màu cam (cảnh báo/đang xử lý)
+
+                // Giai đoạn 2: Sau thêm 6 giây nữa (tổng 8s), báo thành công trên QR
+                simTimer = setTimeout(() => {
+                    document.getElementById('qr-success-overlay').style.display = 'flex';
+                    status.innerHTML = '<i class="fas fa-check-circle"></i> Xác thực thành công!';
+                    status.style.color = "#28a745"; // Màu xanh lá
+                    document.getElementById('btn-manual').style.display = 'none';
+
+                    // Giai đoạn 3: Sau 2 giây cuối (tổng 10s), tự động đóng modal và hiện trang Success chính
+                    simTimer = setTimeout(() => {
+                        confirmPaid();
+                    }, 2000);
+
+                }, 6000); // Chờ 6 giây để xác thực
+            }, 6000); // Chờ 6 giây đầu để quét mã
         }
 
-        function closePayment() { document.getElementById('paymentModal').style.display = 'none'; }
+        function closePayment() { 
+            document.getElementById('paymentModal').style.display = 'none'; 
+            clearTimeout(simTimer);
+        }
 
         function confirmPaid() {
-            alert("Đã gửi yêu cầu xác nhận thanh toán!");
+            clearTimeout(simTimer);
             closePayment();
             showSuccess();
-        }
-
-        function showSuccess() {
-            localStorage.setItem('cart', '[]');
-            document.getElementById('success').style.display = 'block';
         }
 
         // Thêm các hàm sidebar & UI giống index/detail
@@ -422,6 +521,42 @@
         function checkCartAccess() {
             // Đã ở trang cart rồi, không cần redirect
         }
+        
+        function showSuccess() {
+    localStorage.setItem('cart', '[]');
+    document.getElementById('success').style.display = 'block';
+    document.getElementById('cart-cnt').innerText = "0";
+    
+    // GỌI HIỆU ỨNG PHÁO HOA KHI HIỆN MÀN HÌNH THÀNH CÔNG
+    fireConfetti(); 
+}
+
+        // --- HÀM BẮN PHÁO HOA GIẤY ---
+function fireConfetti() {
+    const box = document.getElementById('confetti-box');
+    box.style.display = 'block'; box.innerHTML = ''; // Reset
+    const colors = ['#e60000', '#a50064', '#00c853', '#FFD700', '#3498db']; // Màu sắc theo theme web
+
+    for(let i = 0; i < 150; i++) { // Bắn 150 mảnh
+        const piece = document.createElement('div');
+        piece.className = 'confetti';
+        // Random vị trí, màu sắc, tốc độ rơi
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (Math.random() * 3 + 2) + 's'; // Rơi trong 2-5 giây
+        piece.style.animationDelay = Math.random() * 1 + 's'; // Độ trễ xuất hiện
+        // Random hình dạng (vuông hoặc tròn)
+        if(Math.random() > 0.5) piece.style.borderRadius = '50%';
+        
+        box.appendChild(piece);
+    }
+
+    // Dọn dẹp sau 6 giây để nhẹ máy
+    setTimeout(() => {
+        box.style.display = 'none';
+        box.innerHTML = '';
+    }, 6000);
+}
 
         window.onload = () => {
             loadCart();
