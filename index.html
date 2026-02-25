@@ -21,10 +21,10 @@
         .search-box i { position: absolute; right: 15px; top: 12px; color: #777; pointer-events: none; }
         .nav-right { display: flex; align-items: center; gap: 20px; }
         .nav-right a, .nav-btn { color: var(--white); font-size: 20px; cursor: pointer; position: relative; transition: 0.3s; background: none; border: none; }
+        .nav-right a:hover, .nav-btn:hover { color: var(--red); transform: scale(1.1); }
         .badge { position: absolute; top: -8px; right: -10px; background: var(--red); color: white; font-size: 10px; padding: 2px 5px; border-radius: 10px; }
-
         /* MOBILE SEARCH */
-        #mobile-search-btn { display: none; }
+       #mobile-search-btn { display: none; }
         .mobile-search-container { position: fixed; top: 80px; left: 0; width: 100%; background: var(--black); z-index: 999; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .mobile-search-container.active { display: block; }
         .mobile-search-box { position: relative; padding: 15px 5%; }
@@ -32,7 +32,6 @@
         .mobile-search-box i.fa-search { position: absolute; right: 10%; top: 50%; transform: translateY(-50%); color: #777; pointer-events: none; }
         .mobile-search-box i.fa-times { position: absolute; right: 5%; top: 50%; transform: translateY(-50%); color: #777; cursor: pointer; }
         #mobile-search-suggestions { width: 90%; margin: 0 auto; background: white; border-radius: 0 0 20px 20px; max-height: 300px; overflow-y: auto; }
-
         /* SEARCH SUGGESTIONS (chung) */
         .search-suggestions { position: absolute; top: 48px; left: 0; width: 100%; background: white; border: 1px solid #ddd; border-top: none; border-radius: 0 0 20px 20px; max-height: 320px; overflow-y: auto; display: none; z-index: 999; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         .sugg-item { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #333; border-bottom: 1px solid #eee; }
@@ -42,6 +41,7 @@
         .sugg-clear { padding: 12px 20px; text-align: center; color: #999; font-size: 13px; cursor: pointer; }
         .sugg-clear:hover { background: #f9f9f9; color: var(--red); }
         .sugg-empty { padding: 20px; text-align: center; color: #999; font-size: 13px; }
+        .sugg-item img { width: 40px; height: 40px; object-fit: cover; border-radius: 5px; }
 
         /* HERO BANNER */
         .hero { width: 100%; height: 500px; position: relative; overflow: hidden; background: var(--black); margin-bottom: 50px; }
@@ -73,6 +73,59 @@
         .btn-ad-action { display: inline-block; margin-top: 10px; padding: 8px 20px; border: 1px solid white; color: white; font-size: 12px; text-transform: uppercase; opacity: 0; transition: 0.3s; }
         .brand-ad-card:hover .btn-ad-action { opacity: 1; }
         .btn-ad-action:hover { background: white; color: black; }
+
+        /* DROPDOWN BRAND MENU */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: #222;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .dropdown-btn:hover {
+            background: #333;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+        .dropdown-btn i { transition: transform 0.3s; }
+        .dropdown.active .dropdown-btn i { transform: rotate(180deg); }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: #222;
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+            border-radius: 12px;
+            z-index: 10;
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .dropdown.active .dropdown-content { display: block; }
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .dropdown-item:hover {
+            background: var(--red);
+        }
+        .dropdown-item i { font-size: 16px; }
 
         /* SIDEBAR CHUNG - SỬA LẠI TOÀN BỘ */
 .sidebar {
@@ -139,12 +192,11 @@
 }
 
 /* Responsive - đảm bảo trên mobile */
-@media (min-width: 769px) {
-    .sidebar {
-        width: 350px;           /* desktop giữ nguyên 350px */
-        max-width: 380px;
-    }
-}
+@media (max-width: 768px) {
+            nav { padding: 0 3%; }
+            .nav-center { display: none; }
+            #mobile-search-btn { display: block; }
+        }
 
         /* FORM & FILTER STYLES */
         .f-group { margin-bottom: 25px; }
@@ -224,6 +276,12 @@
             .brand-ad-card { height: 160px; }
             .ad-slogan { font-size: 1.4rem; }
         }
+
+        /* Brand Menu Styles */
+        .brand-menu { display: flex; gap: 10px; }
+        .brand-icon { color: rgb(0, 0, 0); font-size: 18px; padding: 8px 15px; background: #222; border-radius: 30px; cursor: pointer; transition: 0.3s; }
+        .brand-icon:hover { background: #333; }
+        .brand-icon i { margin-right: 5px; }
     </style>
 </head>
 <body>
@@ -237,14 +295,6 @@
 
     <div class="sidebar filter-sidebar" id="filter-sidebar">
         <div class="f-header"><h3>BỘ LỌC</h3><i class="fas fa-times" onclick="closeAllSidebars()" style="cursor:pointer"></i></div>
-        
-        <div class="f-group">
-            <h4>Hãng</h4>
-            <label><input type="checkbox" value="Nike" class="f-brand" onchange="applyFilter()"> Nike</label>
-            <label><input type="checkbox" value="Adidas" class="f-brand" onchange="applyFilter()"> Adidas</label>
-            <label><input type="checkbox" value="Puma" class="f-brand" onchange="applyFilter()"> Puma</label>
-            <label><input type="checkbox" value="MLB" class="f-brand" onchange="applyFilter()"> MLB</label>
-        </div>
 
         <div class="f-group">
             <h4>Khoảng giá</h4>
@@ -330,12 +380,34 @@
     <nav>
         <a href="index.html" class="logo">GIAY<span>CHAT</span></a>
         <div class="nav-center">
+            <!-- Menu đa cấp hãng giày -->
+            <div class="dropdown" id="brand-dropdown">
+                <button class="dropdown-btn" onclick="toggleDropdown()">
+                    <i class="fas fa-tags"></i> Hãng giày <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <div class="dropdown-item" onclick="quickFilterBrand('Nike')">
+                        <i class="fas fa-shoe-prints"></i> Nike
+                    </div>
+                    <div class="dropdown-item" onclick="quickFilterBrand('Adidas')">
+                        <i class="fas fa-shoe-prints"></i> Adidas
+                    </div>
+                    <div class="dropdown-item" onclick="quickFilterBrand('Puma')">
+                        <i class="fas fa-shoe-prints"></i> Puma
+                    </div>
+                    <div class="dropdown-item" onclick="quickFilterBrand('MLB')">
+                        <i class="fas fa-baseball-ball"></i> MLB
+                    </div>
+                </div>
+            </div>
+
             <div class="search-box">
                 <input type="text" id="search" placeholder="Tìm kiếm giày..." autocomplete="off">
                 <i class="fas fa-search"></i>
                 <div class="search-suggestions" id="search-suggestions"></div>
             </div>
         </div>
+
         <div class="nav-right">
             <a href="index.html" title="Trang chủ"><i class="fas fa-home"></i></a>
             <button class="nav-btn" id="mobile-search-btn" onclick="toggleMobileSearch()" title="Tìm kiếm"><i class="fas fa-search"></i></button>
@@ -347,6 +419,15 @@
             <div id="user-area"></div>
         </div>
     </nav>
+
+    <div class="mobile-search-container" id="mobile-search-container">
+        <div class="mobile-search-box">
+            <input type="text" id="mobile-search" placeholder="Tìm kiếm giày..." autocomplete="off">
+            <i class="fas fa-search"></i>
+            <i class="fas fa-times" onclick="closeMobileSearch()"></i>
+        </div>
+        <div id="mobile-search-suggestions"></div>
+    </div>
 
     <div class="hero">
         <img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=2000" alt="Banner">
@@ -394,7 +475,6 @@
             </div>
         </div>
     </div>
-
     <div id="main-container"></div>
 
     <footer style="background: #0a0a0a; color: #888; padding: 60px 5% 20px; border-top: 5px solid #e60000; margin-top: 50px;">
@@ -513,11 +593,12 @@
             ],
             s:[38,39], c:"Black"}
         ];
-
-        const searchInp = document.getElementById('search');
-        const suggContainer = document.getElementById('search-suggestions');
-        const mobileSearchInp = document.getElementById('mobile-search-input');
-        const mobileSuggContainer = document.getElementById('mobile-search-suggestions');
+        // ==================== ELEMENTS ====================
+const searchInp          = document.getElementById('search');
+const suggContainer      = document.getElementById('search-suggestions');
+const mobileSearchInp    = document.getElementById('mobile-search');           // ← đã sửa ID cho khớp HTML
+const mobileSuggContainer= document.getElementById('mobile-search-suggestions');
+const mobileContainer    = document.getElementById('mobile-search-container');
 
         const fmtPrice = (price) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
         /* Tìm kiếm suggestions - hỗ trợ cả desktop và mobile */
@@ -543,6 +624,7 @@
             setTimeout(() => { container.style.display = 'none'; }, 200);
         }
 
+
         /* Mobile search control */
         function toggleMobileSearch() {
             const container = document.getElementById('mobile-search-container');
@@ -560,40 +642,86 @@
         }
 
         function performSearch(query) {
-            searchInp.value = query;
-            if (mobileSearchInp) mobileSearchInp.value = query;
-            updateSearchHistory(query);
-            applyFilter();
-            hideSearchSuggestions();
-            hideSearchSuggestions(mobileSuggContainer);
-            closeMobileSearch();
-        }
+    query = query.trim();
+    if (!query) return;
+
+    searchInp.value = query;
+    if (mobileSearchInp) mobileSearchInp.value = query;
+
+    applyFilter();
+
+    // Ẩn suggestions
+    suggContainer.style.display = 'none';
+    if (mobileSuggContainer) mobileSuggContainer.style.display = 'none';
+    closeMobileSearch();
+}
 
         // Desktop search events
-        searchInp.addEventListener('focus', () => showSearchSuggestions());
-        searchInp.addEventListener('blur', () => hideSearchSuggestions());
-        searchInp.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') performSearch(searchInp.value);
-            else applyFilter();
-        });
+       searchInp.addEventListener('focus', () => {
+    if (!searchInp.value.trim()) renderSearchHistory(suggContainer);
+});
+
+searchInp.addEventListener('input', () => {
+    if (!searchInp.value.trim()) {
+        renderSearchHistory(suggContainer);
+    } else {
+        suggContainer.style.display = 'none';
+    }
+});
+
+searchInp.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') performSearch(searchInp.value);
+});
 
         // Mobile search events
-        if (mobileSearchInp) {
-            mobileSearchInp.addEventListener('focus', () => showSearchSuggestions(mobileSuggContainer));
-            mobileSearchInp.addEventListener('blur', () => hideSearchSuggestions(mobileSuggContainer));
-            mobileSearchInp.addEventListener('keyup', (e) => {
-                searchInp.value = mobileSearchInp.value;
-                if (e.key === 'Enter') performSearch(mobileSearchInp.value);
-                else applyFilter();
-            });
+        function toggleMobileSearch() {
+    mobileContainer.classList.toggle('active');
+    if (mobileContainer.classList.contains('active')) {
+        mobileSearchInp.value = searchInp.value;
+        mobileSearchInp.focus();
+        if (!mobileSearchInp.value.trim()) renderSearchHistory(mobileSuggContainer);
+    }
+}
+
+function closeMobileSearch() {
+    mobileContainer.classList.remove('active');
+}
+
+if (mobileSearchInp) {
+    mobileSearchInp.addEventListener('focus', () => {
+        if (!mobileSearchInp.value.trim()) renderSearchHistory(mobileSuggContainer);
+    });
+
+    mobileSearchInp.addEventListener('input', () => {
+        if (!mobileSearchInp.value.trim()) {
+            renderSearchHistory(mobileSuggContainer);
+        } else {
+            mobileSuggContainer.style.display = 'none';
         }
+    });
+
+    mobileSearchInp.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') performSearch(mobileSearchInp.value);
+    });
+}
+
+// Click ngoài để ẩn suggestions (cả desktop & mobile)
+document.addEventListener('click', (e) => {
+    if (!searchInp.contains(e.target) && !suggContainer.contains(e.target)) {
+        suggContainer.style.display = 'none';
+    }
+    if (mobileSearchInp && mobileSuggContainer &&
+        !mobileSearchInp.contains(e.target) && !mobileSuggContainer.contains(e.target)) {
+        mobileSuggContainer.style.display = 'none';
+    }
+});
         /* LỊCH SỬ XEM */
-        function updateHistory(prod) {
-            let history = JSON.parse(localStorage.getItem('view_history') || '[]');
-            history = history.filter(x => x.id !== prod.id);
-            history.unshift(prod);
-            localStorage.setItem('view_history', JSON.stringify(history.slice(0, 10)));
-        }
+       function updateHistory(prod) {
+    let history = JSON.parse(localStorage.getItem('view_history') || '[]');
+    history = history.filter(x => x.id !== prod.id);
+    history.unshift(prod);
+    localStorage.setItem('view_history', JSON.stringify(history.slice(0, 10)));
+}
 
         function toggleHistory() {
             const history = JSON.parse(localStorage.getItem('view_history') || '[]');
@@ -638,61 +766,66 @@
             toggleHistory();
         }
 
-        /* LỊCH SỬ TÌM KIẾM */
-        function updateSearchHistory(query) {
-            if (!query.trim()) return;
-            let history = JSON.parse(localStorage.getItem('search_history') || '[]');
-            history = history.filter(q => q !== query);
-            history.unshift(query);
-            localStorage.setItem('search_history', JSON.stringify(history.slice(0, 10)));
-        }
+// ==================== LỊCH SỬ TÌM KIẾM ====================
+const SEARCH_KEY = 'search_history';
+const MAX_HISTORY = 10;
 
-        function showSearchSuggestions() {
-            const history = JSON.parse(localStorage.getItem('search_history') || '[]');
-            let html = '';
+const getSearchHistory = () => JSON.parse(localStorage.getItem(SEARCH_KEY) || '[]');
 
-            if (history.length === 0) {
-                html = '<div class="sugg-empty">Không có lịch sử tìm kiếm</div>';
-            } else {
-                html = history.map(q => `
-                    <div class="sugg-item" onclick="performSearch('${q.replace(/'/g, "\\'")}')">
-                        <i class="fas fa-history"></i>
-                        <span>${q}</span>
-                        <i class="fas fa-times" onclick="removeSearchItem(event, '${q.replace(/'/g, "\\'")}')"></i>
-                    </div>
-                `).join('');
-                html += '<div class="sugg-clear" onclick="clearSearchHistory()">Xóa lịch sử tìm kiếm</div>';
+const saveSearchHistory = (arr) => {
+    localStorage.setItem(SEARCH_KEY, JSON.stringify(arr.slice(0, MAX_HISTORY)));
+};
+
+function renderSearchHistory(container) {
+    const history = getSearchHistory();
+    let html = '';
+
+    if (history.length === 0) {
+        html = '<div class="sugg-empty">Chưa có lịch sử tìm kiếm</div>';
+    } else {
+        html = history.map(q => {
+            let iconHtml = '<i class="fas fa-history"></i>';
+            const prod = db.find(i => i.n.toLowerCase() === q.toLowerCase());
+            if (prod) {
+                iconHtml = `<img src="${prod.img}" alt="${q}">`;
             }
+            return `
+                <div class="sugg-item" onclick="performSearch('${q.replace(/'/g, "\\'")}')">
+                    ${iconHtml}
+                    <span>${q}</span>
+                    <i class="fas fa-times" onclick="event.stopImmediatePropagation(); removeSearchItem('${q.replace(/'/g, "\\'")}')"></i>
+                </div>
+            `;
+        }).join('');
+        html += `<div class="sugg-clear" onclick="clearSearchHistory()">Xóa tất cả lịch sử</div>`;
+    }
 
-            suggContainer.innerHTML = html;
-            suggContainer.style.display = 'block';
-        }
+    container.innerHTML = html;
+    container.style.display = 'block';
+}
 
-        function hideSearchSuggestions() {
-            setTimeout(() => { suggContainer.style.display = 'none'; }, 200);
-        }
+function removeSearchItem(query) {
+    let history = getSearchHistory();
+    history = history.filter(q => q !== query);
+    saveSearchHistory(history);
+    renderSearchHistory(suggContainer);
+    if (mobileSuggContainer && mobileSuggContainer.style.display === 'block') {
+        renderSearchHistory(mobileSuggContainer);
+    }
+}
 
-        function performSearch(query) {
-            searchInp.value = query;
-            updateSearchHistory(query);
-            applyFilter();
-            hideSearchSuggestions();
-        }
+function clearSearchHistory() {
+    localStorage.removeItem(SEARCH_KEY);
+    renderSearchHistory(suggContainer);
+    if (mobileSuggContainer) renderSearchHistory(mobileSuggContainer);
+}
 
-        function removeSearchItem(e, query) {
-            e.stopPropagation();
-            let history = JSON.parse(localStorage.getItem('search_history') || '[]');
-            history = history.filter(q => q !== query);
-            localStorage.setItem('search_history', JSON.stringify(history));
-            searchInp.focus();
-            showSearchSuggestions();
-        }
-
-        function clearSearchHistory() {
-            localStorage.removeItem('search_history');
-            searchInp.focus();
-            showSearchSuggestions();
-        }
+function updateSearchHistory(query) {
+    if (!query.trim()) return;
+    let history = getSearchHistory().filter(q => q !== query);
+    history.unshift(query);
+    saveSearchHistory(history);
+}
 
         searchInp.addEventListener('focus', showSearchSuggestions);
         searchInp.addEventListener('blur', hideSearchSuggestions);
@@ -727,8 +860,22 @@
             document.getElementById('require-msg').style.display = 'none';
         }
 
+        // Toggle dropdown khi click
+        function toggleDropdown() {
+            const dropdown = document.getElementById('brand-dropdown');
+            dropdown.classList.toggle('active');
+
+            // Đóng khi click ra ngoài
+            document.addEventListener('click', function handler(e) {
+                if (!dropdown.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                    document.removeEventListener('click', handler);
+                }
+            });
+        }
+
         /* RENDER & FILTER */
-        function quickFilterBrand(brandName) {
+       function quickFilterBrand(brandName) {
             document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
             const brandCheckbox = document.querySelector(`.f-brand[value="${brandName}"]`);
             if (brandCheckbox) {
@@ -736,6 +883,8 @@
                 applyFilter();
                 document.getElementById('main-container').scrollIntoView({ behavior: 'smooth' });
             }
+            // Đóng dropdown sau khi chọn
+            document.getElementById('brand-dropdown').classList.remove('active');
         }
 
         function render(data) {
@@ -863,23 +1012,23 @@
 
         /* KHỞI TẠO */
         window.onload = () => {
-            render(db);
-            
-            const u = localStorage.getItem('user_login');
-            const uName = JSON.parse(localStorage.getItem('user_info') || '{}').name;
-            
-            const userHtml = u 
-                ? `<div style="display:flex; align-items:center; gap:10px;">
-                     <span class="desktop-greeting">Hi, ${uName || 'Member'}</span>
-                     <button class="nav-btn" onclick="toggleUserSidebar()" title="Tài khoản"><i class="fas fa-user-circle"></i></button>
-                   </div>` 
-                : `<a href="login.html" class="nav-btn" title="Đăng nhập"><i class="far fa-user"></i></a>`;
-            
-            document.getElementById('user-area').innerHTML = userHtml;
+    render(db);
 
-            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            document.getElementById('cart-cnt').innerText = cart.length;
-        };
+    const u = localStorage.getItem('user_login');
+    const uName = JSON.parse(localStorage.getItem('user_info') || '{}').name || 'Member';
+
+    const userHtml = u 
+        ? `<div style="display:flex; align-items:center; gap:10px;">
+             <span class="desktop-greeting">Hi, ${uName}</span>
+             <button class="nav-btn" onclick="toggleUserSidebar()" title="Tài khoản"><i class="fas fa-user-circle"></i></button>
+           </div>` 
+        : `<a href="login.html" class="nav-btn" title="Đăng nhập"><i class="far fa-user"></i></a>`;
+
+    document.getElementById('user-area').innerHTML = userHtml;
+
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    document.getElementById('cart-cnt').innerText = cart.length;
+};
     </script>
 </body>
 </html>
