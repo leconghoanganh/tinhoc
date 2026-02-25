@@ -2,129 +2,304 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Đăng nhập | Sneaker Supreme</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIAY CHAT | AUTHENTIC LOGIN</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        :root { --red: #e60000; --black: #111; }
-        body { margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--black); font-family: 'Segoe UI', sans-serif; }
-        
-        .card { background: white; padding: 40px; width: 400px; border-radius: 12px; position: relative; border-top: 6px solid var(--red); box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
-        h2 { text-align: center; margin-bottom: 25px; letter-spacing: 1px; font-weight: 800; color: var(--black); }
-        
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #555; }
-        
-        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 14px; transition: 0.3s; }
-        input:focus { border-color: var(--red); outline: none; box-shadow: 0 0 5px rgba(230,0,0,0.2); }
-        
-        .btn { width: 100%; padding: 14px; background: var(--red); color: white; border: none; font-weight: bold; cursor: pointer; border-radius: 6px; transition: 0.3s; font-size: 15px; margin-top: 10px; text-transform: uppercase; }
-        .btn:hover { background: #000; transform: translateY(-2px); }
-        
-        .link { text-align: center; font-size: 13px; margin-top: 20px; color: #666; }
-        .link span { color: var(--red); font-weight: bold; cursor: pointer; text-decoration: underline; }
-        
-        .back { position: absolute; top: -45px; left: 0; color: white; text-decoration: none; font-size: 14px; transition: 0.3s; opacity: 0.8; }
-        .back:hover { opacity: 1; color: var(--red); }
+        :root { 
+            --red: #e60000; 
+            --black: #0a0a0a; 
+            --white: #fff;
+            --overlay: rgba(0,0,0,0.7);
+            --glass: rgba(255, 255, 255, 0.98);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { 
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=2070') center/cover no-repeat fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* NAVBAR - GIỐNG HỆT INDEX/DETAIL/CART */
+        nav { 
+            background: var(--black); 
+            height: 80px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 0 5%; 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            z-index: 1000; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+        }
+        .logo { color: var(--white); font-size: 24px; font-weight: 900; letter-spacing: 1px; }
+        .logo span { color: var(--red); }
+        .back-btn { color: white; font-size: 14px; font-weight: bold; text-transform: uppercase; display: flex; align-items: center; gap: 8px; opacity: 0.9; transition: 0.3s; }
+        .back-btn:hover { opacity: 1; color: var(--red); }
+
+        /* MAIN CONTENT */
+        .main-content { 
+            flex: 1; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 100px 20px 60px; 
+        }
+        .main-wrapper { 
+            width: 100%; 
+            max-width: 460px; 
+            position: relative; 
+        }
+
+        .card { 
+            background: var(--glass); 
+            padding: 45px 40px; 
+            border-radius: 24px; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6); 
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        h2 { 
+            text-align: center; 
+            margin-bottom: 35px; 
+            letter-spacing: 2px; 
+            font-weight: 900; 
+            color: var(--black);
+            text-transform: uppercase;
+            font-size: 26px;
+        }
+        h2 span { color: var(--red); }
+
+        .form-group { margin-bottom: 20px; position: relative; }
+        .form-group i {
+            position: absolute;
+            left: 15px;
+            bottom: 14px;
+            color: #bbb;
+            transition: 0.3s;
+            z-index: 1;
+        }
+        .form-group label { 
+            display: block; 
+            font-size: 11px; 
+            font-weight: 800; 
+            margin-bottom: 8px; 
+            color: #888; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        input { 
+            width: 100%; 
+            padding: 12px 15px 12px 42px; 
+            border: 2px solid #f0f0f0; 
+            border-radius: 12px; 
+            font-size: 15px; 
+            transition: 0.3s;
+            background: #fcfcfc;
+        }
+        input:focus { 
+            border-color: var(--red); 
+            outline: none; 
+            background: #fff;
+        }
+        input:focus + i { color: var(--red); }
+
+        .btn { 
+            width: 100%; 
+            padding: 16px; 
+            background: var(--black); 
+            color: white; 
+            border: none; 
+            font-weight: 800; 
+            cursor: pointer; 
+            border-radius: 12px; 
+            transition: 0.3s; 
+            font-size: 14px; 
+            margin-top: 15px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn:hover { 
+            background: var(--red); 
+            transform: scale(1.02);
+        }
+
+        .link { 
+            text-align: center; 
+            font-size: 13px; 
+            margin-top: 25px; 
+            color: #666; 
+        }
+        .link span { 
+            color: var(--black); 
+            font-weight: 800; 
+            cursor: pointer; 
+            margin-left: 5px;
+            border-bottom: 2px solid var(--red);
+        }
+
+        .hidden { display: none !important; }
+
+        footer { 
+            background: #0a0a0a; 
+            color: #888; 
+            padding: 40px 5%; 
+            text-align: center; 
+            border-top: 5px solid #e60000; 
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav { padding: 0 3%; }
+            .main-content { padding: 100px 20px 40px; }
+            .card { padding: 40px 30px; }
+        }
+        @media (max-width: 480px) {
+            nav { height: 70px; }
+            .logo { font-size: 18px; }
+            .back-btn { font-size: 13px; }
+            .main-wrapper { max-width: 100%; padding: 0 15px; }
+            .card { padding: 35px 25px; border-radius: 20px; }
+            h2 { font-size: 24px; }
+        }
     </style>
 </head>
 <body>
-    <div style="position:relative">
-        <a href="index.html" class="back"><i class="fas fa-arrow-left"></i> Quay lại cửa hàng</a>
-        
-        <div class="card" id="loginBox">
-            <h2>ĐĂNG NHẬP</h2>
-            <div class="form-group">
-                <label>Tên đăng nhập</label>
-                <input type="text" id="l-user" placeholder="Nhập username">
-            </div>
-            <div class="form-group">
-                <label>Mật khẩu</label>
-                <input type="password" id="l-pass" placeholder="********">
-            </div>
-            <button class="btn" onclick="login()">Vào cửa hàng</button>
-            <div class="link">Chưa có tài khoản? <span onclick="toggle()">Đăng ký ngay</span></div>
-        </div>
 
-        <div class="card" id="regBox" style="display:none">
-            <h2>TẠO TÀI KHOẢN</h2>
-            <div class="form-group">
-                <label>Địa chỉ Email</label>
-                <input type="email" id="r-email" placeholder="sneaker@example.com">
+    <!-- Navbar đồng bộ -->
+    <nav>
+        <a href="index.html" class="logo">GIAY<span>CHAT</span></a>
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Về trang chủ</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="main-wrapper">
+            <div class="card animate__animated animate__zoomIn" id="loginBox">
+                <h2>ĐĂNG <span>NHẬP</span></h2>
+                
+                <div class="form-group">
+                    <label>Tài khoản</label>
+                    <input type="text" id="l-user" placeholder="Username">
+                    <i class="fas fa-user"></i>
+                </div>
+                
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" id="l-pass" placeholder="Password">
+                    <i class="fas fa-lock"></i>
+                </div>
+                
+                <button class="btn" onclick="login()">
+                    XÁC NHẬN <i class="fas fa-check-circle"></i>
+                </button>
+                
+                <div class="link">Chưa có tài khoản? <span onclick="toggle()">TẠO NGAY</span></div>
             </div>
-            <div class="form-group">
-                <label>Tên đăng nhập</label>
-                <input type="text" id="r-user" placeholder="Chọn username">
+
+            <div class="card animate__animated hidden" id="regBox">
+                <h2>ĐĂNG <span>KÝ</span></h2>
+                
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="r-email" placeholder="example@mail.com">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                
+                <div class="form-group">
+                    <label>Tên đăng nhập</label>
+                    <input type="text" id="r-user" placeholder="Username">
+                    <i class="fas fa-id-badge"></i>
+                </div>
+                
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" id="r-pass" placeholder="Password">
+                    <i class="fas fa-key"></i>
+                </div>
+                
+                <div class="form-group">
+                    <label>Nhập lại mật khẩu</label>
+                    <input type="password" id="r-repass" placeholder="Confirm Password">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                
+                <button class="btn" onclick="reg()">
+                    HOÀN TẤT ĐĂNG KÝ <i class="fas fa-user-plus"></i>
+                </button>
+                
+                <div class="link">Đã là thành viên? <span onclick="toggle()">ĐĂNG NHẬP</span></div>
             </div>
-            <div class="form-group">
-                <label>Mật khẩu</label>
-                <input type="password" id="r-pass" placeholder="********">
-            </div>
-            <div class="form-group">
-                <label>Xác nhận mật khẩu</label>
-                <input type="password" id="r-repass" placeholder="********">
-            </div>
-            <button class="btn" onclick="reg()">Đăng ký thành viên</button>
-            <div class="link">Đã có tài khoản? <span onclick="toggle()">Đăng nhập ngay</span></div>
         </div>
     </div>
 
+    <!-- Footer đồng bộ -->
+    <footer>
+        &copy; 2036 GIAY CHAT. All rights reserved.
+    </footer>
+
     <script>
-        // Chuyển đổi giữa Đăng nhập và Đăng ký
         function toggle() {
             const l = document.getElementById('loginBox');
             const r = document.getElementById('regBox');
-            if(l.style.display === 'none') {
-                l.style.display = 'block';
-                r.style.display = 'none';
+            
+            if(l.classList.contains('hidden')) {
+                r.classList.add('animate__fadeOut');
+                setTimeout(() => {
+                    r.classList.add('hidden');
+                    r.classList.remove('animate__fadeOut');
+                    l.classList.remove('hidden');
+                    l.classList.add('animate__zoomIn');
+                }, 300);
             } else {
-                l.style.display = 'none';
-                r.style.display = 'block';
+                l.classList.add('animate__fadeOut');
+                setTimeout(() => {
+                    l.classList.add('hidden');
+                    l.classList.remove('animate__fadeOut');
+                    r.classList.remove('hidden');
+                    r.classList.add('animate__zoomIn');
+                }, 300);
             }
         }
 
-        // Xử lý ĐĂNG KÝ
         function reg() {
-            const email = document.getElementById('r-email').value;
-            const user = document.getElementById('r-user').value;
+            const email = document.getElementById('r-email').value.trim();
+            const user = document.getElementById('r-user').value.trim();
             const pass = document.getElementById('r-pass').value;
             const repass = document.getElementById('r-repass').value;
 
-            // Kiểm tra dữ liệu
-            if(!email.includes('@')) return alert("Vui lòng nhập đúng định dạng Email!");
-            if(user.length < 3) return alert("Tên đăng nhập phải ít nhất 3 ký tự!");
-            if(pass.length < 6) return alert("Mật khẩu phải từ 6 ký tự trở lên!");
+            if(!email || !user || !pass) return alert("Vui lòng điền đầy đủ thông tin!");
             if(pass !== repass) return alert("Mật khẩu xác nhận không khớp!");
 
-            // Lưu thông tin người dùng vào LocalStorage
-            const userData = {
-                password: pass,
-                email: email
-            };
-            
-            localStorage.setItem('user_data_' + user, JSON.stringify(userData));
-            alert("Đăng ký thành công! Chào mừng Sneakerhead mới.");
-            toggle(); // Chuyển về màn hình đăng nhập
+            localStorage.setItem('user_data_' + user, JSON.stringify({password: pass, email: email}));
+            alert("Đăng ký thành công!");
+            toggle();
         }
 
-        // Xử lý ĐĂNG NHẬP
         function login() {
-            const user = document.getElementById('l-user').value;
+            const user = document.getElementById('l-user').value.trim();
             const pass = document.getElementById('l-pass').value;
+            const data = localStorage.getItem('user_data_' + user);
 
-            // Lấy dữ liệu từ LocalStorage
-            const storedData = localStorage.getItem('user_data_' + user);
-
-            if(storedData) {
-                const parsedData = JSON.parse(storedData);
-                if(parsedData.password === pass) {
-                    // Lưu trạng thái phiên làm việc (Session)
+            if(data) {
+                const userObj = JSON.parse(data);
+                if(userObj.password === pass) {
                     localStorage.setItem('user_login', user);
-                    localStorage.setItem('user_email', parsedData.email);
-                    
-                    alert("Đăng nhập thành công! Đang chuyển hướng...");
+                    alert("Chào mừng quay trở lại!");
                     window.location.href = 'index.html';
                 } else {
-                    alert("Mật khẩu không chính xác!");
+                    alert("Mật khẩu không đúng!");
                 }
             } else {
                 alert("Tài khoản không tồn tại!");
