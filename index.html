@@ -748,6 +748,7 @@ const mobileContainer    = document.getElementById('mobile-search-container');
     if (mobileSearchInp) mobileSearchInp.value = query;
 
     applyFilter();
+    updateSearchHistory(query);
 
     // Ẩn suggestions
     suggContainer.style.display = 'none';
@@ -960,32 +961,56 @@ function updateSearchHistory(query) {
         }
 
         // Toggle dropdown khi click
-        function toggleDropdown() {
-            const dropdown = document.getElementById('brand-dropdown');
-            dropdown.classList.toggle('active');
+        // Toggle dropdown khi click
+function toggleDropdown() {
+    const dropdown = document.getElementById('brand-dropdown');
+    
+    // Đóng tất cả dropdown khác nếu có (trong trường hợp sau này mở rộng)
+    document.querySelectorAll('.dropdown.active').forEach(el => {
+        if (el !== dropdown) el.classList.remove('active');
+    });
 
-            // Đóng khi click ra ngoài
-            document.addEventListener('click', function handler(e) {
+    // Toggle dropdown hiện tại
+    dropdown.classList.toggle('active');
+
+    // Chỉ gắn một lần duy nhất event click ngoài (tránh leak)
+    if (dropdown.classList.contains('active')) {
+        // Dùng một handler chung, kiểm tra xem đã gắn chưa
+        if (!dropdown.dataset.outsideListener) {
+            const outsideClickHandler = function(e) {
                 if (!dropdown.contains(e.target)) {
                     dropdown.classList.remove('active');
-                    document.removeEventListener('click', handler);
+                    document.removeEventListener('click', outsideClickHandler);
+                    dropdown.dataset.outsideListener = ''; // reset
                 }
-            });
+            };
+            document.addEventListener('click', outsideClickHandler);
+            dropdown.dataset.outsideListener = 'attached';
         }
+    }
+}
+
+function quickFilterBrand(brandName) {
+    document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
+    // Lọc sản phẩm theo hãng được chọn từ menu
+    const searchVal = searchInp.value.toLowerCase().trim();
+    const result = db.filter(item => {
+        const matchName = item.n.toLowerCase().includes(searchVal);
+        const matchBrand = item.b === brandName;  // ← Chỉ lọc theo hãng này
+        const matchColor = true; 
+        const matchSize = true;
+        let matchPrice = true;
+        return matchName && matchBrand /* && matchColor && matchSize && matchPrice */;
+    });
+
+    render(result);
+    document.getElementById('main-container').scrollIntoView({ behavior: 'smooth' });
+    
+    // Đóng dropdown
+    document.getElementById('brand-dropdown').classList.remove('active');
+}
 
         /* RENDER & FILTER */
-       function quickFilterBrand(brandName) {
-            document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
-            const brandCheckbox = document.querySelector(`.f-brand[value="${brandName}"]`);
-            if (brandCheckbox) {
-                brandCheckbox.checked = true;
-                applyFilter();
-                document.getElementById('main-container').scrollIntoView({ behavior: 'smooth' });
-            }
-            // Đóng dropdown sau khi chọn
-            document.getElementById('brand-dropdown').classList.remove('active');
-        }
-
         function render(data) {
             const container = document.getElementById('main-container');
             if (data.length === 0) {
@@ -1013,14 +1038,12 @@ function updateSearchHistory(query) {
 
         function applyFilter() {
             const searchVal = searchInp.value.toLowerCase().trim();
-            const selBrands = [...document.querySelectorAll('.f-brand:checked')].map(c => c.value);
             const selSizes = [...document.querySelectorAll('.f-size:checked')].map(c => parseInt(c.value));
             const selColors = [...document.querySelectorAll('.color-filter:checked')].map(c => c.value);
             const selPriceRanges = [...document.querySelectorAll('.f-price:checked')].map(c => c.value);
 
             const result = db.filter(item => {
                 const matchName = item.n.toLowerCase().includes(searchVal);
-                const matchBrand = selBrands.length === 0 || selBrands.includes(item.b);
                 const matchColor = selColors.length === 0 || selColors.includes(item.c);
                 const matchSize = selSizes.length === 0 || item.s.some(size => selSizes.includes(size));
                 
@@ -1033,16 +1056,16 @@ function updateSearchHistory(query) {
                     });
                 }
 
-                return matchName && matchBrand && matchColor && matchSize && matchPrice;
+                return matchName && matchColor && matchSize && matchPrice;
             });
             render(result);
         }
 
         function resetFilters() {
-            document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
-            searchInp.value = '';
-            applyFilter();
-        }
+    document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
+    searchInp.value = '';
+    applyFilter();
+}
 
         /* USER INFO & CART CHECK */
         function checkUserInfoComplete() {
