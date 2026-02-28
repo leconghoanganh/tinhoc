@@ -1129,7 +1129,7 @@ function updateSearchHistory(query) {
     document.getElementById('cart-cnt').innerText = cart.length;
 };
 
- let userPoints = localStorage.getItem('userPoints') ? parseInt(localStorage.getItem('userPoints')) : 1200;
+ let userPoints = localStorage.getItem('userPoints') ? parseInt(localStorage.getItem('userPoints')) : 0;
 
     const rewards = [
       { id: 1, name: "Voucher giảm 50.000đ", pointsNeeded: 500, code: "VOUCHER50K", voucherType: "fixed", value: 50000, minOrder: 0, type: "voucher", img: "https://i.ibb.co/ZRbLcFKh/voucher-kangaroo-50.jpg" },
