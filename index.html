@@ -282,6 +282,92 @@
         .brand-icon { color: rgb(0, 0, 0); font-size: 18px; padding: 8px 15px; background: #222; border-radius: 30px; cursor: pointer; transition: 0.3s; }
         .brand-icon:hover { background: #333; }
         .brand-icon i { margin-right: 5px; }
+
+        .points-box {
+      text-align: center;
+      background: #ffebee;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      font-size: 1.4em;
+    }
+    .points-box strong {
+      font-size: 2em;
+      color: #c62828;
+    }
+    .rewards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .reward-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-align: center;
+      padding: 15px;
+    }
+    .reward-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    .reward-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .reward-card h3 {
+      margin: 12px 0 8px;
+      font-size: 1.3em;
+      color: #333;
+    }
+    .reward-card .points-needed {
+      font-weight: bold;
+      color: #e91e63;
+      margin-bottom: 10px;
+    }
+    .reward-card button {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .reward-card button:hover {
+      background: #388e3c;
+    }
+    .reward-card button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .message {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .success { background: #e8f5e9; color: #2e7d32; }
+    .error   { background: #ffebee; color: #c62828; }
+.history-sidebar,
+.user-sidebar,
+.redeem-sidebar {
+    left: auto;
+    right: 0;
+    transform: translateX(101%);
+    box-shadow: 10px 0 30px rgba(0,0,0,0.25);
+}
+.history-sidebar.active,
+.user-sidebar.active,
+.redeem-sidebar.active {
+    transform: translateX(0);
+}
     </style>
 </head>
 <body>
@@ -302,17 +388,7 @@
             <label><input type="checkbox" value="3-6" class="f-price" onchange="applyFilter()"> 3 - 6 triệu</label>
             <label><input type="checkbox" value="6-99" class="f-price" onchange="applyFilter()"> Trên 6 triệu</label>
         </div>
-
-        <!-- ==================== PHẦN HÃNG GIÀY (CHỈ THÊM ĐOẠN NÀY) ==================== -->
-        <div class="f-group">
-            <h4>Hãng giày</h4>
-            <label><input type="checkbox" value="Nike" class="f-brand" onchange="applyFilter()"> Nike</label>
-            <label><input type="checkbox" value="Adidas" class="f-brand" onchange="applyFilter()"> Adidas</label>
-            <label><input type="checkbox" value="Puma" class="f-brand" onchange="applyFilter()"> Puma</label>
-            <label><input type="checkbox" value="MLB" class="f-brand" onchange="applyFilter()"> MLB</label>
-        </div>
-        <!-- ======================================================================== -->
-
+        
         <div class="f-group">
             <h4>Size giày</h4>
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;">
@@ -387,6 +463,18 @@
         </form>
     </div>
 
+<div class="sidebar redeem-sidebar" id="redeem-sidebar">
+        <div class="f-header"><h3>ĐỔI ĐIỂM THƯỞNG</h3><i class="fas fa-times" onclick="closeAllSidebars()" style="cursor:pointer"></i></div>
+
+    <div class="points-box">
+      Điểm thưởng hiện tại của bạn: <strong id="current-points">0</strong> điểm
+    </div>
+
+    <div id="message" class="message" style="display:none;"></div>
+
+    <div class="rewards-grid" id="rewards-list"></div>
+  </div>
+
     <nav>
         <a href="index.html" class="logo">GIAY<span>CHAT</span></a>
         <div class="nav-center">
@@ -427,6 +515,7 @@
                 <i class="fas fa-shopping-bag"></i> <span class="badge" id="cart-cnt">0</span>
             </a>
             <div id="user-area"></div>
+<button class="nav-btn" onclick="toggleRedeemSidebar()" title="Đổi điểm"><i class="fas fa-gift"></i></button>
         </div>
     </nav>
 
@@ -1039,6 +1128,101 @@ function updateSearchHistory(query) {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     document.getElementById('cart-cnt').innerText = cart.length;
 };
+
+ let userPoints = localStorage.getItem('userPoints') ? parseInt(localStorage.getItem('userPoints')) : 1200;
+
+    const rewards = [
+      { id: 1, name: "Voucher giảm 50.000đ", pointsNeeded: 500, code: "VOUCHER50K", voucherType: "fixed", value: 50000, minOrder: 0, type: "voucher", img: "https://i.ibb.co/ZRbLcFKh/voucher-kangaroo-50.jpg" },
+      { id: 2, name: "Voucher giảm 20% toàn bộ đơn", pointsNeeded: 800, code: "GIAM20", voucherType: "percent", value: 20, minOrder: 500000, type: "voucher", img: "https://i.ibb.co/hnYT826/v42.webp" },
+      { id: 3, name: "Tặng 5 đôi tất (trị giá 150k)", pointsNeeded: 1500, code: null, type: "gift", img: "https://i.ibb.co/LXY6txKT/abcd8001-5a8830ff92bd4fd39585427801e6596c.jpg" },
+      { id: 4, name: "Voucher giảm 100.000đ", pointsNeeded: 1000, code: "VOUCHER100K", voucherType: "fixed", value: 100000, minOrder: 200000, type: "voucher", img: "https://i.ibb.co/N2WJSbgM/images.jpg" }
+    ];
+
+    // Hiển thị điểm
+    function updatePoints() {
+      document.getElementById('current-points').textContent = userPoints;
+      localStorage.setItem('userPoints', userPoints);
+    }
+
+    // Hiển thị danh sách quà/voucher
+    function renderRewards() {
+      const container = document.getElementById('rewards-list');
+      container.innerHTML = '';
+
+      rewards.forEach(reward => {
+        const card = document.createElement('div');
+        card.className = 'reward-card';
+
+        card.innerHTML = `
+          <img src="${reward.img}" alt="${reward.name}">
+          <h3>${reward.name}</h3>
+          <div class="points-needed">Cần: ${reward.pointsNeeded} điểm</div>
+          <button id="redeem-${reward.id}" 
+                  ${userPoints < reward.pointsNeeded ? 'disabled' : ''}>
+            Đổi ngay
+          </button>
+        `;
+
+        card.querySelector('button').addEventListener('click', () => redeemReward(reward));
+        container.appendChild(card);
+      });
+    }
+
+    // Xử lý đổi thưởng
+    function redeemReward(reward) {
+      if (userPoints < reward.pointsNeeded) {
+        showMessage('Điểm của bạn chưa đủ để đổi!', 'error');
+        return;
+      }
+
+      userPoints -= reward.pointsNeeded;
+      updatePoints();
+
+      let msg = '';
+      if (reward.type === 'voucher') {
+        addVoucherToStorage(reward);
+        msg = `Chúc mừng! Bạn đã đổi thành công.<br>Mã voucher: <strong>${reward.code}</strong><br>(Sao chép và dùng tại giỏ hàng)`;
+      } else {
+        msg = `Chúc mừng! Bạn đã đổi thành công.<br>Quà tặng "${reward.name}" sẽ được gửi kèm đơn hàng tiếp theo.`;
+      }
+
+      showMessage(msg, 'success');
+
+      // Cập nhật lại nút (vì điểm đã thay đổi)
+      renderRewards();
+    }
+
+    function addVoucherToStorage(reward) {
+      let vouchers = JSON.parse(localStorage.getItem('vouchers') || '[]');
+      if (!vouchers.some(v => v.code === reward.code)) {
+        vouchers.push({
+          code: reward.code,
+          type: reward.voucherType,
+          value: reward.value,
+          minOrder: reward.minOrder
+        });
+        localStorage.setItem('vouchers', JSON.stringify(vouchers));
+      }
+    }
+
+    function showMessage(text, type) {
+      const el = document.getElementById('message');
+      el.innerHTML = text;
+      el.className = `message ${type}`;
+      el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 8000);
+    }
+
+function toggleRedeemSidebar() {
+            if (!localStorage.getItem('user_login')) {
+                alert('Vui lòng đăng nhập để đổi điểm!');
+                window.location.href = 'login.html';
+                return;
+            }
+            openSidebar('redeem-sidebar');
+updatePoints();
+renderRewards();
+        }
     </script>
 </body>
 </html>
