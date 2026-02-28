@@ -1162,7 +1162,7 @@ function goToSlide(index) {
     updateSlide();
 }
 
-let userPoints = localStorage.getItem('userPoints') ? parseInt(localStorage.getItem('userPoints')) : 1200;
+let userPoints = localStorage.getItem('userPoints') ? parseInt(localStorage.getItem('userPoints')) : 0;
 
     const rewards = [
       { id: 1, name: "Voucher giảm 50.000đ", pointsNeeded: 500, code: "VOUCHER50K", type: "voucher", img: "https://via.placeholder.com/300x160/ffebee/333?text=Voucher+50K" },
