@@ -414,78 +414,99 @@
             .price { font-size: 24px; }
         }
 
+        /* ==================== NÂNG CẤP GIAO DIỆN PHẦN ĐỔI ĐIỂM (giống hệt index) ==================== */
+        .redeem-box {
+            background: linear-gradient(135deg, #fff5f5 0%, #fff0f0 100%);
+            border: 2px solid var(--red);
+            border-radius: 16px;
+            padding: 25px 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(230, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .redeem-box:hover {
+            box-shadow: 0 8px 25px rgba(230, 0, 0, 0.15);
+        }
         .points-box {
-      text-align: center;
-      background: #ffebee;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 30px;
-      font-size: 1.4em;
-    }
-    .points-box strong {
-      font-size: 2em;
-      color: #c62828;
-    }
-    .rewards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-    .reward-card {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
-      text-align: center;
-      padding: 15px;
-    }
-    .reward-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    }
-    .reward-card img {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-    .reward-card h3 {
-      margin: 12px 0 8px;
-      font-size: 1.3em;
-      color: #333;
-    }
-    .reward-card .points-needed {
-      font-weight: bold;
-      color: #e91e63;
-      margin-bottom: 10px;
-    }
-    .reward-card button {
-      background: #4caf50;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 1em;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .reward-card button:hover {
-      background: #388e3c;
-    }
-    .reward-card button:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-    .message {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 8px;
-      text-align: center;
-      font-weight: bold;
-    }
-    .success { background: #e8f5e9; color: #2e7d32; }
-    .error   { background: #ffebee; color: #c62828; }
+            text-align: center;
+            font-size: 1.35em;
+            font-weight: 600;
+            color: #333;
+        }
+        .points-box strong {
+            font-size: 2.4em;
+            color: var(--red);
+            font-weight: 900;
+        }
+        .rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .reward-card {
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-align: center;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .reward-card:hover {
+            border-color: var(--red);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(230, 0, 0, 0.15);
+        }
+        .reward-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        .reward-card h3 {
+            margin: 15px 0 8px;
+            font-size: 1.25em;
+            color: #222;
+            font-weight: 700;
+        }
+        .reward-card .points-needed {
+            font-weight: 600;
+            color: #e60000;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        .reward-card button {
+            background: var(--black);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        .reward-card button:hover:not(:disabled) {
+            background: var(--red);
+            transform: translateY(-2px);
+        }
+        .reward-card button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .message {
+            margin-top: 20px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        .success { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .error   { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
 
 .history-sidebar,
 .user-sidebar,
@@ -561,8 +582,12 @@
 <div class="sidebar redeem-sidebar" id="redeem-sidebar">
         <div class="f-header"><h3>ĐỔI ĐIỂM THƯỞNG</h3><i class="fas fa-times" onclick="closeAll()" style="cursor:pointer"></i></div>
 
-    <div class="points-box">
-      Điểm thưởng hiện tại của bạn: <strong id="current-points">0</strong> điểm
+    <!-- PHẦN ĐỔI ĐIỂM ĐÃ NÂNG CẤP GIỐNG INDEX -->
+    <div class="redeem-box">
+        <div class="points-box">
+            Điểm thưởng hiện tại của bạn<br>
+            <strong id="current-points">0</strong> điểm
+        </div>
     </div>
 
     <div id="message" class="message" style="display:none;"></div>
@@ -671,9 +696,7 @@
                         <i class="fas fa-star" data-val="4"></i>
                         <i class="fas fa-star" data-val="5"></i>
                     </div>
-                    <div class="inp-group">
-                        <input type="text" id="rev-name" placeholder="Tên hiển thị của bạn...">
-                    </div>
+                    <!-- ĐÃ BỎ INPUT TÊN - TỰ ĐỘNG LẤY TÊN TÀI KHOẢN -->
                     <div class="inp-group">
                         <textarea id="rev-content" placeholder="Chia sẻ cảm nhận về sản phẩm..."></textarea>
                     </div>
@@ -756,9 +779,9 @@
             ],
             s:[40,41], c:"Blue"},
             {id:10, b:"Puma", n:"Dagger 2 Mid Unisex", p:2700000, img:"https://i.ibb.co/0LpMb6Q/625147926-1068658718775289-3652551344046940966-n.jpg",
-            img:["https://i.ibb.co/0LpMb6Q/625147926-1068658718775289-3652551344046940966-n.jpg",
-                 "https://i.ibb.co/hbBDLgv/png.avif",
-                 "https://i.ibb.co/RpT1Z5v1/png.avif"
+            imgs:["https://i.ibb.co/0LpMb6Q/625147926-1068658718775289-3652551344046940966-n.jpg",
+                  "https://i.ibb.co/hbBDLgv/png.avif",
+                  "https://i.ibb.co/RpT1Z5v1/png.avif"
             ],
             s:[40,41], c:"Purple"},
             {id:11, b:"Puma", n:"MB.05 Voltage Unisex", p:3800000, img:"https://i.ibb.co/HDzccWN7/627073165-1436359044524228-4983930078741043061-n.png",
@@ -953,10 +976,14 @@
             });
         }
         function submitReview() {
-            const name = document.getElementById('rev-name').value.trim();
             const content = document.getElementById('rev-content').value.trim();
             if(currentRating === 0) { alert('Vui lòng chọn số sao đánh giá!'); return; }
-            if(!name || !content) { alert('Vui lòng điền tên và nội dung đánh giá!'); return; }
+            if(!content) { alert('Vui lòng nhập nội dung đánh giá!'); return; }
+
+            // TỰ ĐỘNG LẤY TÊN TỪ TÀI KHOẢN
+            const userInfo = JSON.parse(localStorage.getItem('user_info') || '{}');
+            const name = userInfo.name || localStorage.getItem('user_login') || 'Khách hàng';
+
             const newReview = {
                 id: Date.now(),
                 prodId: currentProd.id,
@@ -969,7 +996,6 @@
             let allReviews = JSON.parse(localStorage.getItem('product_reviews') || '[]');
             allReviews.unshift(newReview);
             localStorage.setItem('product_reviews', JSON.stringify(allReviews));
-            document.getElementById('rev-name').value = '';
             document.getElementById('rev-content').value = '';
             document.getElementById('preview-imgs').innerHTML = '';
             uploadedImages = [];
@@ -1165,10 +1191,10 @@ function goToSlide(index) {
 let userPoints = localStorage.getItem('userPoints') ? parseInt(localStorage.getItem('userPoints')) : 0;
 
     const rewards = [
-      { id: 1, name: "Voucher giảm 50.000đ", pointsNeeded: 500, code: "VOUCHER50K", type: "voucher", img: "https://via.placeholder.com/300x160/ffebee/333?text=Voucher+50K" },
-      { id: 2, name: "Voucher giảm 20% toàn bộ đơn", pointsNeeded: 800, code: "GIAM20", type: "voucher", img: "https://via.placeholder.com/300x160/e8f5e9/333?text=Giảm+20%" },
-      { id: 3, name: "Tặng Áo thun miễn phí (trị giá 250k)", pointsNeeded: 1500, code: null, type: "gift", img: "https://via.placeholder.com/300x160/f3e5f5/333?text=Áo+thun+free" },
-      { id: 4, name: "Voucher giảm 100.000đ", pointsNeeded: 1000, code: "VOUCHER100K", type: "voucher", img: "https://via.placeholder.com/300x160/fff3e0/333?text=Voucher+100K" }
+      { id: 1, name: "Voucher giảm 50.000đ", pointsNeeded: 500, code: "VOUCHER50K", type: "voucher", img: "https://i.ibb.co/ZRbLcFKh/voucher-kangaroo-50.jpg" },
+      { id: 2, name: "Voucher giảm 20% toàn bộ đơn", pointsNeeded: 2000, code: "GIAM20", type: "voucher", img: "https://i.ibb.co/hnYT826/v42.webp" },
+      { id: 3, name: "Tặng Áo thun miễn phí (trị giá 250k)", pointsNeeded: 1500, code: null, type: "gift", img: "https://i.ibb.co/LXY6txKT/abcd8001-5a8830ff92bd4fd39585427801e6596c.jpg" },
+      { id: 4, name: "Voucher giảm 100.000đ", pointsNeeded: 1000, code: "VOUCHER100K", type: "voucher", img: "https://i.ibb.co/N2WJSbgM/images.jpg" }
     ];
 
     // Hiển thị điểm
@@ -1201,7 +1227,7 @@ let userPoints = localStorage.getItem('userPoints') ? parseInt(localStorage.getI
       });
     }
 
-    // Xử lý đổi thưởng
+    // Xử lý đổi thưởng - HOÀN THIỆN PHÙ HỢP VỚI CART
     function redeemReward(reward) {
       if (userPoints < reward.pointsNeeded) {
         showMessage('Điểm của bạn chưa đủ để đổi!', 'error');
@@ -1213,15 +1239,37 @@ let userPoints = localStorage.getItem('userPoints') ? parseInt(localStorage.getI
 
       let msg = '';
       if (reward.type === 'voucher') {
-        msg = `Chúc mừng! Bạn đã đổi thành công.<br>Mã voucher: <strong>${reward.code}</strong><br>(Sao chép và dùng tại giỏ hàng)`;
+        addVoucherToStorage(reward);
+
+        // Tự động thêm vào redeemedVouchers để hiển thị ngay trong cart
+        let redeemed = JSON.parse(localStorage.getItem('redeemedVouchers') || '[]');
+        if (!redeemed.includes(reward.code)) {
+            redeemed.push(reward.code);
+            localStorage.setItem('redeemedVouchers', JSON.stringify(redeemed));
+        }
+
+        msg = `Chúc mừng! Bạn đã đổi thành công.<br>Mã <strong>${reward.code}</strong> đã được thêm tự động vào tài khoản.<br>Bạn có thể chọn nó tại trang thanh toán.`;
       } else {
         msg = `Chúc mừng! Bạn đã đổi thành công.<br>Quà tặng "${reward.name}" sẽ được gửi kèm đơn hàng tiếp theo.`;
       }
 
       showMessage(msg, 'success');
 
-      // Cập nhật lại nút (vì điểm đã thay đổi)
+      // Cập nhật lại nút
       renderRewards();
+    }
+
+    function addVoucherToStorage(reward) {
+      let vouchers = JSON.parse(localStorage.getItem('vouchers') || '[]');
+      if (!vouchers.some(v => v.code === reward.code)) {
+        vouchers.push({
+          code: reward.code,
+          type: "fixed",
+          value: 50000,
+          minOrder: 0
+        });
+        localStorage.setItem('vouchers', JSON.stringify(vouchers));
+      }
     }
 
     function showMessage(text, type) {
@@ -1240,8 +1288,8 @@ function toggleRedeemSidebar() {
             }
             document.getElementById('redeem-sidebar').classList.add('active');
             document.getElementById('overlay').classList.add('active');
-updatePoints();
-renderRewards();
+            updatePoints();
+            renderRewards();
         }
 
 function addReviewPoints() {
