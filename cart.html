@@ -148,6 +148,59 @@
 
         footer { background: #0a0a0a; color: #888; padding: 40px 5%; text-align: center; border-top: 5px solid #e60000; margin-top: 80px; }
 
+        /* ==================== NÂNG CẤP GIAO DIỆN PHẦN CHỌN VOUCHER (chỉ phần này được nâng cấp) ==================== */
+        .voucher-box {
+            background: linear-gradient(135deg, #fffaf0 0%, #fff8e1 100%);
+            border: 2px solid #ffe6cc;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 15px 0 25px;
+            box-shadow: 0 4px 15px rgba(230, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        .voucher-box:hover {
+            box-shadow: 0 6px 20px rgba(230, 0, 0, 0.12);
+            border-color: var(--red);
+        }
+        .voucher-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            color: #d97706;
+        }
+        .voucher-header i {
+            font-size: 20px;
+            color: var(--red);
+        }
+        #voucher-select {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 15px;
+            font-weight: 500;
+            border: 2px solid #e5e5e5;
+            border-radius: 10px;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23e60000' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: calc(100% - 16px) center;
+            background-size: 12px;
+        }
+        #voucher-select:hover {
+            border-color: var(--red);
+        }
+        #voucher-select:focus {
+            outline: none;
+            border-color: var(--red);
+            box-shadow: 0 0 0 4px rgba(230, 0, 0, 0.15);
+        }
+
         /* RESPONSIVE */
         @media (min-width: 769px) {
             .search-box { width: 250px; }
@@ -166,6 +219,7 @@
             .mobile-search-container { top: 70px; }
             .mobile-search-box { padding: 10px 3%; }
             .item img { width: 70px; height: 70px; }
+            .voucher-box { padding: 16px; }
         }
     </style>
 </head>
@@ -278,6 +332,24 @@
                     <span>Phí vận chuyển:</span>
                     <span style="color: #00a651; font-weight: bold;">Miễn phí</span>
                 </div>
+                
+                <!-- PHẦN CHỌN VOUCHER ĐÃ ĐƯỢC NÂNG CẤP GIAO DIỆN (chỉ phần này được thay đổi giao diện) -->
+                <div class="voucher-box">
+                    <div class="voucher-header">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>Chọn Voucher Giảm Giá & Phần Quà</span>
+                    </div>
+                    <div class="summary-row" style="margin-bottom: 0;">
+                        <select id="voucher-select" onchange="applyVoucher()">
+                            <option value="">Không áp dụng</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="summary-row" id="discount-row" style="display: none;">
+                    <span>Giảm giá:</span>
+                    <b id="discount-amount" style="color: #00a651;">0 ₫</b>
+                </div>
                 <div class="summary-row" style="margin-top:20px; border-top: 1px dashed #ddd; padding-top:20px;">
                     <span style="font-weight:bold">TỔNG CỘNG:</span>
                     <b id="final-total" style="color:var(--red); font-size: 24px;">0 ₫</b>
@@ -349,7 +421,7 @@
         function loadCart() {
             const cart = JSON.parse(localStorage.getItem('cart') || '[]');
             const list = document.getElementById('cart-list');
-            let total = 0;
+            let subtotal = 0;
 
             if(cart.length === 0) {
                 list.innerHTML = `<p style="text-align:center; padding:30px; color:#999;">Giỏ hàng trống.</p>`;
@@ -359,7 +431,7 @@
             }
 
             list.innerHTML = cart.map((item, index) => {
-                total += item.p;
+                subtotal += item.p;
                 return `
                     <div class="item">
                         <img src="${item.img}">
@@ -372,13 +444,15 @@
                     </div>
                 `;
             }).join('');
-            updateTotal(total);
+            updateTotal(subtotal);
             updateUI();
+            const select = document.getElementById('voucher-select');
+            if(select.value) applyVoucher();
         }
 
-        function updateTotal(total) {
-            document.getElementById('subtotal').innerText = total.toLocaleString() + ' ₫';
-            document.getElementById('final-total').innerText = total.toLocaleString() + ' ₫';
+        function updateTotal(subtotal) {
+            document.getElementById('subtotal').innerText = subtotal.toLocaleString() + ' ₫';
+            document.getElementById('final-total').innerText = subtotal.toLocaleString() + ' ₫';
         }
 
         function removeItem(idx) {
@@ -426,8 +500,7 @@
         }
 
         function openQRModal() {
-            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            let total = 0; cart.forEach(i => total += i.p);
+            const finalTotal = parseInt(document.getElementById('final-total').innerText.replace(/[^0-9]/g, '')) || 0;
             
             const user = localStorage.getItem('user_login') || 'GUEST';
             const code = "SUP" + Math.floor(Math.random()*9000 + 1000);
@@ -435,10 +508,10 @@
 
             if(currentMethod === 'bank') {
                 document.getElementById('qr-title').innerText = "CHUYỂN KHOẢN MB BANK";
-                document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=2|99|0909123456|||0|0|${total}|${user}%20${code}|transfer_myqr`;
+                document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=2|99|0909123456|||0|0|${finalTotal}|${user}%20${code}|transfer_myqr`;
             } else {
                 document.getElementById('qr-title').innerText = "THANH TOÁN MOMO";
-                document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=2|99|0909123456|||0|0|${total}|${user}%20${code}|transfer_myqr`;
+                document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=2|99|0909123456|||0|0|${finalTotal}|${user}%20${code}|transfer_myqr`;
             }
 
             // Reset trạng thái ban đầu
@@ -561,7 +634,58 @@ function fireConfetti() {
         window.onload = () => {
             loadCart();
             updateUI();
+            loadVouchers();
         };
+
+        function loadVouchers() {
+            if(!localStorage.getItem('vouchers')) {
+                localStorage.setItem('vouchers', JSON.stringify([
+                    {code: 'Voucher giảm 50.000đ', type: 'fixed', value: 50000, minOrder: 200000},
+                    {code: 'Tặng 5 đôi tất (trị giá 150k)', type: 'gift', value: 150000, minOrder: 200000},
+                    {code: 'Voucher giảm 20% toàn bộ đơn', type: 'percent', value: 20, minOrder: 1500000},
+                    {code: 'Voucher giảm 100.000đ', type: 'fixed', value: 100000, minOrder: 500000}
+                ]));
+            }
+            const vouchers = JSON.parse(localStorage.getItem('vouchers') || '[]');
+            const redeemed = JSON.parse(localStorage.getItem('redeemedVouchers') || '[]');
+            const select = document.getElementById('voucher-select');
+            select.innerHTML = '<option value="">Không áp dụng</option>';
+            vouchers.filter(v => redeemed.includes(v.code)).forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v.code;
+                let desc = v.type === 'fixed' ? v.value.toLocaleString() + ' ₫' : v.value + '%';
+                opt.textContent = `${v.code} (Giảm ${desc}${v.minOrder ? ', đơn từ ' + v.minOrder.toLocaleString() + ' ₫' : ''})`;
+                select.appendChild(opt);
+            });
+            const selected = localStorage.getItem('selectedVoucher') || '';
+            if(vouchers.some(v => v.code === selected && redeemed.includes(selected))) {
+                select.value = selected;
+                applyVoucher();
+            } else {
+                localStorage.removeItem('selectedVoucher');
+            }
+        }
+
+        function applyVoucher() {
+            const select = document.getElementById('voucher-select');
+            const code = select.value;
+            localStorage.setItem('selectedVoucher', code);
+            const vouchers = JSON.parse(localStorage.getItem('vouchers') || '[]');
+            const voucher = vouchers.find(v => v.code === code);
+            const subtotal = parseInt(document.getElementById('subtotal').innerText.replace(/[^0-9]/g, '')) || 0;
+            let discount = 0;
+            if (voucher) {
+                if (subtotal >= (voucher.minOrder || 0)) {
+                    discount = voucher.type === 'fixed' ? voucher.value : Math.round((voucher.value / 100) * subtotal);
+                } else {
+                    alert(`Đơn hàng chưa đạt giá trị tối thiểu ${voucher.minOrder.toLocaleString()} ₫ cho voucher này!`);
+                }
+            }
+            document.getElementById('discount-row').style.display = discount > 0 ? 'flex' : 'none';
+            document.getElementById('discount-amount').innerText = `-${discount.toLocaleString()} ₫`;
+            const final = subtotal - discount;
+            document.getElementById('final-total').innerText = final.toLocaleString() + ' ₫';
+        }
     </script>
 </body>
 </html>
