@@ -149,6 +149,22 @@
             border-bottom: 2px solid var(--red);
         }
 
+        /* === THÊM MỚI: Style cho link Quên mật khẩu (không ảnh hưởng code cũ) === */
+        .forgot-link {
+            text-align: right;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+        .forgot-link span {
+            color: var(--red);
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .forgot-link span:hover {
+            text-decoration: underline;
+        }
+
         .hidden { display: none !important; }
 
         footer { 
@@ -201,6 +217,9 @@
                     <i class="fas fa-lock"></i>
                 </div>
                 
+                <!-- === THÊM MỚI: Link Quên mật khẩu (không sửa code cũ) === -->
+                <div class="forgot-link"><span onclick="showForgot()">Quên mật khẩu?</span></div>
+                
                 <button class="btn" onclick="login()">
                     XÁC NHẬN <i class="fas fa-check-circle"></i>
                 </button>
@@ -240,6 +259,35 @@
                 </button>
                 
                 <div class="link">Đã là thành viên? <span onclick="toggle()">ĐĂNG NHẬP</span></div>
+            </div>
+
+            <!-- === THÊM MỚI: Box Quên mật khẩu (giống hệt style hiện tại) === -->
+            <div class="card animate__animated hidden" id="forgotBox">
+                <h2>QUÊN <span>MẬT KHẨU</span></h2>
+                
+                <div class="form-group">
+                    <label>Tên đăng nhập</label>
+                    <input type="text" id="f-user" placeholder="Username">
+                    <i class="fas fa-id-badge"></i>
+                </div>
+                
+                <div class="form-group">
+                    <label>Mật khẩu mới</label>
+                    <input type="password" id="f-newpass" placeholder="Mật khẩu mới">
+                    <i class="fas fa-key"></i>
+                </div>
+                
+                <div class="form-group">
+                    <label>Nhập lại mật khẩu mới</label>
+                    <input type="password" id="f-repass" placeholder="Xác nhận mật khẩu mới">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                
+                <button class="btn" onclick="resetPassword()">
+                    ĐẶT LẠI MẬT KHẨU <i class="fas fa-redo"></i>
+                </button>
+                
+                <div class="link">Quay lại? <span onclick="backToLogin()">ĐĂNG NHẬP</span></div>
             </div>
         </div>
     </div>
@@ -304,6 +352,57 @@
             } else {
                 alert("Tài khoản không tồn tại!");
             }
+        }
+
+        /* ==================== CHỨC NĂNG QUÊN MẬT KHẨU (CHỈ THÊM MỚI) ==================== */
+        function showForgot() {
+            const l = document.getElementById('loginBox');
+            const f = document.getElementById('forgotBox');
+            
+            l.classList.add('animate__fadeOut');
+            setTimeout(() => {
+                l.classList.add('hidden');
+                l.classList.remove('animate__fadeOut');
+                f.classList.remove('hidden');
+                f.classList.add('animate__zoomIn');
+            }, 300);
+        }
+
+        function backToLogin() {
+            const f = document.getElementById('forgotBox');
+            const l = document.getElementById('loginBox');
+            
+            f.classList.add('animate__fadeOut');
+            setTimeout(() => {
+                f.classList.add('hidden');
+                f.classList.remove('animate__fadeOut');
+                l.classList.remove('hidden');
+                l.classList.add('animate__zoomIn');
+            }, 300);
+        }
+
+        function resetPassword() {
+            const user = document.getElementById('f-user').value.trim();
+            const newpass = document.getElementById('f-newpass').value;
+            const repass = document.getElementById('f-repass').value;
+
+            if(!user || !newpass) return alert("Vui lòng điền đầy đủ thông tin!");
+            if(newpass !== repass) return alert("Mật khẩu xác nhận không khớp!");
+
+            const data = localStorage.getItem('user_data_' + user);
+            if(!data) return alert("Tài khoản không tồn tại!");
+
+            const userObj = JSON.parse(data);
+            userObj.password = newpass;
+            localStorage.setItem('user_data_' + user, JSON.stringify(userObj));
+
+            alert("✓ Mật khẩu đã được đặt lại thành công!");
+            backToLogin();
+            
+            // Xóa form
+            document.getElementById('f-user').value = '';
+            document.getElementById('f-newpass').value = '';
+            document.getElementById('f-repass').value = '';
         }
     </script>
 </body>
