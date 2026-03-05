@@ -201,6 +201,16 @@
             box-shadow: 0 0 0 4px rgba(230, 0, 0, 0.15);
         }
 
+        /* === PHẦN MỚI: QUÀ TẶNG ĐIỂM (chỉ thêm style này) === */
+        #gift-reward {
+            background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            text-align: center;
+            border: 2px solid #81c784;
+        }
+
         /* RESPONSIVE */
         @media (min-width: 769px) {
             .search-box { width: 250px; }
@@ -330,7 +340,7 @@
                 </div>
                 <div class="summary-row">
                     <span>Phí vận chuyển:</span>
-                    <span style="color: #00a651; font-weight: bold;">Miễn phí</span>
+                    <span id="shipping-fee" style="color: #00a651; font-weight: bold;">Miễn phí</span>
                 </div>
                 
                 <!-- PHẦN CHỌN VOUCHER ĐÃ ĐƯỢC NÂNG CẤP GIAO DIỆN (chỉ phần này được thay đổi giao diện) -->
@@ -399,7 +409,16 @@
         <div style="margin-top: 50px;">
             <i class="fas fa-check-circle"></i>
             <h2 style="font-size:30px; letter-spacing:2px;">CẢM ƠN BẠN!</h2>
-            <p style="margin: 20px 0; color: #888;">Đơn hàng đã được ghi nhận. Chúng tôi sẽ sớm liên hệ xác nhận.</p>
+            <p id="success-main-msg" style="margin: 20px 0; color: #888;">Đơn hàng đã được ghi nhận. Chúng tôi sẽ sớm liên hệ xác nhận.</p>
+            
+            <!-- === PHẦN TẶNG 100 ĐIỂM ĐỔI QUÀ (chỉ thêm khối này) === -->
+            <div id="gift-reward">
+                <i class="fas fa-gift" style="font-size: 28px; color: #2e7d32; margin-bottom: 10px;"></i>
+                <h4 style="color: #2e7d32; margin-bottom: 5px;">🎉 TẶNG 100 ĐIỂM ĐỔI QUÀ!</h4>
+                <p style="color: #2e7d32; font-size: 15px; margin: 0;">Cảm ơn bạn đã đặt hàng. Bạn đã nhận được <strong>100 điểm</strong> vào tài khoản.</p>
+                <small style="color: #4caf50; display: block; margin-top: 8px;">Tổng điểm hiện tại: <span id="success-points" style="font-weight: bold;">0</span> điểm</small>
+            </div>
+
             <button onclick="window.location.href='index.html'" style="padding:15px 40px; border-radius:30px; border:none; cursor:pointer; font-weight:bold; background: var(--red); color: white;">TIẾP TỤC MUA SẮM</button>
         </div>
     </div>
@@ -417,7 +436,36 @@
 
         let currentMethod = 'cod';
 
-        // Logic cart - GIỮ NGUYÊN HOÀN TOÀN
+        // === PHẦN MỚI: TÍNH PHÍ VẬN CHUYỂN (chỉ thêm hàm này) ===
+        function calculateShipping(subtotal) {
+            return subtotal >= 4000000 ? 36000 : 0;
+        }
+
+        function updateShippingFee(subtotal) {
+            const fee = calculateShipping(subtotal);
+            const el = document.getElementById('shipping-fee');
+            if (fee === 0) {
+                el.innerText = 'Miễn phí';
+                el.style.color = '#00a651';
+            } else {
+                el.innerText = '36.000 ₫';
+                el.style.color = 'var(--red)';
+            }
+        }
+
+        function updateFinalTotal() {
+            const subtotal = parseInt(document.getElementById('subtotal').innerText.replace(/[^0-9]/g, '')) || 0;
+            let discount = 0;
+            const discText = document.getElementById('discount-amount').innerText;
+            if (discText && discText !== '0 ₫') {
+                discount = Math.abs(parseInt(discText.replace(/[^0-9]/g, '')) || 0);
+            }
+            const shipping = calculateShipping(subtotal);
+            const final = subtotal - discount + shipping;
+            document.getElementById('final-total').innerText = final.toLocaleString() + ' ₫';
+        }
+
+        // Logic cart - GIỮ NGUYÊN HOÀN TOÀN (chỉ thêm 2 dòng updateShippingFee + updateFinalTotal)
         function loadCart() {
             const cart = JSON.parse(localStorage.getItem('cart') || '[]');
             const list = document.getElementById('cart-list');
@@ -426,6 +474,8 @@
             if(cart.length === 0) {
                 list.innerHTML = `<p style="text-align:center; padding:30px; color:#999;">Giỏ hàng trống.</p>`;
                 updateTotal(0);
+                updateShippingFee(0);
+                updateFinalTotal();
                 updateUI();
                 return;
             }
@@ -445,6 +495,8 @@
                 `;
             }).join('');
             updateTotal(subtotal);
+            updateShippingFee(subtotal);
+            updateFinalTotal();
             updateUI();
             const select = document.getElementById('voucher-select');
             if(select.value) applyVoucher();
@@ -452,6 +504,7 @@
 
         function updateTotal(subtotal) {
             document.getElementById('subtotal').innerText = subtotal.toLocaleString() + ' ₫';
+            // KHÔNG thay đổi dòng này (giữ nguyên như code cũ)
             document.getElementById('final-total').innerText = subtotal.toLocaleString() + ' ₫';
         }
 
@@ -596,13 +649,18 @@
         }
         
         function showSuccess() {
-    localStorage.setItem('cart', '[]');
-    document.getElementById('success').style.display = 'block';
-    document.getElementById('cart-cnt').innerText = "0";
-    
-    // GỌI HIỆU ỨNG PHÁO HOA KHI HIỆN MÀN HÌNH THÀNH CÔNG
-    fireConfetti(); 
-}
+            localStorage.setItem('cart', '[]');
+            document.getElementById('success').style.display = 'block';
+            document.getElementById('cart-cnt').innerText = "0";
+            
+            // === PHẦN TẶNG 100 ĐIỂM ĐỔI QUÀ (chỉ thêm khối này) ===
+            let points = parseInt(localStorage.getItem('loyalty_points') || '0') + 100;
+            localStorage.setItem('loyalty_points', points);
+            document.getElementById('success-points').innerText = points.toLocaleString();
+            
+            // GỌI HIỆU ỨNG PHÁO HOA KHI HIỆN MÀN HÌNH THÀNH CÔNG
+            fireConfetti(); 
+        }
 
         // --- HÀM BẮN PHÁO HOA GIẤY ---
 function fireConfetti() {
@@ -685,6 +743,10 @@ function fireConfetti() {
             document.getElementById('discount-amount').innerText = `-${discount.toLocaleString()} ₫`;
             const final = subtotal - discount;
             document.getElementById('final-total').innerText = final.toLocaleString() + ' ₫';
+            
+            // === PHẦN MỚI: Cập nhật phí ship + tổng tiền sau khi áp voucher (chỉ thêm 2 dòng này) ===
+            updateShippingFee(subtotal);
+            updateFinalTotal();
         }
     </script>
 </body>
