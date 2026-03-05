@@ -6,7 +6,7 @@
     <title>GIAY CHAT | Authentic Store 2036</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --red: #e60000; --black: #0a0a0a; --white: #ffffff; --overlay: rgba(0,0,0,0.7); }
+        :root { --red: #ff0000; --black: #0a0a0a; --white: #ffffff; --overlay: rgba(0,0,0,0.7); }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: #fcfcfc; color: #333; overflow-x: hidden; padding-top: 80px; }
         a { text-decoration: none; color: inherit; }
@@ -52,7 +52,7 @@
         .hero-content h1 span { color: var(--red); }
         .hero-content p { font-size: 18px; margin-bottom: 30px; opacity: 0.9; }
         .btn-shop { padding: 15px 40px; background: var(--red); color: white; font-weight: bold; border-radius: 5px; transition: 0.3s; }
-        .btn-shop:hover { background: #cc0000; }
+        .btn-shop:hover { background: #9a0404; }
 
         /* BRAND ADS */
         .brand-ads-container { display: flex; width: 100%; height: 350px; background: #000; overflow: hidden; margin-bottom: 50px; }
@@ -73,6 +73,211 @@
         .btn-ad-action { display: inline-block; margin-top: 10px; padding: 8px 20px; border: 1px solid white; color: white; font-size: 12px; text-transform: uppercase; opacity: 0; transition: 0.3s; }
         .brand-ad-card:hover .btn-ad-action { opacity: 1; }
         .btn-ad-action:hover { background: white; color: black; }
+
+        /* ========== SLIDER BANNER ========== */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    background: var(--black);
+    margin-bottom: 50px;
+}
+
+.slider-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 1;
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+    animation: zoom 20s infinite alternate;
+}
+
+@keyframes zoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.2); }
+}
+
+.slide-content {
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    transform: translateY(-50%);
+    color: white;
+    z-index: 10;
+    max-width: 600px;
+}
+
+.slide-content h1 {
+    font-size: 60px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.slide-content h1 span {
+    color: var(--red);
+}
+
+.slide-content p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.btn-shop {
+    display: inline-block;
+    padding: 15px 40px;
+    background: var(--red);
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.btn-shop:hover {
+    background: #9a0404;
+}
+
+/* Nút điều hướng */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+    font-size: 24px;
+    z-index: 3;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.slider-btn:hover {
+    background: rgba(255,0,0,0.7);
+}
+
+.prev { left: 20px; }
+.next { right: 20px; }
+
+/* Dots */
+.dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: 10px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.dot.active, .dot:hover {
+    background: var(--red);
+}
+
+/* Responsive cho slider */
+@media (max-width: 768px) {
+    .hero { height: 350px; }
+    .slide-content { left: 20px; max-width: 90%; }
+    .slide-content h1 { font-size: 28px; }
+    .slide-content p { font-size: 14px; }
+    .slider-btn { padding: 10px 15px; font-size: 18px; }
+}
+
+@media (max-width: 480px) {
+    .hero { height: 300px; }
+    .slide-content h1 { font-size: 22px; }
+}
+
+/* ========== NÚT CHAT NỔI FACEBOOK ========== */
+.chat-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #0084ff;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.chat-float:hover {
+    background: #0063cc;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.chat-float i {
+    font-size: 32px;
+}
+
+.chat-tooltip {
+    position: absolute;
+    right: 70px;
+    background: #333;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    pointer-events: none;
+}
+
+.chat-float:hover .chat-tooltip {
+    opacity: 1;
+    visibility: visible;
+    right: 80px;
+}
 
         /* DROPDOWN BRAND MENU */
         .dropdown {
@@ -387,6 +592,134 @@
         }
         .success { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
         .error   { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+
+        /* ========== CAROUSEL SẢN PHẨM ========== */
+.brand-section {
+    position: relative;
+    padding: 0 5% 50px;
+}
+
+.carousel-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.carousel-wrapper {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    width: 100%;
+}
+
+.carousel-grid {
+    display: flex;
+    gap: 30px;
+    transition: transform 0.3s ease;
+    will-change: transform;
+}
+
+/* Card trong carousel */
+.carousel-grid .card {
+    flex: 0 0 calc(25% - 22.5px); /* 4 sản phẩm trên desktop, trừ gap */
+    max-width: calc(25% - 22.5px);
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Nút điều hướng carousel */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    opacity: 0.8;
+}
+
+.carousel-btn:hover {
+    background: var(--red);
+    color: white;
+    border-color: var(--red);
+    opacity: 1;
+}
+
+.carousel-btn.prev {
+    left: -20px;
+}
+
+.carousel-btn.next {
+    right: -20px;
+}
+
+/* Ẩn nút khi không thể cuộn */
+.carousel-btn.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .carousel-grid .card {
+        flex: 0 0 calc(33.333% - 20px);
+        max-width: calc(33.333% - 20px);
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-grid .card {
+        flex: 0 0 calc(50% - 15px);
+        max-width: calc(50% - 15px);
+    }
+
+    .carousel-btn.prev {
+        left: -15px;
+    }
+
+    .carousel-btn.next {
+        right: -15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-grid .card {
+        flex: 0 0 calc(100% - 0px);
+        max-width: calc(100% - 0px);
+    }
+
+    .carousel-btn {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* Ẩn nút trên mobile nếu muốn dùng vuốt tay, nhưng vẫn giữ */
+@media (max-width: 480px) {
+    .carousel-btn {
+        display: none; /* hoặc giữ lại nếu muốn */
+    }
+    /* Có thể bật vuốt tay bằng overflow-x: auto thay vì hidden */
+    .carousel-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .carousel-grid {
+        scroll-snap-type: x mandatory;
+    }
+    .carousel-grid .card {
+        scroll-snap-align: start;
+    }
+}
     </style>
 </head>
 <body>
@@ -551,14 +884,49 @@
         <div id="mobile-search-suggestions"></div>
     </div>
 
-    <div class="hero">
-        <img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=2000" alt="Banner">
-        <div class="hero-content">
-            <h1>NƠI HỘI TỤ <span>TINH HOA ĐẤT TRỜI</span></h1>
-            <p>Khám phá bộ sưu tập Sneaker độc quyền năm 2036.</p>
-            <a href="#main-container" class="btn-shop">MUA NGAY</a>
+    <!-- Thay thế phần hero hiện tại bằng slider banner (giữ nguyên cấu trúc cha) -->
+<div class="hero">
+    <div class="slider-container">
+        <div class="slider">
+            <div class="slide active">
+                <img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=2000" alt="Banner 1">
+                <div class="slide-content">
+                    <h1>NƠI HỘI TỤ <span>TINH HOA ĐẤT TRỜI</span></h1>
+                    <p>Khám phá bộ sưu tập Sneaker độc quyền năm 2036.</p>
+                    <a href="#main-container" class="btn-shop">MUA NGAY</a>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2000" alt="Banner 2">
+                <div class="slide-content">
+                    <h1>PHONG CÁCH <span>ĐỈNH CAO</span></h1>
+                    <p>Giày chính hãng, đa dạng mẫu mã, giá tốt nhất.</p>
+                    <a href="#main-container" class="btn-shop">XEM NGAY</a>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=2000" alt="Banner 3">
+                <div class="slide-content">
+                    <h1>SNEAKER <span>CHÍNH HÃNG</span></h1>
+                    <p>Hàng trăm mẫu mới mỗi ngày, giao hàng toàn quốc.</p>
+                    <a href="#main-container" class="btn-shop">MUA SẮM</a>
+                </div>
+            </div>
+        </div>
+        <!-- Chấm tròn chỉ slide -->
+        <div class="dots">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
         </div>
     </div>
+</div>
+
+<!-- Nút chat nổi liên kết Facebook -->
+<div class="chat-float" onclick="window.open('https://www.facebook.com/le.cong.hoang.anh.2025', '_blank')" title="Chat với chúng tôi qua Facebook">
+    <i class="fab fa-facebook-messenger"></i>
+    <span class="chat-tooltip">Chat Shop</span>
+</div>
 
     <div class="brand-ads-container">
         <div class="brand-ad-card style-nike" onclick="quickFilterBrand('Nike')">
@@ -618,7 +986,7 @@
                   "https://i.ibb.co/jvNJLp7k/625370604-1532583257806273-8610411959819160328-n.png"
             ], s:[38,39,40,41,42,43], c:"Pink"},
             
-            {id:3, b:"Nike", n:"Kyrie 8 'Chinese New Year'", p:9000000, img:"https://i.ibb.co/SwyKjRb0/626427771-887877020511151-1715349665036263589-n.png",
+            {id:3, b:"Nike", n:"Kyrie 8", p:9000000, img:"https://i.ibb.co/SwyKjRb0/626427771-887877020511151-1715349665036263589-n.png",
             imgs:["https://i.ibb.co/SwyKjRb0/626427771-887877020511151-1715349665036263589-n.png",
                   "https://i.ibb.co/Wpt6sNyQ/626357438-765510539931433-1680951240692059308-n.png",
                   "https://i.ibb.co/mrksCysD/625870879-2360091834501909-7905962188565777004-n.png"
@@ -713,7 +1081,119 @@
                   "https://cdn.hstatic.net/products/1000284478/001_fs261ru02x007_8_08d14811e4ad456c923011699d5f4802.jpg",
                   "https://cdn.hstatic.net/products/1000284478/001_fs261ru02x007_7_848d9da18a754133b409583862aefe6b.jpg"
             ],
-            s:[38,39], c:"Black"}
+            s:[38,39], c:"Black"},
+
+            {id:17, b:"Nike", n:"Giannis Immortality 4 EP", p:2349000, img:"https://i.ibb.co/QvfSc0Sv/image.png",
+            imgs:["https://i.ibb.co/Y438j116/GIANNIS-IMMORTALITY-4-EP.avif",
+                  "https://i.ibb.co/352qwJpx/GIANNIS-IMMORTALITY-4-GS.avif",
+                  "https://i.ibb.co/zWS3xwsb/image.png"
+            ],
+            s:[38,39,41,42,43], c:"Pink"},
+
+            {id:18, b:"Nike", n:"Air Jordan 1 Low", p:3239000, img:"https://i.ibb.co/Zz30VKJM/image.png",
+            imgs:["https://i.ibb.co/27Z91Csw/AIR-JORDAN-1-LOW.avif",
+                  "https://i.ibb.co/8D0HmwJD/AIR-JORDAN-1-LOW.avif",
+                  "https://i.ibb.co/xS1Phmyj/AIR-JORDAN-1-LOW.avif"
+            ],
+            s:[38,40,42,43], c:"Red"},
+
+            {id:19, b:"Nike", n:"Nike Vomero Plus", p:4839000, img:"https://i.ibb.co/ynswmFNG/image.png",
+            imgs:["https://i.ibb.co/XxDRrNw6/image.png",
+                  "https://i.ibb.co/bMwMVTYv/image.png",
+                  "https://i.ibb.co/sdPHBxfj/image.png"
+            ],
+            s:[38,39,40,41,42,43], c:"Pink"},
+
+            {id:20, b:"Nike", n:"Nike Vaporfly 4 Glam", p:7629000, img:"https://i.ibb.co/Nd2wx0Nd/ZOOMX-VAPORFLY-NEXT-4-GLAM.avif",
+            imgs:["https://i.ibb.co/Qv6P6jH2/ZOOMX-VAPORFLY-NEXT-4-GLAM.avif",
+                  "https://i.ibb.co/YFWtXCBP/ZOOMX-VAPORFLY-NEXT-4-GLAM.avif",
+                  "https://i.ibb.co/SwYKxrh1/ZOOMX-VAPORFLY-NEXT-4-GLAM.avif"
+            ],
+            s:[38,39,41,43], c:"Purple"},
+
+             {id:21, b:"Adidas", n:"Adidas Dame 9", p:1900000, img:"https://i.ibb.co/Xf3zdfF5/Giay-BAPE-x-Dame-9-DJo-IH0786-01-00-standard.avif",
+            imgs:["https://i.ibb.co/Xd8d13v/Giay-BAPE-x-Dame-9-DJo-IH0786-02-standard.avif",
+                  "https://i.ibb.co/nqG7xfrd/Giay-BAPE-x-Dame-9-DJo-IH0786-04-standard.avif",
+                  "https://i.ibb.co/C5KdtTVr/Giay-BAPE-x-Dame-9-DJo-IH0786-42-detail.avif"
+            ],
+            s:[38,41,42,43], c:"Red"},
+
+             {id:22, b:"Adidas", n:"Adidas Anthony Edwards 1 Low", p:2900000, img:"https://i.ibb.co/F4jsVRWT/Giay-Bong-Ro-Anthony-Edwards-1-Low-mau-xanh-la-JS1778-01-00-standard.avif",
+            imgs:["https://i.ibb.co/DDXqtqNp/Giay-Bong-Ro-Anthony-Edwards-1-Low-mau-xanh-la-JS1778-02-standard.avif",
+                  "https://i.ibb.co/fdPXFZy1/Giay-Bong-Ro-Anthony-Edwards-1-Low-mau-xanh-la-JS1778-41-detail.avif",
+                  "https://i.ibb.co/1YtZqwnH/Giay-Bong-Ro-Anthony-Edwards-1-Low-mau-xanh-la-JS1778-04-standard.avif"
+            ],
+            s:[38,41,42,43,44,45], c:"Green"},
+
+            {id:23, b:"Adidas", n:"Adidas SuperStar", p:2600000, img:"https://i.ibb.co/LVQngpg/Superstar-Shoes-White-EG4958-01-00-standard.avif",
+            imgs:["https://i.ibb.co/r2t4Cxzn/Superstar-Shoes-White-EG4958-04-standard.avif",
+                  "https://i.ibb.co/ycmzYsBq/Superstar-Shoes-White-EG4958-41-detail.avif",
+                  "https://i.ibb.co/0jMCRpDt/Superstar-Shoes-White-EG4958-HM3.avif"
+            ],
+            s:[38,39,40,41,42,43,44,45], c:"White"},
+
+            {id:24, b:"Adidas", n:"Adidas LightBlaze", p:2500000, img:"https://i.ibb.co/Z4Nnzzt/Giay-LIGHTBLAZE-trang-HQ9347-HM1.avif",
+            imgs:["https://i.ibb.co/ymqxnpyK/Giay-LIGHTBLAZE-trang-HQ9347-HM4.avif",
+                  "https://i.ibb.co/YFmcf5Kk/Giay-LIGHTBLAZE-trang-HQ9347-HM8.avif",
+                  "https://i.ibb.co/zW8vfzLZ/Giay-LIGHTBLAZE-trang-HQ9347-HM52.avif"
+            ],
+            s:[38,39,40,41,42,43,44,45], c:"White"},
+
+            {id:25, b:"Puma", n:"Speedcat Faded", p:2500000, img:"https://i.ibb.co/Z6HFYgJp/Speedcat-Faded-Sneakers-Unisex.avif",
+            imgs:["https://i.ibb.co/0Rdv4r9w/Speedcat-Faded-Sneakers-Unisex.avif",
+                  "https://i.ibb.co/SwmfYQXF/Speedcat-Faded-Sneakers-Unisex.avif",
+                  "https://i.ibb.co/Lhkxr0pf/Speedcat-Faded-Sneakers-Unisex.avif"
+            ],
+            s:[38,39,40,41,42,43,44,45], c:"Blue"},
+
+            {id:26, b:"Puma", n:"AVANTI LS", p:1500000, img:"https://i.ibb.co/JjZJzdzC/Gi-y-Th-Thao-FENTY-x-PUMA-AVANTI-LS.avif",
+            imgs:["https://i.ibb.co/bRMp3FkC/Gi-y-Th-Thao-FENTY-x-PUMA-AVANTI-LS.avif",
+                  "https://i.ibb.co/CKcsCGsT/Gi-y-Th-Thao-FENTY-x-PUMA-AVANTI-LS.avif",
+                  "https://i.ibb.co/sJmJX8hn/Gi-y-Th-Thao-FENTY-x-PUMA-AVANTI-LS.avif"
+            ],
+            s:[38,39,40,41,42,43,44,45], c:"Purple"},
+
+            {id:27, b:"Puma", n:"Inhale", p:2400000, img:"https://i.ibb.co/0LTxhFF/Gi-y-Th-Thao-Inhale.avif",
+            imgs:["https://i.ibb.co/MynSBJm5/Gi-y-Th-Thao-Inhale.avif",
+                  "https://i.ibb.co/HfsFhc3g/Gi-y-Th-Thao-Inhale.avif",
+                  "https://i.ibb.co/W4j5HCdy/Gi-y-Th-Thao-Inhale.avif"
+            ],
+            s:[38,39,40,41,42,43,44,45], c:"Pink"},
+
+            {id:28, b:"Puma", n:"Vis2K", p:1320000, img:"https://i.ibb.co/CpKRXrKc/Vis2-K-Sneakers.avif",
+            imgs:["https://i.ibb.co/BVfd3WqH/Vis2-K-Sneakers.avif",
+                  "https://i.ibb.co/DDmVLWMC/Vis2-K-Sneakers.avif",
+                  "https://i.ibb.co/fdC50Sw8/Vis2-K-Sneakers.avif"
+            ],
+            s:[38,39,40,43,44,45], c:"Black"},
+
+            {id:29, b:"MLB", n:"Big Ball Chunky Field Mask", p:2990000, img:"https://i.ibb.co/kgN3SFd1/image.png",
+            imgs:["https://i.ibb.co/g02hZy5/image.png",
+                  "https://i.ibb.co/yCfvk4T/image.png",
+                  "https://i.ibb.co/VWf09yLr/image.png"
+            ],
+            s:[38,39,40,41,42,43,44,45], c:"Black"},
+
+            {id:30, b:"MLB", n:"Chunky Liner Denim Classic Mono", p:3990000, img:"https://i.ibb.co/pj3fRpnL/image.png",
+            imgs:["https://i.ibb.co/fdMrDXpj/image.png",
+                  "https://i.ibb.co/3HNNZfw/image.png",
+                  "https://i.ibb.co/p6832PqZ/image.png"
+            ],
+            s:[38,39,40,41,42,43,44,45], c:"Blue"},
+
+            {id:31, b:"MLB", n:"Trophy Rowe", p:3590000, img:"https://i.ibb.co/bMYRMsbH/image.png",
+            imgs:["https://i.ibb.co/ccS0THzQ/image.png",
+                  "https://i.ibb.co/k2RhdgZ5/image.png",
+                  "https://i.ibb.co/GwpKpx2/image.png"
+            ],
+            s:[38,39,40,41,42,43,44,45], c:"Pink"},
+
+            {id:32, b:"MLB", n:"Chunky Coopers Town", p:3290000, img:"https://i.ibb.co/ds3cTVYK/image.png",
+            imgs:["https://i.ibb.co/JwGVr4d1/image.png",
+                  "https://i.ibb.co/1t0NYt8c/image.png",
+                  "https://i.ibb.co/1JmK7fzW/image.png"
+            ],
+            s:[38,39,40,41,42,43,44,45], c:"White"},
         ];
         // ==================== ELEMENTS ====================
 const searchInp          = document.getElementById('search');
@@ -1023,31 +1503,88 @@ function quickFilterBrand(brandName) {
     document.getElementById('brand-dropdown').classList.remove('active');
 }
 
+    // ========== SLIDER BANNER ==========
+let slideIndex = 0;
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+
+function showSlide(n) {
+    // Xử lý vòng lặp
+    if (n >= slides.length) slideIndex = 0;
+    if (n < 0) slideIndex = slides.length - 1;
+
+    // Ẩn tất cả slide và xóa active dot
+    slides.forEach(slide => slide.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
+
+    // Hiện slide và dot hiện tại
+    slides[slideIndex].classList.add('active');
+    dots[slideIndex].classList.add('active');
+}
+
+function changeSlide(step) {
+    slideIndex += step;
+    showSlide(slideIndex);
+}
+
+function currentSlide(index) {
+    slideIndex = index;
+    showSlide(slideIndex);
+}
+
+// Tự động chuyển slide mỗi 5 giây
+let slideInterval = setInterval(() => changeSlide(1), 5000);
+
+// Dừng tự động khi hover vào slider
+const hero = document.querySelector('.hero');
+hero.addEventListener('mouseenter', () => clearInterval(slideInterval));
+hero.addEventListener('mouseleave', () => {
+    slideInterval = setInterval(() => changeSlide(1), 5000);
+});
+
+// Khởi tạo slide đầu tiên
+showSlide(slideIndex);
+
         /* RENDER & FILTER */
         function render(data) {
-            const container = document.getElementById('main-container');
-            if (data.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:100px; font-size:18px; color:#999;">Không tìm thấy sản phẩm phù hợp.</div>`;
-                return;
-            }
-            container.innerHTML = "";
-            const brands = [...new Set(data.map(i => i.b))];
-            
-            brands.forEach(br => {
-                const prods = data.filter(i => i.b === br);
-                container.innerHTML += `
-                    <div class="brand-section">
-                        <div class="section-title">${br}</div>
-                        <div class="grid">${prods.map(p => `
+    const container = document.getElementById('main-container');
+    if (data.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:100px; font-size:18px; color:#999;">Không tìm thấy sản phẩm phù hợp.</div>`;
+        return;
+    }
+
+    container.innerHTML = "";
+    const brands = [...new Set(data.map(i => i.b))];
+    
+    brands.forEach(br => {
+        const prods = data.filter(i => i.b === br);
+        const brandSection = document.createElement('div');
+        brandSection.className = 'brand-section';
+        brandSection.innerHTML = `
+            <div class="section-title">${br}</div>
+            <div class="carousel-container">
+                <button class="carousel-btn prev" onclick="scrollCarousel(this, -1)">&#10094;</button>
+                <div class="carousel-wrapper">
+                    <div class="carousel-grid">
+                        ${prods.map(p => `
                             <div class="card" onclick="goDetail(${p.id})">
                                 <img src="${p.img}" alt="${p.n}">
                                 <h3>${p.n}</h3>
                                 <div style="color:var(--red); font-weight:bold; font-size:16px;">${fmtPrice(p.p)}</div>
                                 <div class="btn-view">CHI TIẾT</div>
-                            </div>`).join('')}</div>
-                    </div>`;
-            });
-        }
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <button class="carousel-btn next" onclick="scrollCarousel(this, 1)">&#10095;</button>
+            </div>
+        `;
+        container.appendChild(brandSection);
+    });
+
+    // Cập nhật trạng thái nút sau khi render
+    updateCarouselButtons();
+}
 
         function applyFilter() {
             const searchVal = searchInp.value.toLowerCase().trim();
@@ -1267,6 +1804,66 @@ function toggleRedeemSidebar() {
             updatePoints();
             renderRewards();
         }
+
+        // ========== CAROUSEL CONTROL ==========
+function scrollCarousel(btn, direction) {
+    const container = btn.closest('.carousel-container');
+    const wrapper = container.querySelector('.carousel-wrapper');
+    const grid = container.querySelector('.carousel-grid');
+    const card = grid.querySelector('.card');
+    if (!card) return;
+
+    const cardStyle = window.getComputedStyle(card);
+    const cardWidth = card.offsetWidth + parseInt(cardStyle.marginRight) + parseInt(cardStyle.marginLeft);
+    const scrollAmount = cardWidth * 2; // Cuộn 2 sản phẩm mỗi lần (có thể điều chỉnh)
+
+    if (direction === 1) {
+        wrapper.scrollLeft += scrollAmount;
+    } else {
+        wrapper.scrollLeft -= scrollAmount;
+    }
+
+    // Sau khi cuộn, kiểm tra và cập nhật nút (dùng setTimeout để đợi scroll hoàn tất)
+    setTimeout(() => updateCarouselButtons(container), 100);
+}
+
+// Hàm cập nhật trạng thái nút (disabled nếu không thể cuộn thêm)
+function updateCarouselButtons(container = null) {
+    const containers = container ? [container] : document.querySelectorAll('.carousel-container');
+    containers.forEach(cont => {
+        const wrapper = cont.querySelector('.carousel-wrapper');
+        const prevBtn = cont.querySelector('.prev');
+        const nextBtn = cont.querySelector('.next');
+        if (!wrapper || !prevBtn || !nextBtn) return;
+
+        const maxScrollLeft = wrapper.scrollWidth - wrapper.clientWidth;
+        
+        if (wrapper.scrollLeft <= 0) {
+            prevBtn.classList.add('disabled');
+        } else {
+            prevBtn.classList.remove('disabled');
+        }
+
+        if (wrapper.scrollLeft >= maxScrollLeft - 1) { // -1 để tránh lỗi làm tròn
+            nextBtn.classList.add('disabled');
+        } else {
+            nextBtn.classList.remove('disabled');
+        }
+    });
+}
+
+// Lắng nghe sự kiện scroll để cập nhật nút liên tục
+document.addEventListener('scroll', (e) => {
+    if (e.target.classList.contains('carousel-wrapper')) {
+        updateCarouselButtons(e.target.closest('.carousel-container'));
+    }
+}, true); // dùng capture để bắt sự kiện từ wrapper
+
+// Cũng cần gọi khi resize
+window.addEventListener('resize', () => updateCarouselButtons());
+
+// Gọi lần đầu sau khi render
+setTimeout(updateCarouselButtons, 200);
     </script>
 </body>
 </html>
